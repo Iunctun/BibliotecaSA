@@ -1,0 +1,130 @@
+.header {
+        --ui-color: #f6f5e6;
+        /* cor inicial (bege) */
+        --logo-filter: brightness(1);
+
+        background-color: #141636;
+        padding: 20px 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+
+        transition:
+            background-color 0.3s ease,
+            backdrop-filter 0.3s ease;
+    }
+
+    /* Header com blur ao rolar a página */
+    .header.scrolled {
+        background-color: rgba(246, 245, 230, var(--bg-opacity));
+        backdrop-filter: blur(var(--blur-amount));
+        -webkit-backdrop-filter: blur(var(--blur-amount));
+
+        /* Esfumaçado mais forte em cima */
+        -webkit-mask-image: linear-gradient(180deg,
+                rgba(0, 0, 0, 1) 0%,
+                rgba(0, 0, 0, 0) 100%);
+        mask-image: linear-gradient(180deg,
+                rgba(0, 0, 0, 1) 0%,
+                rgba(0, 0, 0, 0) 100%);
+    }
+
+    .header-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* ==========================================
+   LOGO ESQUERDA
+   PERSONALIZAÇÕES:
+   - Alterar tamanho: modifique o 'height' (ex: 60px, 80px)
+   - Alterar cor: se usar SVG, edite o arquivo SVG diretamente
+   - Alterar imagem: substitua o arquivo em img/logo-02.png
+   ========================================== */
+    .logo-left {
+        flex: 0 0 auto;
+    }
+
+    .logo-left img {
+        height: 60px;
+        /* ← ALTERE AQUI O TAMANHO DA LOGO ESQUERDA */
+        width: auto;
+        /* Para alterar a cor de logos SVG, use filter ou edite o SVG diretamente */
+    }
+
+    /* ==========================================
+   MENU DE NAVEGAÇÃO
+   PERSONALIZAÇÕES:
+   - Alterar cor dos links: modifique o 'color' abaixo
+   - Alterar tamanho da fonte: modifique 'font-size'
+   - Alterar espaçamento entre links: modifique 'gap'
+   ========================================== */
+    .nav-menu {
+        display: flex;
+        gap: 50px;
+        /* ← ALTERE AQUI O ESPAÇO ENTRE OS LINKS */
+        flex: 1;
+        justify-content: center;
+    }
+
+    .nav-link {
+        color: #f1f1f1;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        transition:
+            color 0.3s ease,
+            opacity 0.3s ease;
+    }
+
+    .nav-link:hover {
+        opacity: 0.7;
+        /* ← Opacidade ao passar o mouse */
+    }
+
+    .nav-link::after {
+        content: "";
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: currentColor;
+        transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+        width: 100%;
+    }
+
+    /* ==========================================
+   LOGO DIREITA
+   PERSONALIZAÇÕES:
+   - Alterar tamanho: modifique o 'height' (ex: 60px, 80px)
+   - Alterar cor: se usar SVG, edite o arquivo SVG diretamente
+   - Alterar imagem: substitua o arquivo em img/cão-logo.png
+   ========================================== */
+    .botao-login{
+       background-color:#474857;
+       border-radius: 5px;
+       padding-top: 7px;
+       padding-bottom: 7px;
+       padding-left: 15px;
+       padding-right: 15px;
+    }
+
+    .botao-login:hover{
+        background-color: #303246;
+        color: #141636;
+    }
+
+    .botao-login a{
+        text-decoration: none;
+        color: #ffffff;
+    }
