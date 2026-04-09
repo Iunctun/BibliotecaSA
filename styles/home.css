@@ -1,0 +1,60 @@
+body{
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #dbe4ff;
+}
+
+.card-input{
+    background-color: #2c316b;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    width: 100%;
+    margin-top: 70px;
+    text-align: center;
+}
+
+.card-input h1{
+    color: #fff;
+    font-size: 50px;
+}
+
+.card-input input{
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 200px;
+    padding-right: 200px;
+    border-radius: 5px;
+}
+.card-input button{
+    color: #fff;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 18px;
+    padding-right: 18px;
+    border-radius: 5px ;
+    background-color: #141636;
+}
+
+.left-card{
+    background-color: #fff;
+    padding-bottom: 350px;
+    width: 50%;
+    
+}
+
+.right-card{
+    background-color: #fff;
+    width: 50%;
+}
+
+.catalogo{
+    display: flex;
+    padding: 30px;
+    gap: 30px;
+}
+
+.catalogo h5{
+    font-size: 30px;
+}
+
+
