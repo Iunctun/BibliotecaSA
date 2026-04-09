@@ -16,6 +16,9 @@
             backdrop-filter 0.3s ease;
     }
 
+   
+
+
     /* Header com blur ao rolar a página */
     .header.scrolled {
         background-color: rgba(246, 245, 230, var(--bg-opacity));
