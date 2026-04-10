@@ -1,3 +1,37 @@
-.fotter{
-    background-color: #141636;
+.footer {
+  background: #141636;
+  color: #fff; 
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.footer-section h3 {
+  color: #fff;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.footer-section a {
+  color: #fff; 
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-section a:hover {
+  color: #1d2cff; 
+  opacity: 0.8;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(58, 47, 32, 0.2);
+  padding-top: 1rem;
+  opacity: 0.8;
+  color: #fff;
 }

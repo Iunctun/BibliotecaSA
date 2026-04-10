@@ -1,0 +1,90 @@
+        .portfolio-section {
+            width: 100%;
+            padding: 60px 0;
+        }
+
+        .main-title {
+            text-align: center;
+            font-size: 40px;
+            font-weight: 400;
+            color: #666;
+            margin-bottom: 60px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* MARGEM LATERAL - Ajuste o padding aqui conforme necessário */
+        .portfolio-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 80px; /* ← AJUSTE ESTA MARGEM LATERAL */
+        }
+
+        .carousel-wrapper {
+            margin-bottom: 60px;
+        }
+
+        .project-title {
+            text-align: center;
+            font-size: 25px;
+            font-weight: 400;
+            color: #333;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            min-height: 400px;
+            overflow: hidden;
+        }
+
+        .carousel-images {
+    display: grid;
+    grid-template-columns:  repeat(5, 1fr);
+    gap: 0;
+    margin-bottom: 40px;
+    max-width: 1200px; /* ← ajuste este valor */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+        .image-box {
+    width: 100%;
+    overflow: hidden;
+
+}
+
+.image-box img {
+    width: 100%;
+    height: auto; 
+    display: block;
+}
+
+        /* Navegação por pontos */
+        .carousel-dots {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: none;
+            background-color: #ccc;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            padding: 0;
+        }
+
+        .dot.active {
+            background-color: #333;
+        }
+
+        .dot:hover {
+            background-color: #666;
+        }
