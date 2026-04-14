@@ -109,3 +109,60 @@ body {
 .metric-card.dark .card-value {
     color: #ffffff;
 }
+
+.chart-section {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 20px 24px;
+    border: 1px solid #dde1f0;
+    display: flex;
+    gap: 32px;
+}
+
+.chart-left {
+    flex: 0 0 210px;
+}
+
+.chart-left h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1f3c;
+    margin-bottom: 16px;
+    margin-top: 0;
+
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #444444;
+    padding: 6px 0;
+
+}
+
+.legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.legend-dot.dark {  background-color:#1a1f3c;}
+.legend-dot.medium {background-color: #6b7fc4;}
+.legend-dot.light {background-color: #a8b4e0;}
+.legend-dot.lighter {background-color: #d0d8f0;
+}
+
+.chart-right {
+    flex: 1;
+    position: relative;
+    height: 220px;
+}
+ 
+#loginChart {
+    width: 100% !important;
+    height: 100% !important;
+
+}
