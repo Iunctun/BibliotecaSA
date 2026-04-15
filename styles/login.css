@@ -1,0 +1,213 @@
+body{
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #333;
+}
+
+/* CSS Variables */
+:root {
+  --input-width: 249px;
+  --input-font-size: 14px;
+  --input-pad-x: 43px;
+  --input-pad-y: 10px;
+  --input-pad-x-right: 15px;
+  --input-radius: 20px;
+  --input-bg: #4a4a4a;
+  --input-color: #d6d6d6;
+  --input-placeholder: #9ca3af;
+  --input-border: 1px solid #70a3f0;
+  --input-focus-color: #3b82f6;
+  --input-focus-ring: 3px;
+  --input-shadow: 0px 0px 13px 0px rgba(108,112,244,0.16);
+  --input-icon-color: #7ba3f4;
+}
+
+.login-container{
+    background-color: #111827;
+    position: absolute;
+    align-items: center;
+    margin-left: 500px;
+    margin-top: 250px;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.login-container h3{
+    font-size: 15px;
+    color: #858383;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-style: italic;
+    margin-bottom: 30px;
+}
+
+.center-input{
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.input-email {
+  position: relative;
+  display: flex;
+  width: var(--input-width);
+  margin-top: 20px;
+}
+
+.input-senha {
+  position: relative;
+  display: flex;
+  width: var(--input-width);
+}
+
+.input-email .custom-input {
+  width: 100%;
+  font-family: inherit;
+  font-size: var(--input-font-size);
+  padding: var(--input-pad-y) var(--input-pad-x-right) var(--input-pad-y) var(--input-pad-x);
+  border-radius: var(--input-radius);
+  background: var(--input-bg);
+  color: var(--input-color);
+  border: var(--input-border);
+  box-shadow: var(--input-shadow);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-senha .custom-input {
+  width: 100%;
+  font-family: inherit;
+  font-size: var(--input-font-size);
+  padding: var(--input-pad-y) var(--input-pad-x-right) var(--input-pad-y) var(--input-pad-x);
+  border-radius: var(--input-radius);
+  background: var(--input-bg);
+  color: var(--input-color);
+  border: var(--input-border);
+  box-shadow: var(--input-shadow);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  margin-top: 10px;
+}
+
+.input-email .custom-input::placeholder {
+  color: var(--input-placeholder);
+}
+
+.input-senha .custom-input::placeholder {
+  color: var(--input-placeholder);
+}
+
+.input-email .custom-input:focus {
+  border-color: var(--input-focus-color);
+  box-shadow: 0px 0px 13px 0px rgba(108,112,244,0.16), 0 0 0 3px rgba(59,130,246,0.35);
+}
+
+.input-senha .custom-input:focus {
+  border-color: var(--input-focus-color);
+  box-shadow: 0px 0px 13px 0px rgba(108,112,244,0.16), 0 0 0 3px rgba(59,130,246,0.35);
+}
+
+.input-senha .icon-left {
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--input-icon-color);
+  pointer-events: none;
+}
+
+.input-email .icon-left {
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--input-icon-color);
+  pointer-events: none;
+}
+
+.buttons-login{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+    column-gap: 50px;
+}
+
+.buttons-login .entrar {
+  width: auto;
+  height: 30px;
+  background: #606366;
+  color: #ccdeff;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 20px;
+  border-width: 1px;
+  border-color: #5c92ff;
+  border-style: solid;
+  padding: 12px 24px;
+  box-shadow: 0px 6px 16px 0px rgba(49,123,242,0.2);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: inline-flex;
+  user-select: auto;
+  position: relative;
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  
+}
+
+.buttons-login .entrar:hover {
+  transform: translateY(-3px);
+  background: #82b8f2;
+  color: #474747;
+}
+
+.buttons-login .entrar:active {
+  transform: scale(0.96);
+}
+
+.buttons-login .cadastrar {
+  width: auto;
+  height: 30px;
+  background: #606366;
+  color: #ccdeff;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 20px;
+  border-width: 1px;
+  border-color: #5c92ff;
+  border-style: solid;
+  padding: 12px 24px;
+  box-shadow: 0px 6px 16px 0px rgba(49,123,242,0.2);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: inline-flex;
+  user-select: auto;
+  position: relative;
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.buttons-login .cadastrar:hover {
+  transform: translateY(-3px);
+  background: #82b8f2;
+  color: #474747;
+}
+
+.buttons-login .cadastrar:active {
+  transform: scale(0.96);
+}
+
+.login-title{
+    text-shadow: 6px 4px 15px rgba(37, 99, 235, 1);
+    color: #ffffff;
+    font-size: 30px;
+    font-weight: 900;
+    background-color: #19102c00;
+    
+}
