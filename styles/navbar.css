@@ -1,33 +1,39 @@
 .header {
-        --ui-color: #000000;
-        /* cor inicial (bege) */
-        --logo-filter: brightness(1);
+    --ui-color: #F6F5E6;
+    --bg-opacity: 0.5;        /* ← valor inicial */
+    --blur-amount: 10px;      /* ← valor inicial */
+    --logo-filter: brightness(1);
 
-        background-color: #141636;
-        padding: 20px 0;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 1000;
+    background-color: rgba(0, 0, 0, var(--bg-opacity));
+    backdrop-filter: blur(var(--blur-amount));
+    -webkit-backdrop-filter: blur(var(--blur-amount));
 
-        transition:
-            background-color 0.3s ease,
-            backdrop-filter 0.3s ease;
-    }
+    -webkit-mask-image: linear-gradient(180deg,
+            rgba(0, 0, 0, 1) 0%,
+            rgba(0, 0, 0, 0) 100%);
+    mask-image: linear-gradient(180deg,
+            rgba(0, 0, 0, 1) 0%,
+            rgba(0, 0, 0, 0) 100%);
 
-   
+    padding: 20px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
 
+    transition:
+        background-color 0.3s ease,
+        backdrop-filter 0.3s ease;
+}
 
-    /* Header com blur ao rolar a página */
     .header.scrolled {
-        background-color: rgba(246, 245, 230, var(--bg-opacity));
+        background-color: rgb(44, 49, 107, var(--bg-opacity));
         backdrop-filter: blur(var(--blur-amount));
         -webkit-backdrop-filter: blur(var(--blur-amount));
-
         /* Esfumaçado mais forte em cima */
         -webkit-mask-image: linear-gradient(180deg,
-                rgba(0, 0, 0, 1) 0%,
+                rgba(0, 0, 0, 5) 0%,
                 rgba(0, 0, 0, 0) 100%);
         mask-image: linear-gradient(180deg,
                 rgba(0, 0, 0, 1) 0%,
@@ -61,7 +67,7 @@
     }
 
     .nav-link {
-        color: #f1f1f1;
+        color: #ffffff;
         text-decoration: none;
         font-size: 14px;
         font-weight: 500;

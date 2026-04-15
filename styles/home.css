@@ -1,39 +1,126 @@
+:root {
+  --input-width: 360px;
+  --input-font-size: 14px;
+  --input-pad-x: 42px;
+  --input-pad-y: 10px;
+  --input-pad-x-right: 14px;
+  --input-radius: 8px;
+  --input-bg: #3b3b3b;
+  --input-color: #111827;
+  --input-placeholder: #9ca3af;
+  --input-border: 1px solid #d1d5db;
+  --input-focus-color: #3b82f6;
+  --input-focus-ring: 2px;
+  --input-icon-color: #ffffff;
+}
+
 body{
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
-    background-color: #dbe4ff;
+    background-color: #333;
 }
 
+.tag {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 15px;
+    padding: 7px 15px;
+    border-radius: 20px;
+}
 .card-input{
     background-color: #2c316b;
-    padding-top: 60px;
+    background-image: url('/img/bg2.avif');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding-top: 130px;
     padding-bottom: 60px;
     width: 100%;
-    margin-top: 70px;
     text-align: center;
+    
 }
 
-.card-input h1{
-    color: #fff;
-    font-size: 50px;
+
+
+svg {
+    font-family: "Rouge Script", sans-serif;
+    width: 100%;
+    height: 100%;
 }
 
-.card-input input{
-    padding-top: 15px;
-    padding-bottom: 15px;
-    padding-left: 200px;
-    padding-right: 200px;
-    border-radius: 5px;
+svg text {
+    animation: stroke 5s infinite alternate;
+    stroke-width: 2;
+    stroke: #A0A0A0;
+    font-size: 102px;
 }
-.card-input button{
-    color: #fff;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    padding-left: 18px;
-    padding-right: 18px;
-    border-radius: 5px ;
-    background-color: #141636;
+
+@keyframes stroke {
+    0% {
+        fill: rgba(204,204,204,0);
+        stroke: rgba(160,160,160,1);
+        stroke-dashoffset: 25%;
+        stroke-dasharray: 0 50%;
+        stroke-width: 2;
+    }
+    70% {
+        fill: rgba(204,204,204,0);
+        stroke: rgba(160,160,160,1);
+    }
+    80% {
+        fill: rgba(204,204,204,0);
+        stroke: rgba(160,160,160,1);
+        stroke-width: 3;
+    }
+    100% {
+        fill: rgba(204,204,204,1);
+        stroke: rgba(160,160,160,0);
+        stroke-dashoffset: -25%;
+        stroke-dasharray: 50% 0;
+        stroke-width: 0;
+    }
 }
+
+.wrapper {
+    background-color: #16225f00;
+}
+.card-input h3{
+    color: #838383;
+    margin-bottom: 50px;
+}
+
+.custom-input {
+  width: 30%;
+  font-family: inherit;
+  font-size: var(--input-font-size);
+  padding: var(--input-pad-y) var(--input-pad-x-right) var(--input-pad-y) var(--input-pad-x);
+  border-radius: var(--input-radius);
+  background: var(--input-bg);
+  color: var(--input-color);
+  border: var(--input-border);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  margin-bottom: 40px;
+}
+
+.custom-input::placeholder {
+  color: var(--input-placeholder);
+}
+
+.custom-input:focus {
+  border-color: var(--input-focus-color);
+  box-shadow: 0 0 0 2px rgba(59,130,246,0.35);
+}
+
+.icon-left {
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--input-icon-color);
+  pointer-events: none;
+}
+
 
 .left-card{
     background-color: #fff;

@@ -1,6 +1,6 @@
 .footer {
   background: #141636;
-  color: #fff; 
+  color: #e7e7e7; 
   text-align: center;
   padding: 2rem 0;
 }
@@ -13,13 +13,13 @@
 }
 
 .footer-section h3 {
-  color: #fff;
+  color: #e7e7e7;
   margin-bottom: 1rem;
   font-weight: 600;
 }
 
 .footer-section a {
-  color: #fff; 
+  color: #e7e7e7; 
   text-decoration: none;
   transition: color 0.3s ease;
 }
