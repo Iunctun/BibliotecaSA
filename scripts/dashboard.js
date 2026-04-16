@@ -8,7 +8,7 @@ new Chart(document.getElementById("loginChart"), {
             {
                 label:"Gerencia Usuários",
                 data:[30, 45, 80, 72, 78, 85, 120],
-                borderColor: " #1a1f3c",
+                borderColor: "#1a1f3c",
                 backgroundColor: "transparent",
                 tension: 0.3,
                 pointRadius: 5,
@@ -18,7 +18,7 @@ new Chart(document.getElementById("loginChart"), {
                 label: "Livros Emprestados",
                 data:[20, 38, 90, 65, 78, 85, 82, 110],
                 borderColor: " #6b7fc4",
-                backgroundColor: "rgba (107, 127, 196, 0.08",
+                backgroundColor: "transparent",
                 tension: 0.3,
                 pointRadius: 5,
                 borderWidth: 2,
@@ -34,5 +34,23 @@ new Chart(document.getElementById("loginChart"), {
                 borderWidth: 1.5,
             }
         ]
-    }
-}
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false }
+        },
+        scales: {
+            x: {
+                grid: { color: "rgba(0,0,0,0.05)" },
+                ticks: { font: { size: 12 }, color: "#888" }
+            },
+            y: {
+                grid: { color: "rgba(0,0,0,0.05)" },
+                ticks: { font: { size: 12 }, color: "#888" },
+                beginAtZero: true
+                }
+        }
+    }            
+});
