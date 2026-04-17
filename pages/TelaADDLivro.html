@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Livro - Biblioteca</title>
+    <link rel="stylesheet" href="../styles/navbar.css">
+    <link rel="stylesheet" href="../styles/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles/TelaADDLivro.css">
+
+</head>
+
+<body>
+    <div id="header"></div>
+
+    <div class="add-page">
+
+        <div class="add-page-header">
+            <a href="../index.html" title="Voltar para Home">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+            <h1>Adicionar Novo Livro</h1>
+        </div>
+
+        <div class="form-card">
+
+            <div class="form-top">
+
+                <!-- Upload da capa -->
+                <div class="cover-upload-area" id="coverArea" title="Clique para escolher a capa">
+                    <input type="file" id="inputCapa" accept="image/*">
+                    <img class="cover-preview" id="capaPreview" alt="Preview da capa">
+                    <div class="cover-placeholder" id="capaPlaceholder">
+                        <i class="fa-regular fa-image"></i>
+                        <span>Clique para adicionar a capa do livro</span>
+                        <small>JPG, PNG, WEBP — Máx. 5 MB</small>
+                    </div>
+                    <span class="cover-label" id="capaLabel">Foto da capa</span>
+                </div>
+
+                <!-- Campos principais -->
+                <div class="form-fields">
+
+                    <div class="form-group">
+                        <label for="inputTitulo">Título <span class="required">*</span></label>
+                        <input type="text" id="inputTitulo" placeholder="Ex: Dom Quixote" maxlength="120">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="inputAutor">Autor <span class="required">*</span></label>
+                            <input type="text" id="inputAutor" placeholder="Ex: Miguel de Cervantes" maxlength="80">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputCategoria">Categoria <span class="required">*</span></label>
+                            <select id="inputCategoria">
+                                <option value="">Selecione uma categoria</option>
+                                <option value="Terror">Terror</option>
+                                <option value="Drama">Drama</option>
+                                <option value="Romance">Romance</option>
+                                <option value="Suspense">Suspense</option>
+                                <option value="Comédia">Comédia</option>
+                                <option value="Fantasia">Fantasia</option>
+                                <option value="Ficção Científica">Ficção Científica</option>
+                                <option value="Aventura">Aventura</option>
+                                <option value="Biografia">Biografia</option>
+                                <option value="História">História</option>
+                                <option value="Autoajuda">Autoajuda</option>
+                                <option value="Outros">Outros</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="inputDataPublicacao">Data de Publicação <span class="required">*</span></label>
+                            <input type="date" id="inputDataPublicacao">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputQuantidade">Quantidade em Estoque <span class="required">*</span></label>
+                            <input type="number" id="inputQuantidade" min="1" max="9999" placeholder="Ex: 3">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputResumo">Resumo <span class="required">*</span></label>
+                        <textarea id="inputResumo" placeholder="Escreva uma sinopse do livro..." maxlength="600"></textarea>
+                        <span class="char-count" id="charCount">0 / 600</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="form-footer">
+                <a class="btn-cancelar" href="../index.html">
+                    <i class="fa-solid fa-xmark"></i> Cancelar
+                </a>
+                <button class="btn-salvar" id="btnSalvar">
+                    <i class="fa-solid fa-floppy-disk"></i> Salvar Livro
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast-add">
+        <i class="fa-solid fa-circle-check" id="toast-icon"></i>
+        <span id="toast-msg"></span>
+    </div>
+
+    <div id="footer"></div>
+
+    <script src="../scripts/navbar.js"></script>
+    <script src="../scripts/include.js"></script>
+    <script src="../scripts/TelaADDLivro.js"></script>
+</body>
+
+</html>

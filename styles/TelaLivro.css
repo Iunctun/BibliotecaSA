@@ -1,0 +1,182 @@
+
+        /* Reset e Base */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Ocupa a altura total da tela */
+        html,
+        body {
+            height: 100%;
+            background-color: #d9e1f1;
+        }
+
+        .search-bar {
+            background-color: #556075;
+            border-radius: 20px;
+            padding: 8px 20px;
+            flex-grow: 1;
+            max-width: 800px;
+            /* Barra de busca agora pode crescer mais */
+            margin: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .search-bar input {
+            background: transparent;
+            border: none;
+            color: white;
+            width: 100%;
+            outline: none;
+        }
+
+        /* Container Principal em Tela Cheia */
+        .main-content {
+            margin-top: 120px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            min-height: calc(100vh - 70px);
+            /* Ocupa o resto da tela abaixo do header */
+        }
+
+        .book-card {
+            background-color: white;
+            width: 100%;
+            /* Isso faz ocupar a tela toda horizontalmente */
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Seção de Conteúdo */
+        .book-top-section {
+            display: flex;
+            padding: 50px;
+            gap: 60px;
+        }
+
+        .book-cover {
+            width: 320px;
+            /* Aumentei um pouco a capa para telas grandes */
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.3);
+            flex-shrink: 0;
+        }
+
+        .book-info {
+            flex-grow: 1;
+        }
+
+        .book-info h1 {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .author {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #444;
+        }
+
+        .synopsis {
+            font-size: 18px;
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            text-align: justify;
+        }
+
+        .status {
+    display: block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    width: 7%;
+    margin-bottom: 30px;
+}
+
+.disponivel {
+    background: #edf7f1;
+    color: #2c6e49;
+    border: 1px solid #b7dfc9;
+}
+
+.indisponivel {
+    background: #fdf1f1;
+    color: #c53030;
+    border: 1px solid #f5c0c0;
+}
+
+        .btn-reserve {
+  width: auto;
+  height: 40px;
+  background: #1f0288;
+  color: #ffffff;
+  font-family: Verdana, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 6px;
+  border-width: 1px;
+  border-color: #2205b3;
+  border-style: solid;
+  padding: 14px 28px;
+  box-shadow: 5px 5px 0px 0px rgba(0,0,0,1);
+  transition: all 0.2s linear;
+  cursor: pointer;
+  display: inline-flex;
+  user-select: auto;
+  position: relative;
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.btn-reserve:hover {
+  transform: scale(1.06);
+  background: #21bb02;
+  color: #ffffff;
+}
+
+.btn-reserve:active {
+  transform: scale(0.96);
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+
+        /* Rodapé Técnico Colado na Base do Card */
+        .book-footer {
+            border-top: 2px solid #e7e7e7;
+            padding: 30px 50px;
+            display: flex;
+            gap: 120px;
+            /* Espaço maior entre os itens técnicos */
+        }
+
+        .spec-item h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .spec-item p {
+            font-size: 18px;
+            color: #555;
+        }

@@ -1,20 +1,10 @@
 .header {
     --ui-color: #F6F5E6;
-    --bg-opacity: 0.5;        /* ← valor inicial */
-    --blur-amount: 10px;      /* ← valor inicial */
+    --bg-opacity: 0.9;        /* ← valor inicial */
+    --blur-amount: 20px;      /* ← valor inicial */
     --logo-filter: brightness(1);
 
-    background-color: rgba(0, 0, 0, var(--bg-opacity));
-    backdrop-filter: blur(var(--blur-amount));
-    -webkit-backdrop-filter: blur(var(--blur-amount));
-
-    -webkit-mask-image: linear-gradient(180deg,
-            rgba(0, 0, 0, 1) 0%,
-            rgba(0, 0, 0, 0) 100%);
-    mask-image: linear-gradient(180deg,
-            rgba(0, 0, 0, 1) 0%,
-            rgba(0, 0, 0, 0) 100%);
-
+    background-color: #090e3f;
     padding: 20px 0;
     position: fixed;
     top: 0;
@@ -67,23 +57,22 @@
     }
 
     .nav-link {
-        color: #ffffff;
-        text-decoration: none;
-        font-size: 14px;
-        font-weight: 500;
-        letter-spacing: 0.5px;
-        transition:
-            color 0.3s ease,
-            opacity 0.3s ease;
-    }
+    position: relative; /* necessário */
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease, opacity 0.3s ease;
+}
 
     .nav-link:hover {
         opacity: 0.7;
-        /* ← Opacidade ao passar o mouse */
     }
 
     .nav-link::after {
         content: "";
+        position: absolute; /* necessário */
         bottom: -5px;
         left: 0;
         width: 0;
@@ -96,21 +85,41 @@
         width: 100%;
     }
 
-    .botao-login{
-       background-color:#474857;
-       border-radius: 5px;
-       padding-top: 7px;
-       padding-bottom: 7px;
-       padding-left: 15px;
-       padding-right: 15px;
+        
+
+        .botao-login{
+    width: auto;
+    height: 30px;
+    background: #383838;
+    color: #ffffff;
+    font-family: Verdana, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 6px;
+    border-width: 1px;
+    border-color: #000000;
+    border-style: solid;
+    padding: 14px 28px;
+    box-shadow: 5px 5px 0px 0px rgba(0,0,0,1);
+    transition: all 0.2s linear;
+    cursor: pointer;
+    display: inline-flex;
+    user-select: auto;
+    position: relative;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
     }
 
-    .botao-login:hover{
-        background-color: #303246;
-        color: #141636;
+    .botao-login:hover {
+    transform: scale(1.06);
+    background: #031459;
+    color: #ffffff;
     }
 
-    .botao-login a{
-        text-decoration: none;
-        color: #ffffff;
+    .botao-login:active {
+    transform: scale(0.96);
     }
