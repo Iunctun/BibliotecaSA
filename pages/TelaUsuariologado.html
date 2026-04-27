@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="../styles/Usuariologado.css">
+<link rel="stylesheet" href="../styles/TelaUsuariologado.css">
 <link rel="stylesheet" href="../styles/navbar.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <title>Dashboard Biblioteca</title>
@@ -16,17 +16,17 @@
         <div class="card">
             <h3><i class="fas fa-id-card"></i> Dados Pessoais</h3>
             <div class="flex">
-                <div>
-                    <label>Nome</label>
-                    <div id="nome" class="input">Jorginho Leitor</div>
+                <div class="field-group">
+                    <label for="nome">Nome</label>
+                    <input id="nome" class="input-field" type="text" placeholder="Digite seu nome...">
                 </div>
-                <div>
-                    <label>Email</label>
-                    <div id="email" class="input">JorginhoLeitor@gmail.com</div>
+                <div class="field-group">
+                    <label for="email">Email</label>
+                    <input id="email" class="input-field" type="email" placeholder="Digite seu email...">
                 </div>
-                <div>
+                <div class="field-group">
                     <label>ID de Membro</label>
-                    <div class="input">1123345680</div>
+                    <input class="input-field" type="text" readonly style="opacity:0.7;cursor:not-allowed;" placeholder="ID">
                 </div>
             </div>
             <br>
@@ -42,9 +42,11 @@
     
                 <div class="livro">
                     <div class="livro-info">
-                        <img src="Diariobanana.jpg" width="70" alt="Capa Livro">
-                        <strong>Diário de um Banana 1</strong><br>
-                        <div style="margin-left:75px;">Jeff Kinney</div>
+                        <img src="/img/livro1.webp" width="70" alt="Capa Livro">
+                        <div class="livro-texto">
+                            <strong>Diário de um Banana 1</strong>
+                            <span>Jeff Kinney</span>
+                        </div>
                     </div>
                     <button class="btn-primary btnRenovar">
                         <i class="fas fa-sync-alt"></i> Renovar
@@ -53,9 +55,11 @@
     
                 <div class="livro">
                     <div class="livro-info">
-                        <img src="Diariobanana.jpg" width="70" alt="Capa Livro">
-                        <strong>Diário de um Banana 2</strong><br>
-                        <div style="margin-left:75px;">Jeff Kinney</div>
+                        <img src="/img/livro2.webp" width="70" alt="Capa Livro">
+                        <div class="livro-texto">
+                            <strong>Diário de um Banana 2</strong>
+                            <span>Jeff Kinney</span>
+                        </div>
                     </div>
                     <button class="btn-primary btnRenovar">
                         <i class="fas fa-sync-alt"></i> Renovar
@@ -64,9 +68,11 @@
     
                 <div class="livro">
                     <div class="livro-info">
-                        <img src="Diariobanana.jpg" width="70" alt="Capa Livro">
-                        <strong>Diário de um Banana 3</strong><br>
-                        <div style="margin-left:75px;">Jeff Kinney</div>
+                        <img src="/img/livro3.webp" width="70" alt="Capa Livro">
+                        <div class="livro-texto">
+                            <strong>Diário de um Banana 3</strong>
+                            <span>Jeff Kinney</span>
+                        </div>
                     </div>
                     <button class="btn-primary btnReservar">
                         <i class="fas fa-bookmark"></i> Reservar
@@ -100,13 +106,12 @@
                         <i class="fas fa-credit-card"></i> Pagamento
                     </button>
                 </div>
-    
             </div>
     
         </div>
     </div>
 
-<script src="../scripts/Usuariologado.js"></script>
+<script src="../scripts/TelaUsuariologado.js"></script>
 <script src="../scripts/navbar.js"></script>
 <script src="../scripts/include.js"></script>
 </body>
