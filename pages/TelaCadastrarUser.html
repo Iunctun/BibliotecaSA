@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/navbar.css">
+    <link rel="stylesheet" href="../styles/TelaCadastrarUser.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Syne:wght@400;700&display=swap" rel="stylesheet">
+    <title>Cadastro - Biblioteca</title>
+</head>
+<body>
+
+    <div id="header"></div>
+    <div class="noise"></div>
+
+    <div class="page-layout">
+
+        <aside class="left-panel">
+            <div class="left-inner">
+                <div class="logo-mark">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <h1 class="site-name">Crie sua<br>conta</h1>
+                <p class="site-quote">"O conhecimento é a única riqueza que cresce quando compartilhada."</p>
+
+                <ul class="perks">
+                    <li><i class="fas fa-check"></i> Acesso ao acervo completo</li>
+                    <li><i class="fas fa-check"></i> Histórico de empréstimos</li>
+                    <li><i class="fas fa-check"></i> Renovação online</li>
+                    <li><i class="fas fa-check"></i> Reserva de livros</li>
+                </ul>
+            </div>
+            <div class="ruled-lines">
+                <span></span><span></span><span></span>
+            </div>
+        </aside>
+
+        <main class="right-panel">
+            <div class="form-wrap">
+
+                <div class="form-header">
+                    <p class="eyebrow">Novo membro</p>
+                    <h2 class="form-title">Preencha seus dados</h2>
+                </div>
+
+                <form id="cadastroForm" novalidate>
+
+                    <div class="form-grid">
+
+                        <div class="field full">
+                            <label for="nome">Nome completo</label>
+                            <div class="input-row">
+                                <i class="fas fa-user ico"></i>
+                                <input id="nome" type="text" placeholder="Seu nome completo" autocomplete="name" />
+                            </div>
+                            <span class="err" id="nomeErr"></span>
+                        </div>
+
+                        <div class="field">
+                            <label for="email">Email</label>
+                            <div class="input-row">
+                                <i class="fas fa-at ico"></i>
+                                <input id="email" type="email" placeholder="seu@email.com" autocomplete="email" />
+                            </div>
+                            <span class="err" id="emailErr"></span>
+                        </div>
+
+                        <div class="field">
+                            <label for="telefone">Telefone</label>
+                            <div class="input-row">
+                                <i class="fas fa-phone ico"></i>
+                                <input id="telefone" type="tel" placeholder="(11) 99999-9999" autocomplete="tel" />
+                            </div>
+                            <span class="err" id="telefoneErr"></span>
+                        </div>
+
+                        <div class="field">
+                            <label for="cpf">CPF</label>
+                            <div class="input-row">
+                                <i class="fas fa-id-card ico"></i>
+                                <input id="cpf" type="text" placeholder="000.000.000-00" maxlength="14" />
+                            </div>
+                            <span class="err" id="cpfErr"></span>
+                        </div>
+
+                        <div class="field">
+                            <label for="nascimento">Data de nascimento</label>
+                            <div class="input-row">
+                                <i class="fas fa-calendar ico"></i>
+                                <input id="nascimento" type="date" />
+                            </div>
+                            <span class="err" id="nascimentoErr"></span>
+                        </div>
+
+                        <div class="field full">
+                            <label for="localizacao">Localização</label>
+                            <div class="input-row">
+                                <i class="fas fa-map-marker-alt ico"></i>
+                                <input id="localizacao" type="text" placeholder="Cidade, Estado" autocomplete="address-level2" />
+                            </div>
+                            <span class="err" id="localizacaoErr"></span>
+                        </div>
+
+                        <div class="field">
+                            <label for="senha">Senha</label>
+                            <div class="input-row">
+                                <i class="fas fa-lock ico"></i>
+                                <input id="senha" type="password" placeholder="••••••••" />
+                                <button type="button" class="toggle-pw" data-target="senha" aria-label="Mostrar senha">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <span class="err" id="senhaErr"></span>
+                        </div>
+
+                        <div class="field">
+                            <label for="confirmar">Confirmar senha</label>
+                            <div class="input-row">
+                                <i class="fas fa-lock ico"></i>
+                                <input id="confirmar" type="password" placeholder="••••••••" />
+                                <button type="button" class="toggle-pw" data-target="confirmar" aria-label="Mostrar senha">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <span class="err" id="confirmarErr"></span>
+                        </div>
+
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="btnSubmit">
+                        <span id="btnLabel">Criar conta</span>
+                        <i class="fas fa-circle-notch fa-spin" id="btnSpinner" style="display:none"></i>
+                    </button>
+
+                </form>
+
+                <p class="login-txt">
+                    Já tem conta?
+                    <a href="../pages/TelaLogin.html">Fazer login</a>
+                </p>
+
+                <div class="toast" id="toast"></div>
+            </div>
+        </main>
+
+    </div>
+
+    <script src="../scripts/navbar.js"></script>
+    <script src="../scripts/include.js"></script>
+    <script src="../scripts/TelaCadastrarUser.js"></script>
+</body>
+</html>

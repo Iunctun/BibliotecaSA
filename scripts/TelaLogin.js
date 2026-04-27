@@ -39,6 +39,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function setErr(el, span, msg) { el.classList.add('is-err'); span.textContent = msg; return false; }
     function clrErr(el, span)      { el.classList.remove('is-err'); span.textContent = ''; return true; }
 
+    let toastTimer;
+    function showToast(msg, type) {
+        clearTimeout(toastTimer);
+        toast.textContent = msg;
+        toast.className = 'toast show ' + type;
+        toastTimer = setTimeout(() => { toast.className = 'toast'; }, 3000);
+    }
+
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const ok = validateEmail() & validateSenha();
@@ -48,26 +56,20 @@ document.addEventListener('DOMContentLoaded', () => {
         btnLabel.style.display = 'none';
         btnSpin.style.display = 'inline-block';
 
-        await new Promise(r => setTimeout(r, 1500)); // substitua pelo fetch real
+        await new Promise(r => setTimeout(r, 1500));
 
         btnSubmit.disabled = false;
         btnLabel.style.display = 'inline';
         btnSpin.style.display = 'none';
 
         showToast('Bem-vindo de volta!', 'ok');
-        // window.location.href = '/dashboard';
+        setTimeout(() => {
+            window.location.href = '../pages/TelaHome.html';
+        }, 1000);
     });
 
     btnCad.addEventListener('click', () => {
-        showToast('Redirecionando...', '');
-        // window.location.href = '/cadastro';
+        window.location.href = '../pages/TelaCadastrarUser.html';
     });
 
-    let toastTimer;
-    function showToast(msg, type) {
-        clearTimeout(toastTimer);
-        toast.textContent = msg;
-        toast.className = 'toast show ' + type;
-        toastTimer = setTimeout(() => { toast.className = 'toast'; }, 3000);
-    }
 });

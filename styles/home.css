@@ -14,7 +14,7 @@
   --input-icon-color: #ffffff;
 }
 
-body{
+body {
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
     background-color: #333;
@@ -28,20 +28,18 @@ body{
     padding: 7px 15px;
     border-radius: 20px;
 }
-.card-input{
-    background-color: #2c316b;
-    background-image: url('/img/bg2.avif');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+
+.card-input {
+    background-color: #090e3f;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    background-size: 160px;
+    background-repeat: repeat;
     padding-top: 130px;
     padding-bottom: 60px;
     width: 100%;
     text-align: center;
-    
+    position: relative;
 }
-
-
 
 svg {
     font-family: "Rouge Script", sans-serif;
@@ -83,9 +81,10 @@ svg text {
 }
 
 .wrapper {
-    background-color: #16225f00;
+    background-color: transparent;
 }
-.card-input h3{
+
+.card-input h3 {
     color: #838383;
     margin-bottom: 50px;
 }
@@ -121,27 +120,23 @@ svg text {
   pointer-events: none;
 }
 
-
-.left-card{
+.left-card {
     background-color: #fff;
     padding-bottom: 350px;
     width: 50%;
-    
 }
 
-.right-card{
+.right-card {
     background-color: #fff;
     width: 50%;
 }
 
-.catalogo{
+.catalogo {
     display: flex;
     padding: 30px;
     gap: 30px;
 }
 
-.catalogo h5{
+.catalogo h5 {
     font-size: 30px;
 }
-
-

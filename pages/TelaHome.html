@@ -15,40 +15,240 @@
 <body>
     <div id="header"></div>
 
-    <Section class="sessao-input">
+    <section class="sessao-input">
         <div class="card-input">
-            <div class="wrapper">
-    <svg>
-        <text x="50%" y="50%" dy=".35em" text-anchor="middle">
-            Bem-vindo a Digital Library
-        </text>
-    </svg>
-</div>
-            <h3>Explore milhares de títulos em um só lugar</h3>
-            <div class="input-search">
-                <!--
-                <span class="icon-left">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </span>
-                -->
+            <canvas id="particles-canvas" style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0;"></canvas>
+            <div class="wrapper" style="position:relative; z-index:1;">
+                <svg>
+                    <text x="50%" y="50%" dy=".35em" text-anchor="middle">
+                        Bem-vindo a Digital Library
+                    </text>
+                </svg>
+            </div>
+            <h3 style="position:relative; z-index:1;">Explore milhares de títulos em um só lugar</h3>
+            <div class="input-search" style="position:relative; z-index:1;">
                 <input class="custom-input" type="text" placeholder="Pesquisar por título, autor ou gênero..." />
             </div>
-
-            <span class="tag">Terror</span>
-            <span class="tag">Romance</span>
-            <span class="tag">Drama</span>
-            <span class="tag">Suspense</span>
-            <span class="tag">Comédia</span>
-    
+            <div style="position:relative; z-index:1;">
+                <span class="tag">Terror</span>
+                <span class="tag">Romance</span>
+                <span class="tag">Drama</span>
+                <span class="tag">Suspense</span>
+                <span class="tag">Comédia</span>
+            </div>
         </div>
-    </Section>
+    </section>
 
     <div id="sessaolivros"></div>
-
     <div id="footer"></div>
+
     <script src="../scripts/navbar.js"></script>
     <script src="../scripts/sessaolivros.js"></script>
     <script src="../scripts/include.js"></script>
+
+    <script>
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        const section = document.querySelector('.card-input');
+
+        let mouse = { x: null, y: null };
+
+        section.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+        });
+
+        section.addEventListener('mouseleave', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+
+        function resize() {
+            canvas.width = section.offsetWidth;
+            canvas.height = section.offsetHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        // ── Partículas ──
+        const dots = Array.from({ length: 60 }, () => ({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            r: Math.random() * 2 + 1,
+            dx: (Math.random() - 0.5) * 0.5,
+            dy: (Math.random() - 0.5) * 0.5,
+            alpha: Math.random() * 0.4 + 0.3
+        }));
+
+        // ── Livros abertos (só contorno) ──
+        function randomBook() {
+            return {
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: 22 + Math.random() * 20,
+                dx: (Math.random() - 0.5) * 0.3,
+                dy: (Math.random() - 0.5) * 0.3,
+                angle: Math.random() * Math.PI * 2,
+                dAngle: (Math.random() - 0.5) * 0.006,
+                alpha: Math.random() * 0.25 + 0.12,
+                floatOffset: Math.random() * Math.PI * 2,
+                floatSpeed: 0.008 + Math.random() * 0.008,
+            };
+        }
+
+        const books = Array.from({ length: 16 }, randomBook);
+
+        function drawOpenBook(b, t) {
+            ctx.save();
+
+            const floatY = Math.sin(t * b.floatSpeed + b.floatOffset) * 5;
+
+            // repelir com mouse
+            if (mouse.x !== null) {
+                const dx = b.x - mouse.x;
+                const dy = (b.y + floatY) - mouse.y;
+                const dist = Math.hypot(dx, dy);
+                if (dist < 110) {
+                    const force = (110 - dist) / 110;
+                    b.dx += (dx / dist) * force * 0.25;
+                    b.dy += (dy / dist) * force * 0.25;
+                }
+            }
+
+            ctx.translate(b.x, b.y + floatY);
+            ctx.rotate(b.angle);
+            ctx.globalAlpha = b.alpha;
+            ctx.strokeStyle = 'rgba(112, 163, 240, 1)';
+            ctx.lineWidth = 1.2;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            const s = b.size;
+
+            // Livro aberto: duas páginas simétricas
+            // Página esquerda
+            ctx.beginPath();
+            ctx.moveTo(0, -s * 0.6);           // topo centro (lombada)
+            ctx.bezierCurveTo(
+                -s * 0.1, -s * 0.65,
+                -s * 0.9, -s * 0.6,
+                -s, -s * 0.5                   // canto superior esquerdo
+            );
+            ctx.lineTo(-s, s * 0.5);           // canto inferior esquerdo
+            ctx.bezierCurveTo(
+                -s * 0.9, s * 0.6,
+                -s * 0.1, s * 0.65,
+                0, s * 0.6                     // base centro (lombada)
+            );
+            ctx.stroke();
+
+            // Página direita (espelhada)
+            ctx.beginPath();
+            ctx.moveTo(0, -s * 0.6);
+            ctx.bezierCurveTo(
+                s * 0.1, -s * 0.65,
+                s * 0.9, -s * 0.6,
+                s, -s * 0.5
+            );
+            ctx.lineTo(s, s * 0.5);
+            ctx.bezierCurveTo(
+                s * 0.9, s * 0.6,
+                s * 0.1, s * 0.65,
+                0, s * 0.6
+            );
+            ctx.stroke();
+
+            // Lombada (linha central vertical)
+            ctx.beginPath();
+            ctx.moveTo(0, -s * 0.6);
+            ctx.lineTo(0, s * 0.6);
+            ctx.stroke();
+
+            // Linhas de texto na página esquerda
+            const lineCount = 4;
+            for (let i = 0; i < lineCount; i++) {
+                const ly = -s * 0.25 + i * (s * 0.15);
+                const lx1 = -s * 0.8;
+                const lx2 = -s * 0.15;
+                ctx.globalAlpha = b.alpha * 0.5;
+                ctx.beginPath();
+                ctx.moveTo(lx1, ly);
+                ctx.lineTo(lx2, ly);
+                ctx.stroke();
+            }
+
+            // Linhas de texto na página direita
+            for (let i = 0; i < lineCount; i++) {
+                const ly = -s * 0.25 + i * (s * 0.15);
+                const lx1 = s * 0.15;
+                const lx2 = s * 0.8;
+                ctx.globalAlpha = b.alpha * 0.5;
+                ctx.beginPath();
+                ctx.moveTo(lx1, ly);
+                ctx.lineTo(lx2, ly);
+                ctx.stroke();
+            }
+
+            ctx.restore();
+        }
+
+        let t = 0;
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            t++;
+
+            // Dots
+            dots.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(112, 163, 240, ${p.alpha})`;
+                ctx.fill();
+
+                p.x += p.dx;
+                p.y += p.dy;
+                if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+            });
+
+            // Linhas entre dots
+            dots.forEach((a, i) => {
+                dots.slice(i + 1).forEach(b => {
+                    const dist = Math.hypot(a.x - b.x, a.y - b.y);
+                    if (dist < 100) {
+                        ctx.beginPath();
+                        ctx.moveTo(a.x, a.y);
+                        ctx.lineTo(b.x, b.y);
+                        ctx.strokeStyle = `rgba(112, 163, 240, ${0.18 * (1 - dist / 100)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                });
+            });
+
+            // Livros
+            books.forEach(b => {
+                b.x += b.dx;
+                b.y += b.dy;
+
+                b.dx = Math.max(-1, Math.min(1, b.dx)) * 0.99;
+                b.dy = Math.max(-1, Math.min(1, b.dy)) * 0.99;
+                b.angle += b.dAngle;
+
+                if (b.x < -60) b.x = canvas.width + 60;
+                if (b.x > canvas.width + 60) b.x = -60;
+                if (b.y < -60) b.y = canvas.height + 60;
+                if (b.y > canvas.height + 60) b.y = -60;
+
+                drawOpenBook(b, t);
+            });
+
+            requestAnimationFrame(draw);
+        }
+
+        draw();
+    </script>
 </body>
 
 </html>
