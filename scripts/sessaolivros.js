@@ -98,10 +98,130 @@ const livrosFixos = [
         titulo: 'Os Miseráveis',
         autor: 'Victor Hugo',
         capa: '../img/livro3.webp',
-        genero: 'Drama',
+        genero: 'Suspense',
         dataPublicacao: '1862',
         disponivel: true,
         resumo: 'Jean Valjean, após cumprir pena por roubar um pão, tenta reconstruir sua vida e se tornar um homem honesto. Perseguido pelo implacável Inspetor Javert, ele encontra redenção no amor e no sacrifício, em meio à agitação política da França do século XIX.'
+    },
+    {
+        id: 'LIV-007',
+        titulo: 'A Torre Negra',
+        autor: 'Stephen King',
+        capa: '../img/livro7.webp',
+        genero: 'Suspense',
+        dataPublicacao: '1982',
+        disponivel: true,
+        resumo: 'Roland Deschain é o último Pistoleiro, um herói solitário numa terra em decadência que segue o Homem de Preto em direção à misteriosa Torre Negra — o eixo de todos os universos e a chave para salvar a realidade.'
+    },
+    {
+        id: 'LIV-008',
+        titulo: 'O Visconde de Bragelonne',
+        autor: 'Alexandre Dumas',
+        capa: '../img/livro1.webp',
+        genero: 'Suspense',
+        dataPublicacao: '1847',
+        disponivel: true,
+        resumo: 'A última e mais longa aventura dos Três Mosqueteiros. Athos, Aramis, Porthos e D\'Artagnan enfrentam seus últimos grandes desafios, envolvendo o homem da máscara de ferro e os destinos entrelaçados de toda uma geração.'
+    },
+    {
+        id: 'LIV-009',
+        titulo: 'Dom Quixote',
+        autor: 'Miguel de Cervantes',
+        capa: '../img/livro2.webp',
+        genero: 'Suspense',
+        dataPublicacao: '1605',
+        disponivel: true,
+        resumo: 'Alonso Quijano, um fidalgo que leu tantos romances de cavalaria que enlouqueceu, decide se tornar cavaleiro andante com o nome Dom Quixote. Acompanhado de seu fiel escudeiro Sancho Pança, ele sai em busca de aventuras e justiça.'
+    },
+    {
+        id: 'LIV-004',
+        titulo: 'O Cemitério',
+        autor: 'Stephen King',
+        capa: '../img/livro4.webp',
+        genero: 'Drama',
+        dataPublicacao: '1983',
+        disponivel: true,
+        resumo: 'A família Creed se muda para uma casa perto de uma rodovia movimentada no Maine. Próximo à propriedade existe um cemitério de animais de estimação com poderes sombrios — qualquer coisa enterrada lá volta à vida, mas diferente do que era antes.'
+    },
+    {
+        id: 'LIV-005',
+        titulo: 'Shining',
+        autor: 'Stephen King',
+        capa: '../img/livro5.webp',
+        genero: 'Drama',
+        dataPublicacao: '1977',
+        disponivel: true,
+        resumo: 'Uma releitura sombria sobre isolamento, loucura e os fantasmas que carregamos dentro de nós. Uma família isolada em um hotel no inverno descobre que os verdadeiros monstros nem sempre são os que conseguimos ver.'
+    },
+    {
+        id: 'LIV-006',
+        titulo: 'Carrie',
+        autor: 'Stephen King',
+        capa: '../img/livro6.webp',
+        genero: 'Drama',
+        dataPublicacao: '1974',
+        disponivel: true,
+        resumo: 'Carrie White é uma adolescente tímida e isolada que sofre bullying na escola e opressão religiosa em casa. Quando ela descobre que possui poderes telecinéticos, os eventos culminam em uma noite de terror no baile de formatura.'
+    },
+    {
+        id: 'LIV-006',
+        titulo: 'Carrie',
+        autor: 'Stephen King',
+        capa: '../img/livro6.webp',
+        genero: 'Suspense',
+        dataPublicacao: '1974',
+        disponivel: true,
+        resumo: 'Carrie White é uma adolescente tímida e isolada que sofre bullying na escola e opressão religiosa em casa. Quando ela descobre que possui poderes telecinéticos, os eventos culminam em uma noite de terror no baile de formatura.'
+    },
+    {
+        id: 'LIV-009',
+        titulo: 'Dom Quixote',
+        autor: 'Miguel de Cervantes',
+        capa: '../img/livro2.webp',
+        genero: 'Romance',
+        dataPublicacao: '1605',
+        disponivel: true,
+        resumo: 'Alonso Quijano, um fidalgo que leu tantos romances de cavalaria que enlouqueceu, decide se tornar cavaleiro andante com o nome Dom Quixote. Acompanhado de seu fiel escudeiro Sancho Pança, ele sai em busca de aventuras e justiça.'
+    },
+    {
+        id: 'LIV-004',
+        titulo: 'O Cemitério',
+        autor: 'Stephen King',
+        capa: '../img/livro4.webp',
+        genero: 'Romance',
+        dataPublicacao: '1983',
+        disponivel: true,
+        resumo: 'A família Creed se muda para uma casa perto de uma rodovia movimentada no Maine. Próximo à propriedade existe um cemitério de animais de estimação com poderes sombrios — qualquer coisa enterrada lá volta à vida, mas diferente do que era antes.'
+    },
+    {
+        id: 'LIV-005',
+        titulo: 'Shining',
+        autor: 'Stephen King',
+        capa: '../img/livro5.webp',
+        genero: 'Romance',
+        dataPublicacao: '1977',
+        disponivel: true,
+        resumo: 'Uma releitura sombria sobre isolamento, loucura e os fantasmas que carregamos dentro de nós. Uma família isolada em um hotel no inverno descobre que os verdadeiros monstros nem sempre são os que conseguimos ver.'
+    },
+    {
+        id: 'LIV-006',
+        titulo: 'Carrie',
+        autor: 'Stephen King',
+        capa: '../img/livro6.webp',
+        genero: 'Romance',
+        dataPublicacao: '1974',
+        disponivel: true,
+        resumo: 'Carrie White é uma adolescente tímida e isolada que sofre bullying na escola e opressão religiosa em casa. Quando ela descobre que possui poderes telecinéticos, os eventos culminam em uma noite de terror no baile de formatura.'
+    },
+    {
+        id: 'LIV-006',
+        titulo: 'Carrie',
+        autor: 'Stephen King',
+        capa: '../img/livro6.webp',
+        genero: 'Romance',
+        dataPublicacao: '1974',
+        disponivel: true,
+        resumo: 'Carrie White é uma adolescente tímida e isolada que sofre bullying na escola e opressão religiosa em casa. Quando ela descobre que possui poderes telecinéticos, os eventos culminam em uma noite de terror no baile de formatura.'
     }
 ];
 
