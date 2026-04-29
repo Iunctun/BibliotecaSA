@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,15 +7,15 @@
     <link rel="stylesheet" href="../styles/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="../styles/footer.css">
-
-    <title>Document</title>
+    <title>Dashboard - Biblioteca</title>
 </head>
 <body>
 
-    <!-- Navbar fixo -->
     <div id="header"></div>
 
     <div class="layout">
+
+        <!-- Sidebar -->
         <aside class="sidebar">
             <a href="" class="sidebar-item active">
                 <i class="fa-solid fa-house"></i>
@@ -27,49 +27,56 @@
             </a>
             <a href="#" class="sidebar-item">
                 <i class="fa-solid fa-users"></i>
-                <span>Usuarios</span>
+                <span>Usuários</span>
             </a>
             <a href="#" class="sidebar-item">
                 <i class="fa-solid fa-scale-balanced"></i>
                 <span>Controle de Empréstimos</span>
             </a>
         </aside>
-    <main class="main">
-            <h1>Dashboard</h1>
-        
 
-        <div class="cards-grid">
-            
-            <div class="metric-card dark">
-                <i class=" fa-solid fa-book-open"></i>
-                <P class="card-label">Total de Livros</P>
-                <p class="card-value">167</p>
+        <!-- Main -->
+        <main class="main">
+
+            <div class="main-header">
+                <span class="main-sup">Painel Administrativo</span>
+                <h1>Dashboard</h1>
             </div>
 
-            <div class="metric-card">
-                <i class=" fa-solid fa-users"></i>
-                <P class="card-label">Total de Usuários</P>
-                <p class="card-value">167</p>
+            <!-- Cards -->
+            <div class="cards-grid">
+
+                <div class="metric-card dark">
+                    <i class="fa-solid fa-book-open"></i>
+                    <p class="card-label">Total de Livros</p>
+                    <p class="card-value">167</p>
+                </div>
+
+                <div class="metric-card">
+                    <i class="fa-solid fa-users"></i>
+                    <p class="card-label">Total de Usuários</p>
+                    <p class="card-value">167</p>
+                </div>
+
+                <div class="metric-card dark">
+                    <i class="fa-solid fa-book-bookmark"></i>
+                    <p class="card-label">Livros Emprestados</p>
+                    <p class="card-value">14</p>
+                </div>
+
+                <div class="metric-card">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <p class="card-label">Livros Atrasados</p>
+                    <p class="card-value">1</p>
+                </div>
+
             </div>
 
-            <div class="metric-card dark">
-                <i class=" fa-solid fa-book-bookmark"></i>
-                <P class="card-label">Livros Emprestados</P>
-                <p class="card-value">14</p>
-            </div>
-
-            <div class="metric-card">
-                <i class=" fa-solid fa-triangle-exclamation"></i>
-                <P class="card-label">Livros Atrasados</P>
-                <p class="card-value">1</p>
-            </div>
-
-            </div>
+            <!-- Chart -->
             <div class="chart-section">
 
                 <div class="chart-left">
-                    <h2>Ativação de Login</h2>
-        
+                    <h2>Atividade de Login</h2>
                     <div class="legend-item">
                         <span class="legend-dot dark"></span>
                         <span>Gerencia Usuários</span>
@@ -87,21 +94,18 @@
                         <span>Livros Atrasados</span>
                     </div>
                 </div>
-        
+
                 <div class="chart-right">
                     <canvas id="loginChart"></canvas>
                 </div>
-        
+
             </div>
-        </main> 
+
+        </main>
     </div>
 
-    
-
-
-
-    <!-- JS para importar o NavBar -->
     <div id="footer"></div>
+
     <script src="../scripts/navbar.js"></script>
     <script src="../scripts/sessaolivros.js"></script>
     <script src="../scripts/include.js"></script>

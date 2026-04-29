@@ -1,3 +1,22 @@
+:root {
+    --navy:      #1b2688;
+    --navy-dark: #060b30;
+    --charcoal:  #333333;
+    --charcoal2: #3d3d3d;
+    --charcoal3: #2a2a2a;
+    --accent:    #70a3f0;
+    --accent2:   #5c92ff;
+    --white:     #e8ecf4;
+    --muted:     #8892b4;
+    --border:    rgba(112, 163, 240, 0.15);
+    --border-h:  rgba(112, 163, 240, 0.4);
+    --err:       #e07b6a;
+    --ok:        #6abf8a;
+    --r:         10px;
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-sans:  'Syne', sans-serif;
+}
+
 .header {
     --ui-color: #F6F5E6;
     --bg-opacity: 0.9;        /* ← valor inicial */

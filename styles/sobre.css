@@ -1,0 +1,198 @@
+/* ============================================================
+   Sessão Sobre — CSS
+   Requer:
+   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+   ============================================================ */
+
+/* ---------- Seção principal ---------- */
+.sobre-section {
+    width: 100%;
+    padding: 80px 0 100px;
+    font-family: 'DM Sans', sans-serif;
+}
+
+/* ---------- Header — usa as mesmas classes do catálogo ---------- */
+/* .lib-sup, .lib-title, .lib-rule, .lib-rule-line, .lib-rule-dot
+   já estão definidos em SessaoLivros.css — nada a sobrescrever aqui. */
+
+/* ---------- Container ---------- */
+.sobre-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 80px;
+}
+
+/* ---------- Layout principal: texto + stats ---------- */
+.sobre-body {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 80px;
+    align-items: start;
+    margin-bottom: 80px;
+}
+
+/* ---------- Coluna de texto ---------- */
+.sobre-text-col {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.sobre-lead {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 1.6;
+    margin: 0;
+    border-left: 3px solid #1d9e75;
+    padding-left: 24px;
+}
+
+.sobre-body-text {
+    font-size: 15px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.85;
+    margin: 0;
+}
+
+.sobre-body-text + .sobre-body-text {
+    margin-top: -12px;
+}
+
+/* ---------- Linha divisória interna ---------- */
+.sobre-inline-rule {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.sobre-inline-rule-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(29,158,117,0.6), transparent);
+}
+
+.sobre-inline-rule-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(29,158,117,1);
+}
+
+/* ---------- Coluna de stats ---------- */
+.sobre-stats-col {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sobre-stat {
+    padding: 24px 28px;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 3px;
+    background: rgba(255,255,255,0.05);
+    transition: border-color 0.25s ease, background 0.25s ease;
+    cursor: default;
+}
+
+.sobre-stat:hover {
+    border-color: rgba(29,158,117,0.5);
+    background: rgba(29,158,117,0.08);
+}
+
+.sobre-stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 400;
+    color: #1d9e75;
+    line-height: 1;
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+}
+
+.sobre-stat-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+}
+
+.sobre-stat-desc {
+    font-size: 12px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.45);
+    margin-top: 4px;
+    line-height: 1.5;
+}
+
+/* ---------- Linha de pilares ---------- */
+.sobre-pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    padding-top: 48px;
+}
+
+.sobre-pillar {
+    padding: 32px 28px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 3px;
+    background: rgba(255,255,255,0.04);
+    transition: border-color 0.25s ease, transform 0.25s ease, background 0.25s ease;
+    cursor: default;
+}
+
+.sobre-pillar:hover {
+    border-color: rgba(29,158,117,0.45);
+    background: rgba(29,158,117,0.06);
+    transform: translateY(-4px);
+}
+
+/* ---------- Ícone Font Awesome ---------- */
+.sobre-pillar-icon {
+    font-size: 24px;
+    color: #1d9e75;
+    opacity: 0.85;
+    margin-bottom: 20px;
+    display: block;
+    transition: opacity 0.25s ease;
+}
+
+.sobre-pillar:hover .sobre-pillar-icon {
+    opacity: 1;
+}
+
+.sobre-pillar-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0 0 10px;
+}
+
+.sobre-pillar-text {
+    font-size: 13px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.7;
+    margin: 0;
+}
+
+.sobre-pillar-sep {
+    width: 20px;
+    height: 1px;
+    background: #1d9e75;
+    opacity: 0.7;
+    margin: 14px 0;
+    transition: width 0.3s ease, opacity 0.3s ease;
+}
+
+.sobre-pillar:hover .sobre-pillar-sep {
+    width: 36px;
+    opacity: 1;
+}

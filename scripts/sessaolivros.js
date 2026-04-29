@@ -106,6 +106,22 @@ const livrosFixos = [
 ];
 
 // ============================================================
+//  Mapa de classes CSS por gênero
+//  Adicione novos gêneros aqui conforme necessário
+// ============================================================
+
+const GENERO_CSS = {
+    'Terror':  'terror',
+    'Drama':   'drama',
+    'Ficção':  'ficcao',
+    'Romance': 'romance',
+};
+
+function getGeneroClass(genero) {
+    return GENERO_CSS[genero] || 'default';
+}
+
+// ============================================================
 //  Carrega livros do localStorage e mescla com os fixos
 // ============================================================
 
@@ -119,11 +135,10 @@ function carregarTodosLivros() {
 // ============================================================
 
 function montarCatalogos(todosLivros) {
-    // Coleta todos os gêneros presentes
     const generosSet = new Set(todosLivros.map(l => l.genero));
-    const catalogos = [];
-
+    const catalogos  = [];
     let idx = 1;
+
     generosSet.forEach(genero => {
         catalogos.push({
             carouselId: `carousel${idx}`,
@@ -138,42 +153,46 @@ function montarCatalogos(todosLivros) {
 }
 
 // ============================================================
-//  Injeta o HTML da sessão de livros dinamicamente
+//  Injeta o HTML completo dentro de #sessaolivros
 // ============================================================
 
 function renderizarSessaoLivros(catalogos) {
     const sessao = document.getElementById('sessaolivros');
     if (!sessao) return;
 
-    let html = `<div class="portfolio-section"><div class="portfolio-container">`;
+    sessao.classList.add('lib-section');
 
-    // Botão de adicionar livro (acesso rápido)
-    html += `
-        <div style="display:flex; justify-content:flex-end; margin-bottom:24px;">
-            <a href="../pages/TelaADDLivro.html"
-               style="display:inline-flex; align-items:center; gap:8px; padding:9px 20px;
-                      background:#2c6e49; color:#fff; border-radius:8px; text-decoration:none;
-                      font-size:14px; font-weight:600; transition:background 0.2s;"
-               onmouseover="this.style.background='#245c3d'"
-               onmouseout="this.style.background='#2c6e49'">
-                <i class="fa-solid fa-plus"></i> Adicionar Livro
-            </a>
+    let html = `
+        <div class="lib-header">
+            <span class="lib-sup">Acervo Digital</span>
+            <h1 class="lib-title">Catálogo de Livros</h1>
+            <div class="lib-rule">
+                <div class="lib-rule-line"></div>
+                <div class="lib-rule-dot"></div>
+                <div class="lib-rule-line lib-rule-line--right"></div>
+            </div>
         </div>
+        <div class="lib-container">
     `;
 
     catalogos.forEach(catalogo => {
+        const cssClass = getGeneroClass(catalogo.genero);
+        const count    = String(catalogo.livros.length).padStart(2, '0');
+
         html += `
-            <div class="carousel-wrapper">
-                <h2 class="project-title">${catalogo.genero}</h2>
-                <div class="carousel-container">
-                    <div class="carousel-images" id="${catalogo.carouselId}"></div>
+            <div class="genre-block">
+                <div class="genre-head">
+                    <span class="genre-tag ${cssClass}">${catalogo.genero}</span>
+                    <div class="genre-head-line"></div>
+                    <span class="genre-count">${count} títulos</span>
                 </div>
+                <div class="carousel-grid" id="${catalogo.carouselId}"></div>
                 <div class="carousel-dots" id="${catalogo.dotsId}"></div>
             </div>
         `;
     });
 
-    html += `</div></div>`;
+    html += `</div>`;
     sessao.innerHTML = html;
 }
 
@@ -230,14 +249,18 @@ class Carousel {
 
         card.innerHTML = `
             <div class="book-card-capa">
-                <img src="${livro.capa}" alt="Capa do livro ${livro.titulo}" />
+                <img src="${livro.capa}" alt="Capa — ${livro.titulo}" loading="lazy" />
+                <div class="book-card-overlay"></div>
                 <span class="book-card-status ${livro.disponivel ? 'disponivel' : 'indisponivel'}">
                     ${livro.disponivel ? 'Disponível' : 'Indisponível'}
                 </span>
+                <span class="book-card-year">${livro.dataPublicacao}</span>
             </div>
             <div class="book-card-info">
                 <h3 class="book-card-titulo">${livro.titulo}</h3>
                 <p class="book-card-autor">${livro.autor}</p>
+                <div class="book-card-sep"></div>
+                <span class="book-card-genero">${livro.genero}</span>
             </div>
         `;
 

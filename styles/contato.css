@@ -1,0 +1,259 @@
+/* ============================================================
+   Sessão Contato — CSS
+   Mesmo padrão visual da Digital Library
+   ============================================================ */
+
+.contato-section {
+    width: 100%;
+    padding: 80px 0 100px;
+    font-family: 'DM Sans', sans-serif;
+}
+
+.contato-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 80px;
+}
+
+/* ── Layout: info + formulário ── */
+.contato-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+    margin-top: 64px;
+}
+
+/* ── Coluna esquerda: info ── */
+.contato-info-col {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+}
+
+.contato-lead {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 1.6;
+    margin: 0;
+    border-left: 3px solid #1d9e75;
+    padding-left: 24px;
+}
+
+.contato-desc {
+    font-size: 15px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.85;
+    margin: 0;
+}
+
+/* ── Itens de contato ── */
+.contato-items {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.contato-item {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 20px 24px;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 3px;
+    background: rgba(255,255,255,0.02);
+    transition: border-color 0.25s, background 0.25s;
+    cursor: default;
+}
+
+.contato-item:hover {
+    border-color: rgba(29,158,117,0.35);
+    background: rgba(29,158,117,0.05);
+}
+
+.contato-item-icon {
+    font-size: 18px;
+    color: #1d9e75;
+    opacity: 0.85;
+    width: 20px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.contato-item-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.contato-item-label {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+}
+
+.contato-item-value {
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.75);
+}
+
+/* ── Divisor ── */
+.contato-rule {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.contato-rule-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(29,158,117,0.6), transparent);
+}
+
+.contato-rule-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(29,158,117,1);
+}
+
+/* ── Redes sociais ── */
+.contato-socials {
+    display: flex;
+    gap: 8px;
+}
+
+.contato-social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 3px;
+    background: rgba(255,255,255,0.03);
+    color: rgba(255,255,255,0.4);
+    font-size: 15px;
+    text-decoration: none;
+    transition: border-color 0.25s, color 0.25s, background 0.25s;
+}
+
+.contato-social-btn:hover {
+    border-color: rgba(29,158,117,0.45);
+    background: rgba(29,158,117,0.07);
+    color: #1d9e75;
+}
+
+/* ── Formulário ── */
+.contato-form-col {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.contato-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.contato-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.contato-form-group label {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+}
+
+.contato-form-group input,
+.contato-form-group textarea,
+.contato-form-group select {
+    padding: 12px 16px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 3px;
+    font-size: 14px;
+    font-weight: 300;
+    color: #e8e4de;
+    background: rgba(255,255,255,0.04);
+    outline: none;
+    font-family: 'DM Sans', sans-serif;
+    transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+}
+
+.contato-form-group input::placeholder,
+.contato-form-group textarea::placeholder {
+    color: rgba(255,255,255,0.2);
+}
+
+.contato-form-group input:focus,
+.contato-form-group textarea:focus,
+.contato-form-group select:focus {
+    border-color: rgba(29,158,117,0.6);
+    background: rgba(29,158,117,0.05);
+    box-shadow: 0 0 0 3px rgba(29,158,117,0.08);
+}
+
+.contato-form-group textarea {
+    resize: vertical;
+    min-height: 130px;
+    line-height: 1.7;
+}
+
+.contato-form-group select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+    cursor: pointer;
+}
+
+.contato-form-group select option {
+    background: #1e2028;
+    color: #e8e4de;
+}
+
+.contato-btn-wrap {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 4px;
+}
+
+.contato-btn {
+    background: #1d9e75;
+    color: #ffffff;
+    border: none;
+    padding: 13px 40px;
+    border-radius: 3px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.25s, transform 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.contato-btn:hover {
+    background: #17865f;
+    transform: translateY(-2px);
+}
+
+.contato-btn:active {
+    transform: translateY(0);
+}

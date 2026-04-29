@@ -3,256 +3,312 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/navbar.css">
+    <link rel="stylesheet" href="../styles/footer.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <title>O Substituto - Detalhes</title>
     <style>
-        /* Estilos Globais */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background-color: #ffffff;
-            color: #333;
+            background-color: #16181c;
+            color: #e8e4de;
+            font-family: 'DM Sans', sans-serif;
         }
 
-        /* Navbar */
-        .navbar {
-            background-color: #1a1a3a;
-            padding: 12px 50px;
+        /* ── Área principal ── */
+        .detail-section {
+            width: 100%;
+            padding: 80px 0 100px;
+            margin-top: 100px;
+        }
+
+        .detail-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 80px;
+        }
+
+        /* ── Layout capa + info ── */
+        .detail-body {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 72px;
+            align-items: start;
+        }
+
+        /* ── Capa ── */
+        .detail-cover {
+            position: sticky;
+            top: 40px;
+        }
+
+        .detail-cover img {
+            width: 100%;
+            border-radius: 4px;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.55);
+            display: block;
+        }
+
+        .detail-cover-status {
+            margin-top: 16px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 8px;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #5dcaa5;
         }
 
-        .nav-left {
+        .detail-cover-status i {
+            font-size: 9px;
+        }
+
+        /* ── Coluna de info ── */
+        .detail-info {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            padding-top: 8px;
+        }
+
+        /* Supratítulo */
+        .detail-sup {
+            display: block;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #3e5bdb;
+        }
+
+        /* Título */
+        .detail-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 400;
+            color: #ffffff;
+            line-height: 1.15;
+            margin-top: 10px;
+        }
+
+        /* Autor */
+        .detail-author {
+            font-size: 15px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.55);
+            letter-spacing: 0.5px;
+        }
+
+        .detail-author span {
+            color: rgba(255,255,255,0.25);
+            margin-right: 6px;
+        }
+
+        /* Divisor */
+        .detail-rule {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .detail-rule-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(29,158,117,0.5), transparent);
+        }
+
+        .detail-rule-label {
+            font-size: 9px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(29,158,117,0.9);
+        }
+
+        /* Sinopse */
+        .detail-synopsis {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .detail-synopsis p {
+            font-size: 15px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.72);
+            line-height: 1.85;
+        }
+
+        /* Botão reservar */
+        .detail-btn-wrap {
             display: flex;
             align-items: center;
             gap: 20px;
         }
 
-        .logo-img {
-            height: 35px;
-            filter: brightness(0) invert(1);
-            margin-right: 15px;
-        }
-
-        /* Botões Início e Catálogo */
-        .nav-btn {
-            background: transparent;
-            border: none;
-            color: white;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            padding: 8px 15px;
-            transition: opacity 0.2s;
-        }
-
-        .nav-btn:hover {
-            opacity: 0.8;
-        }
-
-        /* Barra de Pesquisa */
-        .search-container {
-            flex-grow: 1;
-            max-width: 500px;
-            position: relative;
-            margin: 0 30px;
-        }
-
-        .search-container input {
-            width: 100%;
-            padding: 8px 45px 8px 15px;
-            border-radius: 6px;
-            border: none;
-            font-size: 14px;
-            outline: none;
-        }
-
-        .search-icon-btn {
-            position: absolute;
-            right: 5px;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: #2b5797;
-            color: white;
-            border: none;
-            padding: 4px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .profile-pic {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            background-color: #fff;
-            object-fit: cover;
-        }
-
-        .btn-exit {
-            background: transparent;
-            color: white;
-            border: 1px solid white;
-            padding: 5px 35px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        /* Conteúdo Principal */
-        .container {
-            max-width: 1100px;
-            margin: 40px auto;
-            display: flex;
-            gap: 50px;
-            padding: 0 20px;
-        }
-
-        .book-cover-container img {
-            width: 280px;
-            box-shadow: 8px 8px 20px rgba(0,0,0,0.15);
-            border-radius: 4px;
-        }
-
-        .book-details {
-            flex: 1;
-        }
-
-        .book-details h1 {
-            font-size: 36px;
-            margin-bottom: 5px;
-        }
-
-        .author-name {
-            font-weight: bold;
-            margin-bottom: 15px;
-            font-size: 16px;
-        }
-
-        .synopsis {
-            line-height: 1.6;
-            font-size: 15px;
-            margin-bottom: 25px;
-            text-align: justify;
-        }
-
-        .synopsis p {
-            margin-bottom: 15px;
-        }
-
-        .status-available {
-            color: #00c853;
-            font-weight: bold;
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-
         .btn-reserve {
-            background-color: #3b82f6;
-            color: white;
+            background: #1d9e75;
+            color: #ffffff;
             border: none;
-            width: 250px;
-            padding: 12px 0;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: bold;
+            padding: 14px 48px;
+            border-radius: 3px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
             cursor: pointer;
-            display: block;
-            margin: 0 auto;
-            transition: background 0.3s;
+            transition: background 0.25s ease, transform 0.2s ease;
         }
 
         .btn-reserve:hover {
-            background-color: #2563eb;
+            background: #17865f;
+            transform: translateY(-2px);
         }
 
-        /* Rodapé de Informações */
-        .technical-info {
-            border-top: 2px solid #eee;
-            margin-top: 50px;
-            padding: 30px 60px;
-            display: flex;
-            justify-content: flex-start;
-            gap: 150px;
+        .btn-wish {
+            background: transparent;
+            color: rgba(255,255,255,0.4);
+            border: 1px solid rgba(255,255,255,0.12);
+            padding: 14px 20px;
+            border-radius: 3px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: border-color 0.25s ease, color 0.25s ease;
         }
 
-        .info-block label {
-            display: block;
-            font-weight: bold;
-            font-size: 18px;
+        .btn-wish:hover {
+            border-color: rgba(255,255,255,0.35);
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* ── Informações técnicas ── */
+        .detail-meta {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            padding-top: 40px;
+            margin-top: 80px;
+        }
+
+        .detail-meta-item {
+            padding: 24px 28px;
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 3px;
+            background: rgba(255,255,255,0.02);
+            transition: border-color 0.25s ease, background 0.25s ease;
+            cursor: default;
+        }
+
+        .detail-meta-item:hover {
+            border-color: rgba(29,158,117,0.3);
+            background: rgba(29,158,117,0.04);
+        }
+
+        .detail-meta-label {
+            font-size: 9px;
+            font-weight: 500;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
             margin-bottom: 8px;
         }
 
-        .info-block span {
-            color: #444;
+        .detail-meta-value {
+            font-family: 'Playfair Display', serif;
             font-size: 16px;
+            font-weight: 400;
+            color: #e8e4de;
         }
     </style>
 </head>
 <body>
 
-    <header class="navbar">
-        <div class="nav-left">
-            <img src="icone bbl.png" alt="Logo" class="logo-img">
-            <button class="nav-btn">Início</button>
-            <button class="nav-btn">Catálogo</button>
-        </div>
+    <div id="header"></div>
 
-        <div class="search-container">
-            <input type="text" placeholder="Pesquisar livro....">
-            <button class="search-icon-btn">🔍</button>
-        </div>
+    <section class="detail-section">
+        <div class="detail-container">
 
-        <div class="nav-right">
-            <img src="https://cdn-icons-png.flaticon.com/512/4333/4333609.png" alt="Perfil" class="profile-pic">
-            <button class="btn-exit">Sair</button>
-        </div>
-    </header>
+            <!-- Corpo principal -->
+            <div class="detail-body">
 
-    <main class="container">
-        <div class="book-cover-container">
-            <img src="o substituto.jpg" alt="Capa O Substituto">
-        </div>
+                <!-- Capa -->
+                <div class="detail-cover">
+                    <img src="../img/livro2.webp" alt="Capa O Substituto">
+                    <div class="detail-cover-status">
+                        <i class="fa-solid fa-circle"></i>
+                        Disponível
+                    </div>
+                </div>
 
-        <div class="book-details">
-            <h1>O substituto</h1>
-            <p class="author-name">Por Brenna Yovanoff</p>
-            
-            <div class="synopsis">
-                <p>É normal que muitos jovens se sintam excluídos, mas, nessa fantasia sinistra, Mackie Doyle tem boas razões para se sentir assim</p>
-                <p>Mackie Doyle não é normal. Ele vive na pequena cidade de Gentry, mas vem de um mundo de túneis e águas escuras e lamacentas. Ele é um substituto — deixado no berço de um bebê humano há dezesseis anos. Agora, em virtude de uma alergia fatal a ferro, sangue e solo consagrado, Mackie está morrendo aos poucos no mundo dos homens. Essa iminente morte faz com que ele saia de seu casulo e vá em busca de respostas.</p>
-                <p>Nessa cidade onde crianças são trocadas quando pequenas por seres do submundo, substitutos são seres conhecidos, embora não assumidos. Muitas famílias já passaram por isso, mas não conseguem entender o motivo. E, para não confrontarem a realidade, aceitam sem reclamar. O impressionante é que a troca é facilmente notada, mas, talvez por resignação, a passividade da cidade é tão grande que ninguém faz nada para mudar.</p>
+                <!-- Informações -->
+                <div class="detail-info">
+                    <div>
+                        <span class="detail-sup">Fantasia · Suspense</span>
+                        <h1 class="detail-title">O atirador de lâmpadas</h1>
+                        <p class="detail-author"><span>por</span> Brenna Yovanoff</p>
+                    </div>
+
+                    <div class="detail-rule">
+                        <div class="detail-rule-line"></div>
+                        <span class="detail-rule-label">sinopse</span>
+                        <div class="detail-rule-line"></div>
+                    </div>
+
+                    <div class="detail-synopsis">
+                        <p>É normal que muitos jovens se sintam excluídos, mas, nessa fantasia sinistra, Mackie Doyle tem boas razões para se sentir assim.</p>
+                        <p>Mackie Doyle não é normal. Ele vive na pequena cidade de Gentry, mas vem de um mundo de túneis e águas escuras e lamacentas. Ele é um substituto — deixado no berço de um bebê humano há dezesseis anos. Agora, em virtude de uma alergia fatal a ferro, sangue e solo consagrado, Mackie está morrendo aos poucos no mundo dos homens.</p>
+                        <p>Nessa cidade onde crianças são trocadas quando pequenas por seres do submundo, substitutos são seres conhecidos, embora não assumidos. O impressionante é que a troca é facilmente notada, mas, talvez por resignação, a passividade da cidade é tão grande que ninguém faz nada para mudar.</p>
+                    </div>
+
+                    <div class="detail-btn-wrap">
+                        <button class="btn-reserve">
+                            <i class="fa-solid fa-bookmark" style="margin-right:8px;"></i>
+                            Reservar
+                        </button>
+                        <button class="btn-wish">
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div><!-- /detail-body -->
+
+            <!-- Informações técnicas -->
+            <div class="detail-meta">
+                <div class="detail-meta-item">
+                    <div class="detail-meta-label">Autor</div>
+                    <div class="detail-meta-value">Brenna Yovanoff</div>
+                </div>
+                <div class="detail-meta-item">
+                    <div class="detail-meta-label">Gênero</div>
+                    <div class="detail-meta-value">Fantasia / Suspense</div>
+                </div>
+                <div class="detail-meta-item">
+                    <div class="detail-meta-label">Idioma</div>
+                    <div class="detail-meta-value">Português</div>
+                </div>
+                <div class="detail-meta-item">
+                    <div class="detail-meta-label">Disponibilidade</div>
+                    <div class="detail-meta-value">Disponível</div>
+                </div>
             </div>
 
-            <p class="status-available">Disponível</p>
-            <button class="btn-reserve">Reservar</button>
-        </div>
-    </main>
+        </div><!-- /detail-container -->
+    </section>
 
-    <footer class="technical-info">
-        <div class="info-block">
-            <label>Editora</label>
-            <span>Bertrand</span>
-        </div>
-        <div class="info-block">
-            <label>Ano de publicação</label>
-            <span>2012</span>
-        </div>
-        <div class="info-block">
-            <label>ISBN</label>
-            <span>978-8528615906</span>
-        </div>
-    </footer>
+    <div id="footer"></div>
+
+    <script src="../scripts/navbar.js"></script>
+    <script src="../scripts/include.js"></script>
 
 </body>
 </html>

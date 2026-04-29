@@ -8,5 +8,6 @@ function loadComponent(id, file, callback) {
 }
 
 loadComponent("header", "./components/navbar.html", initNavbar);
+loadComponent("header", "./components/navbar.html", initNavbar);
 loadComponent("footer", "./components/footer.html", initNavbar);
 loadComponent("sessaolivros", "./components/SessaoLivros.html", initCarousels);
