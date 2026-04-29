@@ -1,36 +1,37 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const btnEditar = document.getElementById('btnEditar');
-  const btnPagamento = document.getElementById('btnPagamento');
-  const btnRenovar = document.querySelectorAll('.btnRenovar');
-  const btnReservar = document.querySelectorAll('.btnReservar');
+document.addEventListener("DOMContentLoaded", () => {
+  const btnEditar = document.getElementById("btnEditar");
+  if (btnEditar) {
+      btnEditar.addEventListener("click", () => {
+          const nome = document.getElementById("nome").value;
+          const email = document.getElementById("email").value;
 
-  const nomeEl = document.getElementById('nome');
-  const emailEl = document.getElementById('email');
-  const valorEl = document.getElementById('valor');
+          alert(`Perfil editado!\nNome: ${nome}\nEmail: ${email}`);
+      });
+  }
 
-  // EDITAR PERFIL
-  btnEditar.addEventListener('click', () => {
-    nomeEl.focus();
-    alert('Edite os campos de Nome e Email diretamente.');
+  const botoesRenovar = document.querySelectorAll(".btnRenovar");
+  botoesRenovar.forEach((botao, index) => {
+      botao.addEventListener("click", () => {
+          alert(`Livro ${index + 1} renovado com sucesso!`);
+      });
   });
 
-  // PAGAMENTO
-  btnPagamento.addEventListener('click', () => {
-    if (valorEl.innerText === 'R$0.00') {
-      alert('Nenhuma multa pendente!');
-    } else {
-      alert('Pagamento realizado com sucesso!');
-      valorEl.innerText = 'R$0.00';
-    }
+
+  const botoesReservar = document.querySelectorAll(".btnReservar");
+  botoesReservar.forEach((botao) => {
+      botao.addEventListener("click", () => {
+          alert("Livro reservado com sucesso!");
+      });
   });
 
-  // RENOVAR LIVRO
-  btnRenovar.forEach(btn => {
-    btn.addEventListener('click', () => alert('Livro renovado por mais 7 dias!'));
-  });
+  const btnPagamento = document.getElementById("btnPagamento");
+  if (btnPagamento) {
+      btnPagamento.addEventListener("click", () => {
+          const valor = document.getElementById("valor").textContent;
+          alert(`Redirecionando para pagamento...\nValor: ${valor}`);
+          
+         
+      });
+  }
 
-  // RESERVAR LIVRO
-  btnReservar.forEach(btn => {
-    btn.addEventListener('click', () => alert('Livro reservado com sucesso!'));
-  });
 });
