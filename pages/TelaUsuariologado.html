@@ -3,57 +3,232 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <link rel="stylesheet" href="../styles/TelaUsuariologado.css">
   <link rel="stylesheet" href="../styles/navbar.css">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
   <title>Dashboard Biblioteca</title>
 </head>
+<style>
+  :root {
+    --navy:      #1b2688;
+    --navy-dark: #060b30;
+    --charcoal:  #333333;
+    --charcoal2: #3d3d3d;
+    --charcoal3: #2a2a2a;
+    --accent:    #70a3f0;
+    --accent2:   #5c92ff;
+    --white:     #e8ecf4;
+    --muted:     #8892b4;
+    --border:    rgba(112, 163, 240, 0.15);
+    --border-h:  rgba(112, 163, 240, 0.4);
+    --err:       #e07b6a;
+    --ok:        #6abf8a;
+    --r:         10px;
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-sans:  'Syne', sans-serif;
+}
+
+.header {
+    --ui-color: #F6F5E6;
+    --bg-opacity: 0.9;        /* ← valor inicial */
+    --blur-amount: 20px;      /* ← valor inicial */
+    --logo-filter: brightness(1);
+
+    background-color: #090e3f;
+    padding: 20px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+
+    transition:
+        background-color 0.3s ease,
+        backdrop-filter 0.3s ease;
+}
+
+    .header.scrolled {
+        background-color: rgb(44, 49, 107, var(--bg-opacity));
+        backdrop-filter: blur(var(--blur-amount));
+        -webkit-backdrop-filter: blur(var(--blur-amount));
+        /* Esfumaçado mais forte em cima */
+        -webkit-mask-image: linear-gradient(180deg,
+                rgba(0, 0, 0, 5) 0%,
+                rgba(0, 0, 0, 0) 100%);
+        mask-image: linear-gradient(180deg,
+                rgba(0, 0, 0, 1) 0%,
+                rgba(0, 0, 0, 0) 100%);
+    }
+
+    .header-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+ 
+    .logo-left {
+        flex: 0 0 auto;
+    }
+
+    .logo-left img {
+        height: 60px;
+        width: auto;
+    }
+
+    .nav-menu {
+        display: flex;
+        gap: 50px;
+        flex: 1;
+        justify-content: center;
+        
+    }
+
+    .nav-link {
+    position: relative; /* necessário */
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease, opacity 0.3s ease;
+    font-family: var(--font-sans);
+}
+
+    .nav-link:hover {
+        opacity: 0.7;
+    }
+
+    .nav-link::after {
+        content: "";
+        position: absolute; /* necessário */
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: currentColor;
+        transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+        width: 100%;
+    }
+
+        
+
+    .botao-login {
+        margin-top: 6px;
+        width: 130px;
+        height: 30px;
+        padding: 13px;
+        background: var(--navy);
+        border: 1px solid var(--border-h);
+        border-radius: var(--r);
+        color: var(--white);
+        font-family: var(--font-sans);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .botao-login:hover {
+        background: #0d1450;
+        box-shadow: 0 8px 24px rgba(9,14,63,0.5);
+        transform: translateY(-2px);
+    }
+
+    .botao-login:active { transform: scale(0.98); }
+
+    .botao-login:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+    }
+</style>
 
 <body>
+  <header class="header">
+        <div class="header-container">
+            <!-- Logo esquerda: Substitua o arquivo em img/logo-02.png -->
 
-  <div id="header"></div>
+            <div class="logo-left">
+                <i class="fa-solid fa-book-open" style="font-size: 30px; color: #fff;"></i>
+            </div>
+
+
+
+            <!-- Menu de navegação -->
+            <nav class="nav-menu">
+                <a href="../../pages/TelaHome.html" class="nav-link">INÍCIO</a>
+                <a href="#sessao-sobre" class="nav-link">SOBRE</a>
+                <a href="../../pages/TelaCatalogoLivros.html" class="nav-link">CATÁLOGO</a>
+                <a href="#sessao-contato" class="nav-link">CONTATO</a>
+            </nav>
+
+            <!-- Logo direita: Substitua o arquivo em img/cão-logo.png -->
+            
+                <button  onclick="window.location.href=''" class="botao-login">Admin</button>
+            
+        </div>
+    </header>
+    
+</body>
+
+</html>
 
   <div class="container">
 
+    <!-- Dados Pessoais -->
     <div class="card">
       <h3><i class="fas fa-id-card"></i> Dados Pessoais</h3>
-
       <div class="flex">
         <div class="field-group">
           <label for="nome">Nome</label>
-          <input id="nome" class="input-field" type="text" placeholder="Digite seu nome...">
+          <input id="nome" class="input-field" type="text" value="Admin">
         </div>
-
         <div class="field-group">
           <label for="email">Email</label>
-          <input id="email" class="input-field" type="email" placeholder="Digite seu email...">
+          <input id="email" class="input-field" type="email" value="admin@gmail.com">
         </div>
-
         <div class="field-group">
           <label>ID de Membro</label>
-          <input class="input-field" type="text" readonly placeholder="ID">
+          <input class="input-field" type="text" readonly value="001">
         </div>
       </div>
-
       <br>
-
-      <button class="btn-primary" id="btnEditar">
-        <i class="fas fa-user-edit"></i> Editar Perfil
-      </button>
+      
+      <div class="btn-row">
+        <!-- 
+        <button class="btn-primary" id="btnEditar">
+          <i class="fas fa-user-edit"></i> Editar Perfil
+        </button>
+        -->
+        <a href="dashboard.html" class="btn-gerenciamento" id="btnGerenciamento">
+          <i class="fas fa-sliders-h"></i> Gerenciamento da Biblioteca
+        </a>
+      </div>
     </div>
 
+    <!-- Livros + Histórico -->
     <div class="flex">
 
       <div class="card" style="flex:1">
         <h3><i class="fas fa-book"></i> Livros Atualmente Emprestados</h3>
 
-      
         <div class="livro">
           <div class="livro-info">
-            <img src="/BibliotecaSA-main/img/livro1.webp" width="70">
+            <img src="../img/livro1.webp" width="70">
             <div class="livro-texto">
               <strong>Está chovendo estrelas</strong>
               <span>Ana Santos</span>
@@ -64,10 +239,9 @@
           </button>
         </div>
 
-      
         <div class="livro">
           <div class="livro-info">
-            <img src="/BibliotecaSA-main/img/livro2.webp" width="70">
+            <img src="../img/livro2.webp" width="70">
             <div class="livro-texto">
               <strong>O atirador de lâmpagos</strong>
               <span>Au J.Thomson</span>
@@ -80,7 +254,7 @@
 
         <div class="livro">
           <div class="livro-info">
-            <img src="/BibliotecaSA-main/img/livro3.webp" width="70">
+            <img src="../img/livro4.webp" width="70">
             <div class="livro-texto">
               <strong>A vida junto à gratidão</strong>
               <span>Beatriz Miranda</span>
@@ -90,10 +264,8 @@
             <i class="fas fa-bookmark"></i> Reservar
           </button>
         </div>
-
       </div>
 
-     
       <div class="card" style="flex:1">
         <h3><i class="fas fa-history"></i> Histórico de Empréstimos</h3>
 
@@ -118,7 +290,6 @@
           <strong>Valor Total:</strong>
           <span id="valor" class="total">R$30.00</span>
           <br><br>
-
           <button class="btn-primary" id="btnPagamento">
             <i class="fas fa-credit-card"></i> Pagamento
           </button>
@@ -131,6 +302,5 @@
   <script src="../scripts/TelaUsuariologado.js"></script>
   <script src="../scripts/navbar.js"></script>
   <script src="../scripts/include.js"></script>
-
 </body>
 </html>

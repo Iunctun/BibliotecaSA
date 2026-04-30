@@ -228,6 +228,107 @@
             font-weight: 400;
             color: #e8e4de;
         }
+
+        /* ── Toast de sucesso ── */
+        .toast {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: #111316;
+            border: 1px solid rgba(29, 158, 117, 0.4);
+            border-radius: 4px;
+            padding: 20px 28px;
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.35s ease, transform 0.35s ease;
+            pointer-events: none;
+            min-width: 320px;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .toast-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(29, 158, 117, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .toast-icon i {
+            color: #1d9e75;
+            font-size: 16px;
+        }
+
+        .toast-body {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .toast-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 400;
+            color: #ffffff;
+        }
+
+        .toast-sub {
+            font-size: 12px;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.45);
+            letter-spacing: 0.3px;
+        }
+
+        .toast-close {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.25);
+            font-size: 14px;
+            cursor: pointer;
+            padding: 4px;
+            transition: color 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .toast-close:hover {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Barra de progresso do toast */
+        .toast-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 2px;
+            background: #1d9e75;
+            border-radius: 0 0 0 4px;
+            width: 100%;
+            transform-origin: left;
+            animation: none;
+        }
+
+        .toast.show .toast-progress {
+            animation: progress 4s linear forwards;
+        }
+
+        @keyframes progress {
+            from { transform: scaleX(1); }
+            to   { transform: scaleX(0); }
+        }
     </style>
 </head>
 <body>
@@ -242,7 +343,7 @@
 
                 <!-- Capa -->
                 <div class="detail-cover">
-                    <img src="../img/livro2.webp" alt="Capa O Substituto">
+                    <img src="../img/livro1.webp" alt="Capa O Substituto">
                     <div class="detail-cover-status">
                         <i class="fa-solid fa-circle"></i>
                         Disponível
@@ -253,7 +354,7 @@
                 <div class="detail-info">
                     <div>
                         <span class="detail-sup">Fantasia</span>
-                        <h1 class="detail-title">O atirador de lâmpagos</h1>
+                        <h1 class="detail-title">Está chovendo estrelas</h1>
                         <p class="detail-author"><span>por</span> Au J.Thomson</p>
                     </div>
 
@@ -270,7 +371,7 @@
                     </div>
 
                     <div class="detail-btn-wrap">
-                        <button class="btn-reserve">
+                        <button class="btn-reserve" id="btnReservar">
                             <i class="fa-solid fa-bookmark" style="margin-right:8px;"></i>
                             Reservar
                         </button>
@@ -305,10 +406,53 @@
         </div><!-- /detail-container -->
     </section>
 
+    <!-- Toast de sucesso -->
+    <div class="toast" id="toastReserva">
+        <div class="toast-icon">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        <div class="toast-body">
+            <span class="toast-title">Livro reservado!</span>
+            <span class="toast-sub">Sua reserva foi realizada com sucesso.</span>
+        </div>
+        <button class="toast-close" id="toastClose">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="toast-progress"></div>
+    </div>
+
     <div id="footer"></div>
 
     <script src="../scripts/navbar.js"></script>
     <script src="../scripts/include.js"></script>
+
+    <script>
+        const btnReservar = document.getElementById('btnReservar');
+        const toast       = document.getElementById('toastReserva');
+        const toastClose  = document.getElementById('toastClose');
+        let toastTimer    = null;
+
+        function mostrarToast() {
+            // Reinicia animação da barra de progresso
+            const bar = toast.querySelector('.toast-progress');
+            bar.style.animation = 'none';
+            bar.offsetHeight; // reflow
+            bar.style.animation = '';
+
+            toast.classList.add('show');
+
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(fecharToast, 4000);
+        }
+
+        function fecharToast() {
+            toast.classList.remove('show');
+            clearTimeout(toastTimer);
+        }
+
+        btnReservar.addEventListener('click', mostrarToast);
+        toastClose.addEventListener('click', fecharToast);
+    </script>
 
 </body>
 </html>

@@ -5,7 +5,7 @@
 const livrosFixos = [
     {
         id: 'LIV-001',
-        titulo: 'It - A Coisa',
+        titulo: 'Está chovendo estrelas',
         autor: 'Stephen King',
         capa: '../img/livro1.webp',
         genero: 'Terror',
@@ -386,7 +386,7 @@ class Carousel {
 
         card.addEventListener('click', () => {
             sessionStorage.setItem('livroSelecionado', JSON.stringify(livro));
-            window.location.href = 'pages/TelaDoLivro.html';
+            window.location.href = '../pages/TelaDoLivro.html';
         });
 
         return card;
