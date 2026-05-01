@@ -64,11 +64,18 @@
             font-weight: 500;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: #5dcaa5;
         }
 
         .detail-cover-status i {
             font-size: 9px;
+        }
+
+        .status-disponivel {
+            color: #5dcaa5;
+        }
+
+        .status-indisponivel {
+            color: #e24b4a;
         }
 
         /* ── Coluna de info ── */
@@ -146,18 +153,63 @@
             line-height: 1.85;
         }
 
-        /* Botão reservar */
+        /* ── Preços ── */
+        .detail-prices {
+            display: flex;
+            gap: 40px;
+            align-items: flex-end;
+        }
+
+        .price-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .price-label {
+            font-size: 9px;
+            font-weight: 500;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+        }
+
+        .price-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 400;
+            color: #e8e4de;
+        }
+
+        .price-item.locar .price-value {
+            color: #e8e4de;
+        }
+
+        .price-sub {
+            font-size: 11px;
+            color: rgba(255,255,255,0.25);
+        }
+
+        .price-divider {
+            width: 1px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            margin-bottom: 4px;
+        }
+
+        /* Botões */
         .detail-btn-wrap {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 12px;
+            flex-wrap: wrap;
         }
 
         .btn-reserve {
             background: #1d9e75;
             color: #ffffff;
             border: none;
-            padding: 14px 48px;
+            padding: 14px 36px;
             border-radius: 3px;
             font-family: 'DM Sans', sans-serif;
             font-size: 13px;
@@ -170,6 +222,59 @@
 
         .btn-reserve:hover {
             background: #17865f;
+            transform: translateY(-2px);
+        }
+
+        .btn-reserve:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-locar {
+            background: #3e5bdb;
+            color: #ffffff;
+            border: none;
+            padding: 14px 36px;
+            border-radius: 3px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.25s ease, transform 0.2s ease;
+        }
+
+        .btn-locar:hover {
+            background: #2e48c4;
+            transform: translateY(-2px);
+        }
+
+        .btn-locar:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-comprar {
+            background: transparent;
+            color: #e8e4de;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 14px 36px;
+            border-radius: 3px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: border-color 0.25s ease, background 0.25s ease, transform 0.2s ease;
+        }
+
+        .btn-comprar:hover {
+            border-color: rgba(255,255,255,0.45);
+            background: rgba(255,255,255,0.05);
             transform: translateY(-2px);
         }
 
@@ -227,6 +332,163 @@
             font-size: 16px;
             font-weight: 400;
             color: #e8e4de;
+        }
+
+        /* ── Modal de Locação ── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal {
+            background: #1e2128;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 40px 36px;
+            width: 100%;
+            max-width: 480px;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.open .modal {
+            transform: translateY(0);
+        }
+
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            font-weight: 400;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        .modal-sub {
+            font-size: 13px;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 28px;
+        }
+
+        .modal-book-info {
+            background: rgba(29,158,117,0.07);
+            border: 1px solid rgba(29,158,117,0.2);
+            border-radius: 4px;
+            padding: 14px 18px;
+            font-size: 13px;
+            color: rgba(255,255,255,0.55);
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        .modal-book-info strong {
+            color: #5dcaa5;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 9px;
+            font-weight: 500;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.35);
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            background: #111316;
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 4px;
+            color: #e8e4de;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            padding: 12px 16px;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-input:focus {
+            border-color: #3e5bdb;
+        }
+
+        .form-input.error {
+            border-color: #e24b4a;
+        }
+
+        .form-input[readonly] {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .btn-modal-cancel {
+            background: transparent;
+            color: rgba(255,255,255,0.4);
+            border: 1px solid rgba(255,255,255,0.12);
+            padding: 13px 22px;
+            border-radius: 3px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: border-color 0.25s ease, color 0.25s ease;
+        }
+
+        .btn-modal-cancel:hover {
+            border-color: rgba(255,255,255,0.3);
+            color: rgba(255,255,255,0.7);
+        }
+
+        .btn-modal-confirm {
+            flex: 1;
+            background: #3e5bdb;
+            color: #ffffff;
+            border: none;
+            padding: 13px 22px;
+            border-radius: 3px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.25s ease, transform 0.2s ease;
+        }
+
+        .btn-modal-confirm:hover {
+            background: #2e48c4;
+            transform: translateY(-1px);
         }
 
         /* ── Toast de sucesso ── */
@@ -308,7 +570,6 @@
             color: rgba(255, 255, 255, 0.6);
         }
 
-        /* Barra de progresso do toast */
         .toast-progress {
             position: absolute;
             bottom: 0;
@@ -344,9 +605,9 @@
                 <!-- Capa -->
                 <div class="detail-cover">
                     <img src="../img/livro1.webp" alt="Capa O Substituto">
-                    <div class="detail-cover-status">
-                        <i class="fa-solid fa-circle"></i>
-                        Disponível
+                    <div class="detail-cover-status" id="statusBadge">
+                        <i class="fa-solid fa-circle status-disponivel" id="statusIcon"></i>
+                        <span class="status-disponivel" id="statusText">Disponível</span>
                     </div>
                 </div>
 
@@ -370,10 +631,29 @@
                         <p>Enquanto isso, nas sombras, uma antiga escuridão começa a despertar, prometendo um crepúsculo sem precedentes para a terra. O peso do mundo repousa sobre Myrddin, que terá que enfrentar forças muito maiores do que ele — e talvez, aprender que nem sempre o destino é tão grandioso quanto parece.</p>
                     </div>
 
+                    <!-- Preços -->
+                    <div class="detail-rule">
+                        <div class="detail-rule-line"></div>
+                        <span class="detail-rule-label">preços</span>
+                        <div class="detail-rule-line"></div>
+                    </div>
+
+                    <div class="detail-prices">
+                        <div class="price-item">
+                            <div class="price-label">Locar</div>
+                            <div class="price-value">R$ 12,00</div>
+                            <div class="price-sub">Por 15 dias</div>
+                        </div>
+                    </div>
+
                     <div class="detail-btn-wrap">
                         <button class="btn-reserve" id="btnReservar">
                             <i class="fa-solid fa-bookmark" style="margin-right:8px;"></i>
                             Reservar
+                        </button>
+                        <button class="btn-locar" id="btnLocar">
+                            <i class="fa-solid fa-file-contract" style="margin-right:8px;"></i>
+                            Locar
                         </button>
                         <button class="btn-wish">
                             <i class="fa-regular fa-heart"></i>
@@ -399,21 +679,68 @@
                 </div>
                 <div class="detail-meta-item">
                     <div class="detail-meta-label">Disponibilidade</div>
-                    <div class="detail-meta-value">Disponível</div>
+                    <div class="detail-meta-value" id="metaDisponibilidade">Disponível</div>
                 </div>
             </div>
 
         </div><!-- /detail-container -->
     </section>
 
-    <!-- Toast de sucesso -->
+    <!-- ── Modal de Locação ── -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <p class="modal-title">Locar livro</p>
+            <p class="modal-sub">Preencha os dados para confirmar a locação</p>
+
+            <div class="modal-book-info">
+                <strong>Está chovendo estrelas</strong> — Au J. Thomson<br>
+                Prazo: 15 dias &nbsp;|&nbsp; Valor: <strong>R$ 12,00</strong>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Nome completo</label>
+                <input class="form-input" id="fNome" type="text" placeholder="Seu nome completo">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">CPF</label>
+                <input class="form-input" id="fCpf" type="text" placeholder="000.000.000-00" maxlength="14">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Data de retirada</label>
+                    <input class="form-input" id="fRetirada" type="date">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Data de devolução</label>
+                    <input class="form-input" id="fDevolucao" type="date" readonly>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Contato (telefone ou e-mail)</label>
+                <input class="form-input" id="fContato" type="text" placeholder="(11) 99999-9999 ou email@exemplo.com">
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-modal-cancel" id="btnCancelar">Cancelar</button>
+                <button class="btn-modal-confirm" id="btnConfirmar">
+                    <i class="fa-solid fa-check" style="margin-right:8px;"></i>
+                    Confirmar locação
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Toast de sucesso ── -->
     <div class="toast" id="toastReserva">
         <div class="toast-icon">
             <i class="fa-solid fa-check"></i>
         </div>
         <div class="toast-body">
-            <span class="toast-title">Livro reservado!</span>
-            <span class="toast-sub">Sua reserva foi realizada com sucesso.</span>
+            <span class="toast-title" id="toastTitulo">Livro reservado!</span>
+            <span class="toast-sub" id="toastMensagem">Sua reserva foi realizada com sucesso.</span>
         </div>
         <button class="toast-close" id="toastClose">
             <i class="fa-solid fa-xmark"></i>
@@ -427,20 +754,121 @@
     <script src="../scripts/include.js"></script>
 
     <script>
-        const btnReservar = document.getElementById('btnReservar');
-        const toast       = document.getElementById('toastReserva');
-        const toastClose  = document.getElementById('toastClose');
-        let toastTimer    = null;
+        /* ── Elementos ── */
+        const btnReservar       = document.getElementById('btnReservar');
+        const btnLocar          = document.getElementById('btnLocar');
+        const modalOverlay      = document.getElementById('modalOverlay');
+        const btnCancelar       = document.getElementById('btnCancelar');
+        const btnConfirmar      = document.getElementById('btnConfirmar');
+        const toast             = document.getElementById('toastReserva');
+        const toastClose        = document.getElementById('toastClose');
+        const toastTitulo       = document.getElementById('toastTitulo');
+        const toastMensagem     = document.getElementById('toastMensagem');
+        const statusIcon        = document.getElementById('statusIcon');
+        const statusText        = document.getElementById('statusText');
+        const metaDisponibilidade = document.getElementById('metaDisponibilidade');
+        const fNome             = document.getElementById('fNome');
+        const fCpf              = document.getElementById('fCpf');
+        const fRetirada         = document.getElementById('fRetirada');
+        const fDevolucao        = document.getElementById('fDevolucao');
+        const fContato          = document.getElementById('fContato');
 
-        function mostrarToast() {
-            // Reinicia animação da barra de progresso
+        let isDisponivel = true;
+        let toastTimer   = null;
+
+        /* ── Status: marcar como indisponível ── */
+        function marcarIndisponivel() {
+            isDisponivel = false;
+
+            statusIcon.className = 'fa-solid fa-circle status-indisponivel';
+            statusText.className = 'status-indisponivel';
+            statusText.textContent = 'Indisponível';
+            metaDisponibilidade.textContent = 'Indisponível';
+
+            btnLocar.disabled    = true;
+            btnReservar.disabled = true;
+        }
+
+        /* ── Modal: abrir ── */
+        function abrirModal() {
+            if (!isDisponivel) return;
+
+            const hoje = new Date().toISOString().split('T')[0];
+            fRetirada.value = hoje;
+            calcularDevolucao();
+
+            modalOverlay.classList.add('open');
+        }
+
+        /* ── Modal: fechar ── */
+        function fecharModal() {
+            modalOverlay.classList.remove('open');
+            limparErros();
+        }
+
+        /* ── Calcular data de devolução (+15 dias) ── */
+        function calcularDevolucao() {
+            if (!fRetirada.value) return;
+            const data = new Date(fRetirada.value);
+            data.setDate(data.getDate() + 15);
+            fDevolucao.value = data.toISOString().split('T')[0];
+        }
+
+        /* ── Máscara de CPF ── */
+        fCpf.addEventListener('input', () => {
+            let v = fCpf.value.replace(/\D/g, '');
+            if (v.length > 11) v = v.slice(0, 11);
+            v = v
+                .replace(/(\d{3})(\d)/, '$1.$2')
+                .replace(/(\d{3})(\d)/, '$1.$2')
+                .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            fCpf.value = v;
+        });
+
+        fRetirada.addEventListener('change', calcularDevolucao);
+
+        /* ── Validação e confirmação ── */
+        function limparErros() {
+            [fNome, fCpf, fContato].forEach(el => el.classList.remove('error'));
+        }
+
+        btnConfirmar.addEventListener('click', () => {
+            limparErros();
+            let valido = true;
+
+            if (!fNome.value.trim())    { fNome.classList.add('error');    valido = false; }
+            if (!fCpf.value.trim())     { fCpf.classList.add('error');     valido = false; }
+            if (!fContato.value.trim()) { fContato.classList.add('error'); valido = false; }
+            if (!fRetirada.value)       { valido = false; }
+
+            if (!valido) return;
+
+            fecharModal();
+            marcarIndisponivel();
+            mostrarToast(
+                'Livro locado!',
+                'Devolução até ' + formatarData(fDevolucao.value)
+            );
+        });
+
+        /* ── Formatar data para exibição ── */
+        function formatarData(iso) {
+            if (!iso) return '';
+            const [y, m, d] = iso.split('-');
+            return `${d}/${m}/${y}`;
+        }
+
+        /* ── Toast ── */
+        function mostrarToast(titulo, mensagem) {
+            toastTitulo.textContent   = titulo;
+            toastMensagem.textContent = mensagem;
+
             const bar = toast.querySelector('.toast-progress');
             bar.style.animation = 'none';
             bar.offsetHeight; // reflow
             bar.style.animation = '';
 
             toast.classList.add('show');
-
             clearTimeout(toastTimer);
             toastTimer = setTimeout(fecharToast, 4000);
         }
@@ -450,8 +878,24 @@
             clearTimeout(toastTimer);
         }
 
-        btnReservar.addEventListener('click', mostrarToast);
+        /* ── Botão Reservar ── */
+        btnReservar.addEventListener('click', () => {
+            if (!isDisponivel) return;
+            mostrarToast('Livro reservado!', 'Sua reserva foi realizada com sucesso.');
+        });
+
+        /* ── Eventos do modal ── */
+        btnLocar.addEventListener('click', abrirModal);
+        btnCancelar.addEventListener('click', fecharModal);
         toastClose.addEventListener('click', fecharToast);
+
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) fecharModal();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') fecharModal();
+        });
     </script>
 
 </body>

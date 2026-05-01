@@ -39,14 +39,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ── Validações ──
     const fields = {
-        nome:        { el: null, err: null },
-        email:       { el: null, err: null },
-        telefone:    { el: null, err: null },
-        cpf:         { el: null, err: null },
-        nascimento:  { el: null, err: null },
-        localizacao: { el: null, err: null },
-        senha:       { el: null, err: null },
-        confirmar:   { el: null, err: null },
+        nome:       { el: null, err: null },
+        email:      { el: null, err: null },
+        telefone:   { el: null, err: null },
+        cpf:        { el: null, err: null },
+        nascimento: { el: null, err: null },
+        estado:     { el: null, err: null },
+        senha:      { el: null, err: null },
+        confirmar:  { el: null, err: null },
     };
 
     Object.keys(fields).forEach(id => {
@@ -63,36 +63,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
         switch (id) {
             case 'nome':
-                if (!v)              return setErr(el, err, 'Nome obrigatório.');
-                if (v.length < 3)    return setErr(el, err, 'Nome muito curto.');
+                if (!v)           return setErr(el, err, 'Nome obrigatório.');
+                if (v.length < 3) return setErr(el, err, 'Nome muito curto.');
                 break;
             case 'email':
-                if (!v)              return setErr(el, err, 'Email obrigatório.');
+                if (!v)           return setErr(el, err, 'Email obrigatório.');
                 if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) return setErr(el, err, 'Email inválido.');
                 break;
             case 'telefone':
-                if (!v)              return setErr(el, err, 'Telefone obrigatório.');
+                if (!v)           return setErr(el, err, 'Telefone obrigatório.');
                 if (v.replace(/\D/g,'').length < 10) return setErr(el, err, 'Telefone inválido.');
                 break;
             case 'cpf':
-                if (!v)              return setErr(el, err, 'CPF obrigatório.');
+                if (!v)           return setErr(el, err, 'CPF obrigatório.');
                 if (v.replace(/\D/g,'').length < 11) return setErr(el, err, 'CPF inválido.');
                 break;
             case 'nascimento':
-                if (!v)              return setErr(el, err, 'Data obrigatória.');
+                if (!v)           return setErr(el, err, 'Data obrigatória.');
                 if (new Date(v) > new Date()) return setErr(el, err, 'Data inválida.');
                 break;
-            case 'localizacao':
-                if (!v)              return setErr(el, err, 'Localização obrigatória.');
+            case 'estado':
+                if (!v)           return setErr(el, err, 'Estado obrigatório.');
                 break;
             case 'senha':
-                if (!v)              return setErr(el, err, 'Senha obrigatória.');
-                if (v.length < 6)    return setErr(el, err, 'Mínimo 6 caracteres.');
-                // revalida confirmar se já preenchida
+                if (!v)           return setErr(el, err, 'Senha obrigatória.');
+                if (v.length < 6) return setErr(el, err, 'Mínimo 6 caracteres.');
                 if (fields.confirmar.el.value) validate('confirmar');
                 break;
             case 'confirmar':
-                if (!v)              return setErr(el, err, 'Confirme a senha.');
+                if (!v)           return setErr(el, err, 'Confirme a senha.');
                 if (v !== fields.senha.el.value) return setErr(el, err, 'Senhas não coincidem.');
                 break;
         }
@@ -115,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btnLabel.style.display = 'none';
         btnSpinner.style.display = 'inline-block';
 
-        // substitua pelo fetch real
+        // substitua pelo fetch real para sua API
         await new Promise(r => setTimeout(r, 1600));
 
         btnSubmit.disabled = false;
