@@ -1,3 +1,16 @@
+// ── Proteção de rota — apenas admin ──
+(async () => {
+    try {
+        const resp = await fetch('/BibliotecaSA/backend/sessao.php');
+        const data = await resp.json();
+        if (!data.logado || data.perfil !== 'admin') {
+            window.location.href = '../pages/TelaLogin.html';
+        }
+    } catch {
+        window.location.href = '../pages/TelaLogin.html';
+    }
+})();
+
 // ── Elementos ──
 const coverArea       = document.getElementById('coverArea');
 const inputCapa       = document.getElementById('inputCapa');
@@ -5,18 +18,16 @@ const capaPreview     = document.getElementById('capaPreview');
 const capaPlaceholder = document.getElementById('capaPlaceholder');
 const capaLabel       = document.getElementById('capaLabel');
 
-const inputTitulo          = document.getElementById('inputTitulo');
-const inputAutor           = document.getElementById('inputAutor');
-const inputCategoria       = document.getElementById('inputCategoria');
-const inputDataPublicacao  = document.getElementById('inputDataPublicacao');
-const inputQuantidade      = document.getElementById('inputQuantidade');
-const inputResumo          = document.getElementById('inputResumo');
-const charCount            = document.getElementById('charCount');
-const btnSalvar            = document.getElementById('btnSalvar');
+const inputTitulo         = document.getElementById('inputTitulo');
+const inputAutor          = document.getElementById('inputAutor');
+const inputCategoria      = document.getElementById('inputCategoria');
+const inputDataPublicacao = document.getElementById('inputDataPublicacao');
+const inputQuantidade     = document.getElementById('inputQuantidade');
+const inputResumo         = document.getElementById('inputResumo');
+const charCount           = document.getElementById('charCount');
+const btnSalvar           = document.getElementById('btnSalvar');
 
 // ── Preview da capa ──
-let capaBase64 = null;
-
 inputCapa.addEventListener('change', () => {
     const file = inputCapa.files[0];
     if (!file) return;
@@ -28,15 +39,14 @@ inputCapa.addEventListener('change', () => {
 
     const reader = new FileReader();
     reader.onload = (e) => {
-        capaBase64 = e.target.result;
-        capaPreview.src = capaBase64;
+        capaPreview.src = e.target.result;
         coverArea.classList.add('has-image');
         capaLabel.textContent = 'Clique para trocar a capa';
     };
     reader.readAsDataURL(file);
 });
 
-// ── Contador de caracteres do resumo ──
+// ── Contador de caracteres ──
 inputResumo.addEventListener('input', () => {
     charCount.textContent = `${inputResumo.value.length} / 600`;
 });
@@ -54,59 +64,80 @@ function showToast(mensagem, tipo = 'erro') {
 
     msg.textContent = mensagem;
     toast.classList.add(tipo, 'show');
-
     setTimeout(() => toast.classList.remove('show'), 3500);
-}
-
-// ── Gerar ID único ──
-function gerarId() {
-    const livros = JSON.parse(localStorage.getItem('livrosCadastrados') || '[]');
-    const num = livros.length + 1;
-    return 'LIV-' + String(num).padStart(3, '0');
 }
 
 // ── Validação ──
 function validar() {
     let ok = true;
-
     [inputTitulo, inputAutor, inputCategoria, inputDataPublicacao, inputQuantidade, inputResumo].forEach(el => {
         el.classList.remove('error');
     });
 
-    if (!inputTitulo.value.trim())         { inputTitulo.classList.add('error');         ok = false; }
-    if (!inputAutor.value.trim())          { inputAutor.classList.add('error');          ok = false; }
-    if (!inputCategoria.value)             { inputCategoria.classList.add('error');      ok = false; }
-    if (!inputDataPublicacao.value)        { inputDataPublicacao.classList.add('error'); ok = false; }
-    if (!inputQuantidade.value || +inputQuantidade.value < 1) { inputQuantidade.classList.add('error'); ok = false; }
-    if (!inputResumo.value.trim())         { inputResumo.classList.add('error');         ok = false; }
+    if (!inputTitulo.value.trim())                                { inputTitulo.classList.add('error');         ok = false; }
+    if (!inputAutor.value.trim())                                 { inputAutor.classList.add('error');          ok = false; }
+    if (!inputCategoria.value)                                    { inputCategoria.classList.add('error');      ok = false; }
+    if (!inputDataPublicacao.value)                               { inputDataPublicacao.classList.add('error'); ok = false; }
+    if (!inputQuantidade.value || +inputQuantidade.value < 1)     { inputQuantidade.classList.add('error');     ok = false; }
+    if (!inputResumo.value.trim())                                { inputResumo.classList.add('error');         ok = false; }
 
     return ok;
 }
 
-// ── Salvar ──
-btnSalvar.addEventListener('click', () => {
+// ── Salvar — envia para o banco ──
+btnSalvar.addEventListener('click', async () => {
     if (!validar()) {
         showToast('Preencha todos os campos obrigatórios.', 'erro');
         return;
     }
 
-    const anoPublicacao = inputDataPublicacao.value.split('-')[0];
+    btnSalvar.disabled = true;
 
-    const novoLivro = {
-        id:             gerarId(),
-        titulo:         inputTitulo.value.trim(),
-        autor:          inputAutor.value.trim(),
-        capa:           capaBase64 || '../img/sem-capa.webp',
-        genero:         inputCategoria.value,
-        dataPublicacao: anoPublicacao,
-        quantidade:     parseInt(inputQuantidade.value),
-        disponivel:     parseInt(inputQuantidade.value) > 0,
-        resumo:         inputResumo.value.trim()
-    };
+    try {
+        const formData = new FormData();
+        formData.append('titulo',          inputTitulo.value.trim());
+        formData.append('autor',           inputAutor.value.trim());
+        formData.append('categoria',       inputCategoria.value);
+        formData.append('data_publicacao', inputDataPublicacao.value);
+        formData.append('quantidade',      inputQuantidade.value);
+        formData.append('resumo',          inputResumo.value.trim());
 
-    const livros = JSON.parse(localStorage.getItem('livrosCadastrados') || '[]');
-    livros.push(novoLivro);
-    localStorage.setItem('livrosCadastrados', JSON.stringify(livros));
+        if (inputCapa.files[0]) {
+            formData.append('capa', inputCapa.files[0]);
+        }
 
-    showToast(`"${novoLivro.titulo}" cadastrado com sucesso!`, 'sucesso');
+        const resp = await fetch('/BibliotecaSA/backend/livros_salvar.php', {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await resp.json();
+
+        if (data.erro) {
+            showToast(data.erro, 'erro');
+            return;
+        }
+
+        showToast(`"${inputTitulo.value.trim()}" cadastrado com sucesso!`, 'sucesso');
+
+        // Limpa o formulário após salvar
+        setTimeout(() => {
+            inputTitulo.value = '';
+            inputAutor.value = '';
+            inputCategoria.value = '';
+            inputDataPublicacao.value = '';
+            inputQuantidade.value = '';
+            inputResumo.value = '';
+            charCount.textContent = '0 / 600';
+            coverArea.classList.remove('has-image');
+            capaPreview.src = '';
+            capaLabel.textContent = 'Foto da capa';
+            inputCapa.value = '';
+        }, 1500);
+
+    } catch (err) {
+        showToast('Erro ao conectar com o servidor.', 'erro');
+    } finally {
+        btnSalvar.disabled = false;
+    }
 });

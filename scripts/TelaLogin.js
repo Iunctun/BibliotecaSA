@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const toast     = document.getElementById('toast');
     const btnCad    = document.getElementById('btnCad');
 
+    // ── Toggle senha ──
     togglePw.addEventListener('click', () => {
         const pw = senhaIn.type === 'password';
         senhaIn.type = pw ? 'text' : 'password';
@@ -47,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         toastTimer = setTimeout(() => { toast.className = 'toast'; }, 3000);
     }
 
+    // ── Submit — autenticação real ──
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const ok = validateEmail() & validateSenha();
@@ -56,16 +58,41 @@ document.addEventListener('DOMContentLoaded', () => {
         btnLabel.style.display = 'none';
         btnSpin.style.display = 'inline-block';
 
-        await new Promise(r => setTimeout(r, 1500));
+        try {
+            const resp = await fetch('/BibliotecaSA/backend/login.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: emailIn.value.trim(),
+                    senha: senhaIn.value
+                })
+            });
 
-        btnSubmit.disabled = false;
-        btnLabel.style.display = 'inline';
-        btnSpin.style.display = 'none';
+            const data = await resp.json();
 
-        showToast('Bem-vindo de volta!', 'ok');
-        setTimeout(() => {
-            window.location.href = '../pages/TelaHome.html';
-        }, 1000);
+            if (data.erro) {
+                showToast(data.erro, 'err');
+                return;
+            }
+
+            showToast('Bem-vindo, ' + data.nome + '!', 'ok');
+
+            setTimeout(() => {
+                // Admin vai para o dashboard, usuário vai para o perfil
+                if (data.perfil === 'admin') {
+                    window.location.href = '../pages/dashboard.html';
+                } else {
+                    window.location.href = '../pages/TelaUsuarioLogado.html';
+                }
+            }, 1000);
+
+        } catch (err) {
+            showToast('Erro ao conectar com o servidor.', 'err');
+        } finally {
+            btnSubmit.disabled = false;
+            btnLabel.style.display = 'inline';
+            btnSpin.style.display = 'none';
+        }
     });
 
     btnCad.addEventListener('click', () => {

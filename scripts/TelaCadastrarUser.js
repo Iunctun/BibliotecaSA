@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    const form        = document.getElementById('cadastroForm');
-    const btnSubmit   = document.getElementById('btnSubmit');
-    const btnLabel    = document.getElementById('btnLabel');
-    const btnSpinner  = document.getElementById('btnSpinner');
-    const toast       = document.getElementById('toast');
+    const form       = document.getElementById('cadastroForm');
+    const btnSubmit  = document.getElementById('btnSubmit');
+    const btnLabel   = document.getElementById('btnLabel');
+    const btnSpinner = document.getElementById('btnSpinner');
+    const toast      = document.getElementById('toast');
 
     // ── Máscaras ──
     document.getElementById('cpf').addEventListener('input', function () {
@@ -105,7 +105,15 @@ document.addEventListener('DOMContentLoaded', () => {
     function setErr(el, span, msg) { el.classList.add('is-err'); span.textContent = msg; return false; }
     function clrErr(el, span)      { el.classList.remove('is-err'); span.textContent = ''; return true; }
 
-    // ── Submit ──
+    let toastTimer;
+    function showToast(msg, type) {
+        clearTimeout(toastTimer);
+        toast.textContent = msg;
+        toast.className = 'toast show ' + type;
+        toastTimer = setTimeout(() => { toast.className = 'toast'; }, 3500);
+    }
+
+    // ── Submit — cadastro real no banco ──
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         if (!validateAll()) return;
@@ -114,24 +122,39 @@ document.addEventListener('DOMContentLoaded', () => {
         btnLabel.style.display = 'none';
         btnSpinner.style.display = 'inline-block';
 
-        // substitua pelo fetch real para sua API
-        await new Promise(r => setTimeout(r, 1600));
+        try {
+            const resp = await fetch('/BibliotecaSA/backend/cadastrar_usuario.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    nome:       fields.nome.el.value.trim(),
+                    email:      fields.email.el.value.trim(),
+                    telefone:   fields.telefone.el.value.trim(),
+                    cpf:        fields.cpf.el.value.trim(),
+                    nascimento: fields.nascimento.el.value,
+                    estado:     fields.estado.el.value.trim(),
+                    senha:      fields.senha.el.value
+                })
+            });
 
-        btnSubmit.disabled = false;
-        btnLabel.style.display = 'inline';
-        btnSpinner.style.display = 'none';
+            const data = await resp.json();
 
-        showToast('Conta criada! Redirecionando...', 'ok');
-        setTimeout(() => {
-            window.location.href = 'login.html';
-        }, 2000);
+            if (data.erro) {
+                showToast(data.erro, 'err');
+                return;
+            }
+
+            showToast('Conta criada! Redirecionando...', 'ok');
+            setTimeout(() => {
+                window.location.href = '../pages/TelaLogin.html';
+            }, 2000);
+
+        } catch (err) {
+            showToast('Erro ao conectar com o servidor.', 'err');
+        } finally {
+            btnSubmit.disabled = false;
+            btnLabel.style.display = 'inline';
+            btnSpinner.style.display = 'none';
+        }
     });
-
-    let toastTimer;
-    function showToast(msg, type) {
-        clearTimeout(toastTimer);
-        toast.textContent = msg;
-        toast.className = 'toast show ' + type;
-        toastTimer = setTimeout(() => { toast.className = 'toast'; }, 3500);
-    }
 });
