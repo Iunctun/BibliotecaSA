@@ -1,28 +1,64 @@
+<!--
+  =====================================================================
+  NAVBAR INLINE — Cole este bloco no <body> de cada página HTML.
+  Substitui o antigo <div id="header"></div> + include.js carregando o navbar.
+
+  COMO USAR:
+  1. Cole o bloco <header>...</header> abaixo no topo do <body>
+  2. Ajuste os links de <a href="..."> conforme a profundidade da pasta:
+       - Páginas em /pages/  → href="../pages/TelaHome.html"  (já está correto abaixo)
+       - Páginas na raiz     → href="pages/TelaHome.html"
+  3. Inclua navbar.js e chame initNavbar() como mostrado ao final
+  4. NÃO inclua mais o include.js para o header — só para footer/carrossel
+  =====================================================================
+-->
+
+<!-- ===== NAVBAR INLINE ===== -->
 <header class="header">
-        <div class="header-container">
-            <!-- Logo esquerda: Substitua o arquivo em img/logo-02.png -->
+  <div class="header-container">
 
-            <div class="logo-left">
-                <i class="fa-solid fa-book-open" style="font-size: 30px; color: #fff;"></i>
-            </div>
+    <div class="logo-left">
+      <i class="fa-solid fa-book-open" style="font-size: 30px; color: #fff;"></i>
+    </div>
+
+    <nav class="nav-menu">
+      <a href="../pages/TelaHome.html" class="nav-link">INÍCIO</a>
+      <a href="#sessao-sobre" class="nav-link">SOBRE</a>
+      <a href="../pages/TelaCatalogoLivros.html" class="nav-link">CATÁLOGO</a>
+      <a href="#sessao-contato" class="nav-link">CONTATO</a>
+    </nav>
+
+    <!-- Deixe VAZIO — o navbar.js preenche após checar a sessão -->
+    <div class="nav-user-area" id="navUserArea"></div>
+
+  </div>
+</header>
+<!-- ===== FIM NAVBAR ===== -->
 
 
+<!--
+  =====================================================================
+  SCRIPTS — coloque antes do </body>, nesta ordem:
+  =====================================================================
 
-            <!-- Menu de navegação -->
-            <nav class="nav-menu">
-                <a href="../../pages/TelaHome.html" class="nav-link">INÍCIO</a>
-                <a href="#sessao-sobre" class="nav-link">SOBRE</a>
-                <a href="../../pages/TelaCatalogoLivros.html" class="nav-link">CATÁLOGO</a>
-                <a href="#sessao-contato" class="nav-link">CONTATO</a>
-            </nav>
+  <script src="../scripts/navbar.js"></script>
+  <script>
+    initNavbar(); <!-- Chama imediatamente — header já está no DOM -->
+  </script>
+  <script src="../scripts/include.js"></script>  <!-- Só footer/carrossel agora -->
+  <script src="../scripts/SuaPageScript.js"></script>
 
-            <!-- Logo direita: Substitua o arquivo em img/cão-logo.png -->
-            
-                <button  onclick="window.location.href='../pages/TelaLogin.html'" class="botao-login">Login</button>
-            
-        </div>
-    </header>
-    
-</body>
+  =====================================================================
+  PÁGINAS QUE PRECISAM SER ATUALIZADAS (remover <div id="header"> e
+  adicionar o navbar inline acima):
 
-</html>
+  - TelaHome.html
+  - TelaCatalogoLivros.html
+  - TelaLogin.html
+  - TelaCadastrarUser.html
+  - TelaDoLivro.html
+  - TelaADDLivro.html
+  - dashboard.html
+  - TelaUsuariologado.html  ← já atualizado
+  =====================================================================
+-->

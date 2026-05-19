@@ -16,30 +16,28 @@
 </head>
 
 <body>
+
+    <!-- ===== NAVBAR INLINE (dinâmico) ===== -->
     <header class="header">
         <div class="header-container">
-            <!-- Logo esquerda: Substitua o arquivo em img/logo-02.png -->
 
             <div class="logo-left">
                 <i class="fa-solid fa-book-open" style="font-size: 30px; color: #fff;"></i>
             </div>
 
-
-
-            <!-- Menu de navegação -->
             <nav class="nav-menu">
                 <a href="#inicio" class="nav-link">INÍCIO</a>
                 <a href="#sessao-sobre" class="nav-link">SOBRE</a>
-                <a href="../../pages/TelaCatalogoLivros.html" class="nav-link">CATÁLOGO</a>
+                <a href="/BibliotecaSA/pages/TelaCatalogoLivros.html" class="nav-link">CATÁLOGO</a>
                 <a href="#sessao-contato" class="nav-link">CONTATO</a>
             </nav>
 
-            <!-- Logo direita: Substitua o arquivo em img/cão-logo.png -->
-            
-                <button  onclick="window.location.href='../pages/TelaUsuarioLogado.html'" class="botao-login">MEU PERFIL</button>
-            
+            <!-- Vazio — preenchido pelo navbar.js -->
+            <div class="nav-user-area" id="navUserArea"></div>
+
         </div>
     </header>
+    <!-- ===== FIM NAVBAR ===== -->
 
     <section class="sessao-input" id="inicio">
         <div class="card-input">
@@ -145,14 +143,18 @@
         </div>
     </section>
 
-    <!-- Catálogo de Livros -->
+    <!--
+        Catálogo de Livros
+        O #sessaolivros já existe aqui no DOM.
+        O sessaolivros.js vai preencher este div diretamente via renderizarSessaoLivros().
+        NÃO usar include.js para isso — evita o bug do div aninhado.
+    -->
     <div id="sessaolivros"></div>
 
     <!-- Sessão Contato -->
     <section class="contato-section" id="sessao-contato">
         <div class="contato-container">
 
-            <!-- Header igual ao padrão -->
             <div class="lib-header">
                 <span class="lib-sup">Fale Conosco</span>
                 <h2 class="lib-title">Contato</h2>
@@ -163,21 +165,16 @@
                 </div>
             </div>
 
-            <!-- Corpo -->
             <div class="contato-body">
 
-                <!-- Coluna de informações -->
                 <div class="contato-info-col">
-
                     <p class="contato-lead">
                         Tem alguma dúvida, sugestão ou quer saber mais sobre nosso acervo?
                     </p>
-
                     <p class="contato-desc">
                         Nossa equipe está pronta para ajudar. Preencha o formulário ao lado
                         ou entre em contato diretamente pelos canais abaixo.
                     </p>
-
                     <div class="contato-items">
                         <div class="contato-item">
                             <i class="fa-solid fa-envelope contato-item-icon"></i>
@@ -208,33 +205,20 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="contato-rule">
                         <div class="contato-rule-line"></div>
                         <span class="contato-rule-label">redes sociais</span>
                         <div class="contato-rule-line"></div>
                     </div>
-
                     <div class="contato-socials">
-                        <a href="#" class="contato-social-btn" title="Instagram">
-                            <i class="fa-brands fa-instagram"></i>
-                        </a>
-                        <a href="#" class="contato-social-btn" title="Twitter / X">
-                            <i class="fa-brands fa-x-twitter"></i>
-                        </a>
-                        <a href="#" class="contato-social-btn" title="LinkedIn">
-                            <i class="fa-brands fa-linkedin-in"></i>
-                        </a>
-                        <a href="#" class="contato-social-btn" title="YouTube">
-                            <i class="fa-brands fa-youtube"></i>
-                        </a>
+                        <a href="#" class="contato-social-btn" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="contato-social-btn" title="Twitter / X"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="#" class="contato-social-btn" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="#" class="contato-social-btn" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
                     </div>
-
                 </div>
 
-                <!-- Formulário -->
                 <div class="contato-form-col">
-
                     <div class="contato-form-row">
                         <div class="contato-form-group">
                             <label for="contato-nome">Nome</label>
@@ -245,7 +229,6 @@
                             <input type="email" id="contato-email" placeholder="seu@email.com">
                         </div>
                     </div>
-
                     <div class="contato-form-group">
                         <label for="contato-assunto">Assunto</label>
                         <select id="contato-assunto">
@@ -257,19 +240,16 @@
                             <option value="outro">Outro</option>
                         </select>
                     </div>
-
                     <div class="contato-form-group">
                         <label for="contato-mensagem">Mensagem</label>
                         <textarea id="contato-mensagem" placeholder="Escreva sua mensagem..."></textarea>
                     </div>
-
                     <div class="contato-btn-wrap">
                         <button class="contato-btn">
                             <i class="fa-solid fa-paper-plane"></i>
                             Enviar Mensagem
                         </button>
                     </div>
-
                 </div>
 
             </div>
@@ -278,34 +258,50 @@
 
     <div id="footer"></div>
 
+    <!--
+        ORDEM DOS SCRIPTS:
+        1. navbar.js   → define initNavbar()
+        2. initNavbar() → chamado imediatamente (header já está no DOM)
+        3. sessaolivros.js → define initCarousels()
+        4. initCarousels() → chamado imediatamente (#sessaolivros já está no DOM)
+        5. include.js  → carrega só o footer
+        6. particulas.js → efeito de partículas
+    -->
     <script src="../scripts/navbar.js"></script>
+    <script>
+        initNavbar();
+    </script>
+
     <script src="../scripts/sessaolivros.js"></script>
+    <script>
+        // Carrossel iniciado direto — sem depender de include.js
+        initCarousels();
+    </script>
+
     <script src="../scripts/include.js"></script>
     <script src="../scripts/particulas.js"></script>
 
     <script>
-        // Mapa: href da navbar → id real da seção
+        // Scroll suave da navbar
         const scrollMap = {
             '#inicio':         'inicio',
-            '#sobre':          'sessao-sobre',
-            '#projetos':       'sessaolivros',
+            '#sessao-sobre':   'sessao-sobre',
+            '#sessaolivros':   'sessaolivros',
             '#sessao-contato': 'sessao-contato'
         };
 
         document.querySelectorAll('a.nav-link').forEach(link => {
             link.addEventListener('click', function (e) {
-                const href = this.getAttribute('href');
+                const href     = this.getAttribute('href');
                 const targetId = scrollMap[href];
                 if (!targetId) return;
-
                 const target = document.getElementById(targetId);
                 if (!target) return;
-
                 e.preventDefault();
                 target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         });
     </script>
-</body>
 
+</body>
 </html>
