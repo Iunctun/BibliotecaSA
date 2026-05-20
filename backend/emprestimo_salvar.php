@@ -1,8 +1,9 @@
 <?php
 // ============================================================
-//  emprestimo_salvar.php
-//  POST (JSON) do TelaLivro.js — modal de locação
+//  emprestimo_salvar.php  — v2
+//  POST (JSON) do TelaDoLivro — modal de locação
 //  Campos: livro_id, nome, cpf, data_retirada, data_devolucao, contato
+//  Ao confirmar empréstimo, cancela reserva pendente do mesmo usuário (se houver)
 //  Retorna JSON { sucesso: true } ou { erro: "msg" }
 // ============================================================
 
@@ -16,7 +17,7 @@ require_once __DIR__ . '/conexao.php';
 $dados = json_decode(file_get_contents('php://input'), true);
 
 // Validações
-$campos = ['livro_id','nome','cpf','data_retirada','data_devolucao','contato'];
+$campos = ['livro_id', 'nome', 'cpf', 'data_retirada', 'data_devolucao', 'contato'];
 foreach ($campos as $campo) {
     if (empty($dados[$campo])) {
         echo json_encode(['erro' => "Campo '$campo' obrigatório."]);
@@ -24,7 +25,14 @@ foreach ($campos as $campo) {
     }
 }
 
-$livro_id = (int)$dados['livro_id'];
+// Exige usuário logado
+if (empty($_SESSION['usuario_id'])) {
+    echo json_encode(['erro' => 'Você precisa estar logado para locar um livro.']);
+    exit;
+}
+
+$livro_id   = (int)$dados['livro_id'];
+$usuario_id = (int)$_SESSION['usuario_id'];
 
 // Verifica se o livro existe e tem estoque
 $stmt = $pdo->prepare('SELECT id, quantidade FROM livros WHERE id = ? LIMIT 1');
@@ -41,35 +49,46 @@ if ($livro['quantidade'] < 1) {
     exit;
 }
 
-// Usuário logado ou anônimo
-$usuario_id = $_SESSION['usuario_id'] ?? null;
-// Se não tiver sessão, exige que o usuário esteja logado
-if (!$usuario_id) {
-    echo json_encode(['erro' => 'Você precisa estar logado para locar um livro.']);
+// Data de devolução não pode ser antes da retirada
+if ($dados['data_devolucao'] <= $dados['data_retirada']) {
+    echo json_encode(['erro' => 'Data de devolução deve ser posterior à data de retirada.']);
     exit;
 }
 
-// Inicia transação: insere empréstimo e decrementa estoque
+// Inicia transação
 $pdo->beginTransaction();
 
-$stmt = $pdo->prepare('
-    INSERT INTO emprestimos (usuario_id, livro_id, nome_locatario, cpf_locatario, contato, data_retirada, data_devolucao)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
-');
-$stmt->execute([
-    $usuario_id,
-    $livro_id,
-    trim($dados['nome']),
-    trim($dados['cpf']),
-    trim($dados['contato']),
-    $dados['data_retirada'],
-    $dados['data_devolucao']
-]);
+try {
+    // Insere empréstimo
+    $stmt = $pdo->prepare('
+        INSERT INTO emprestimos (usuario_id, livro_id, nome_locatario, cpf_locatario, contato, data_retirada, data_devolucao)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    ');
+    $stmt->execute([
+        $usuario_id,
+        $livro_id,
+        trim($dados['nome']),
+        trim($dados['cpf']),
+        trim($dados['contato']),
+        $dados['data_retirada'],
+        $dados['data_devolucao']
+    ]);
 
-// Decrementa a quantidade em estoque
-$stmt = $pdo->prepare('UPDATE livros SET quantidade = quantidade - 1 WHERE id = ?');
-$stmt->execute([$livro_id]);
+    // Decrementa estoque
+    $stmt = $pdo->prepare('UPDATE livros SET quantidade = quantidade - 1 WHERE id = ?');
+    $stmt->execute([$livro_id]);
 
-$pdo->commit();
+    // Cancela reserva pendente do mesmo usuário para este livro (se houver)
+    $stmt = $pdo->prepare('
+        UPDATE reservas SET status = "cancelada"
+        WHERE usuario_id = ? AND livro_id = ? AND status = "pendente"
+    ');
+    $stmt->execute([$usuario_id, $livro_id]);
 
-echo json_encode(['sucesso' => true]);
+    $pdo->commit();
+    echo json_encode(['sucesso' => true]);
+
+} catch (Exception $e) {
+    $pdo->rollBack();
+    echo json_encode(['erro' => 'Erro interno ao registrar empréstimo.']);
+}

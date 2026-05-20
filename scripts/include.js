@@ -1,10 +1,7 @@
 // ============================================================
-//  include.js  — v3
-//  Carrega APENAS o footer via fetch.
-//
-//  O navbar NÃO é mais carregado aqui: cada página declara
-//  o <header> inline e chama initNavbar() diretamente,
-//  eliminando race conditions de timing e paths relativos.
+//  include.js  — v4
+//  Carrega footer e carrossel via fetch.
+//  Detecta automaticamente o path correto baseado na URL.
 // ============================================================
 
 function loadComponent(id, file, callback) {
@@ -18,13 +15,15 @@ function loadComponent(id, file, callback) {
             if (el) el.innerHTML = data;
             if (callback) callback();
         })
-        .catch(err => console.warn('[include.js]', err));
+        .catch(err => console.warn('[include.js]', err.message));
 }
 
-// Só o footer é carregado via componente
-loadComponent('footer', '../components/footer.html');
+// Detecta se está em /pages/ ou na raiz para usar path correto
+const emPages = window.location.pathname.includes('/pages/');
+const base    = emPages ? '../' : '';
 
-// SessaoLivros (carrossel) — só injeta se o elemento existir na página
+loadComponent('footer', `${base}components/footer.html`);
+
 if (document.getElementById('sessaolivros')) {
-    loadComponent('sessaolivros', '../components/SessaoLivros.html', initCarousels);
+    loadComponent('sessaolivros', `${base}components/SessaoLivros.html`, initCarousels);
 }

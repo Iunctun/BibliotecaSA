@@ -1,10 +1,11 @@
 <?php
 // ============================================================
-//  livros_listar.php
+//  livros_listar.php  — v2
 //  GET  — retorna todos os livros
 //  GET ?categoria=Terror  — filtra por categoria
 //  GET ?busca=texto       — busca por título ou autor
-//  Usado por: sessaolivros.js, TelaCatalogoLivros
+//  Disponibilidade real: considera quantidade no estoque
+//  Usado por: TelaCatalogoLivros, sessaolivros.js
 // ============================================================
 
 header('Content-Type: application/json');
@@ -22,7 +23,7 @@ if (!empty($_GET['categoria'])) {
 
 if (!empty($_GET['busca'])) {
     $sql .= ' AND (titulo LIKE ? OR autor LIKE ?)';
-    $termo = '%' . $_GET['busca'] . '%';
+    $termo    = '%' . $_GET['busca'] . '%';
     $params[] = $termo;
     $params[] = $termo;
 }
@@ -33,10 +34,13 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
 $livros = $stmt->fetchAll();
 
-// Adiciona campo disponivel baseado na quantidade
 foreach ($livros as &$l) {
-    $l['disponivel'] = $l['quantidade'] > 0;
-    $l['ano']        = substr($l['data_publicacao'], 0, 4);
+    // Disponível = tem quantidade em estoque (emprestimos já decrementam a quantidade)
+    $l['disponivel'] = (int)$l['quantidade'] > 0;
+    $l['ano']        = $l['data_publicacao'] ? substr($l['data_publicacao'], 0, 4) : null;
+    $l['quantidade'] = (int)$l['quantidade'];
+    // Remove campo desnecessário para o frontend
+    unset($l['data_publicacao']);
 }
 
-echo json_encode($livros);
+echo json_encode(array_values($livros));

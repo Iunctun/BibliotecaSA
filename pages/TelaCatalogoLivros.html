@@ -7,16 +7,10 @@
   <link rel="stylesheet" href="../styles/footer.css">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <title>Catálogo de Livros</title>
+  <title>Catálogo de Livros - Biblioteca</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      background-color: #16181c;
-      color: #e8e4de;
-      font-family: 'DM Sans', sans-serif;
-      min-height: 100vh;
-    }
+    body { background-color: #16181c; color: #e8e4de; font-family: 'DM Sans', sans-serif; min-height: 100vh; }
 
     .main-layout {
       display: flex;
@@ -49,7 +43,6 @@
     }
 
     .filter-card:hover { border-color: rgba(29,158,117,0.2); }
-
     .filter-card::-webkit-scrollbar { width: 4px; }
     .filter-card::-webkit-scrollbar-track { background: transparent; }
     .filter-card::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
@@ -78,13 +71,10 @@
       cursor: pointer;
       transition: color 0.2s;
     }
-
     .option:hover { color: rgba(255,255,255,0.9); }
-
     .option input[type="checkbox"] {
       appearance: none;
-      width: 14px;
-      height: 14px;
+      width: 14px; height: 14px;
       border: 1px solid rgba(255,255,255,0.15);
       border-radius: 2px;
       background: transparent;
@@ -92,11 +82,22 @@
       flex-shrink: 0;
       transition: border-color 0.2s, background 0.2s;
     }
+    .option input[type="checkbox"]:checked { background: #1d9e75; border-color: #1d9e75; }
 
-    .option input[type="checkbox"]:checked {
-      background: #1d9e75;
-      border-color: #1d9e75;
+    .search-input {
+      width: 100%;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 4px;
+      color: #e8e4de;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      padding: 10px 14px;
+      outline: none;
+      transition: border-color 0.2s ease;
     }
+    .search-input:focus { border-color: rgba(29,158,117,0.5); }
+    .search-input::placeholder { color: rgba(255,255,255,0.2); }
 
     .btn-clear {
       background: transparent;
@@ -113,48 +114,19 @@
       width: 100%;
       transition: border-color 0.25s, color 0.25s;
     }
-
-    .btn-clear:hover {
-      border-color: rgba(255,255,255,0.2);
-      color: rgba(255,255,255,0.6);
-    }
+    .btn-clear:hover { border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.6); }
 
     /* ── Catálogo ── */
-    .catalog-section {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 40px;
-    }
+    .catalog-section { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 40px; }
 
-    .results-info {
-      width: 100%;
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.25);
-    }
-
+    .results-info { width: 100%; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.25); }
     .results-info span { color: #1d9e75; }
 
     /* ── Grid ── */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 20px;
-      width: 100%;
-    }
+    .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px; width: 100%; }
 
-    .book-card {
-      display: flex;
-      flex-direction: column;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-
+    .book-card { display: flex; flex-direction: column; cursor: pointer; transition: transform 0.2s ease; }
     .book-card:hover { transform: translateY(-4px); }
-    .book-card.hidden { display: none; }
 
     .book-card img {
       width: 100%;
@@ -177,13 +149,21 @@
       overflow: hidden;
     }
 
-    .book-card p {
-      font-size: 11px;
-      font-weight: 300;
-      color: rgba(255,255,255,0.35);
-      margin-bottom: 12px;
-      letter-spacing: 0.3px;
+    .book-card p { font-size: 11px; font-weight: 300; color: rgba(255,255,255,0.35); margin-bottom: 12px; letter-spacing: 0.3px; }
+
+    .book-badge {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 2px;
+      display: inline-block;
+      margin-bottom: 8px;
+      width: fit-content;
     }
+    .badge-disponivel { background: rgba(29,158,117,0.12); color: #5dcaa5; }
+    .badge-indisponivel { background: rgba(226,75,74,0.12); color: #e24b4a; }
 
     .btn-reserve {
       background: transparent;
@@ -201,104 +181,112 @@
       transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
       width: 100%;
     }
+    .btn-reserve:hover { background: #1d9e75; border-color: #1d9e75; color: #fff; }
+    .btn-reserve:disabled { opacity: 0.35; cursor: not-allowed; }
 
-    .btn-reserve:hover {
-      background: #1d9e75;
-      border-color: #1d9e75;
-      color: #ffffff;
-    }
-
-    .empty-state {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      padding: 60px 0;
-      color: rgba(255,255,255,0.2);
+    .btn-ver-mais {
+      background: transparent;
+      color: rgba(255,255,255,0.5);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 8px 0;
+      border-radius: 3px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
       width: 100%;
+      margin-top: 6px;
+      transition: border-color 0.2s, color 0.2s;
     }
+    .btn-ver-mais:hover { border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.8); }
 
+    /* Loading skeleton */
+    .skeleton-card { display: flex; flex-direction: column; gap: 10px; }
+    .skeleton-img { width: 100%; aspect-ratio: 2/3; border-radius: 3px; background: linear-gradient(90deg,rgba(255,255,255,0.04) 25%,rgba(255,255,255,0.08) 50%,rgba(255,255,255,0.04) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+    .skeleton-line { height: 12px; border-radius: 2px; background: linear-gradient(90deg,rgba(255,255,255,0.04) 25%,rgba(255,255,255,0.08) 50%,rgba(255,255,255,0.04) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+    .skeleton-line.short { width: 60%; }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    .empty-state { display: none; flex-direction: column; align-items: center; gap: 12px; padding: 60px 0; color: rgba(255,255,255,0.2); width: 100%; }
     .empty-state i { font-size: 36px; }
     .empty-state p { font-size: 13px; letter-spacing: 1px; }
 
-    /* ── Paginação ── */
-    .pagination {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+    /* Paginação */
+    .pagination { display: flex; align-items: center; gap: 6px; }
+    .page { background: transparent; border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.4); padding: 8px 14px; border-radius: 3px; font-family: 'DM Sans', sans-serif; font-size: 12px; cursor: pointer; transition: border-color 0.25s ease, color 0.25s ease, background 0.25s ease; }
+    .page:hover { border-color: rgba(29,158,117,0.4); color: rgba(255,255,255,0.8); }
+    .page.active { border-color: #1d9e75; color: #1d9e75; background: rgba(29,158,117,0.06); }
+    .page-dots { color: rgba(255,255,255,0.2); font-size: 12px; padding: 0 4px; }
 
-    .page {
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.08);
-      color: rgba(255,255,255,0.4);
-      padding: 8px 14px;
-      border-radius: 3px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 12px;
-      cursor: pointer;
-      transition: border-color 0.25s ease, color 0.25s ease, background 0.25s ease;
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 40px; right: 40px;
+      display: flex; align-items: center; gap: 16px;
+      background: #111316; border: 1px solid rgba(29,158,117,0.4);
+      border-radius: 4px; padding: 20px 28px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+      z-index: 9999; opacity: 0; transform: translateY(16px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      pointer-events: none; min-width: 300px;
     }
-
-    .page:hover {
-      border-color: rgba(29,158,117,0.4);
-      color: rgba(255,255,255,0.8);
-    }
-
-    .page.active {
-      border-color: #1d9e75;
-      color: #1d9e75;
-      background: rgba(29,158,117,0.06);
-    }
-
-    .page-dots {
-      color: rgba(255,255,255,0.2);
-      font-size: 12px;
-      padding: 0 4px;
-    }
+    .toast.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .toast.toast-erro { border-color: rgba(226,75,74,0.4); }
+    .toast-icon { width: 36px; height: 36px; border-radius: 50%; background: rgba(29,158,117,0.12); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .toast-erro .toast-icon { background: rgba(226,75,74,0.12); }
+    .toast-icon i { color: #1d9e75; font-size: 15px; }
+    .toast-erro .toast-icon i { color: #e24b4a; }
+    .toast-body { display: flex; flex-direction: column; gap: 3px; }
+    .toast-title { font-family: 'Playfair Display', serif; font-size: 15px; color: #fff; }
+    .toast-sub { font-size: 12px; color: rgba(255,255,255,0.4); }
+    .toast-close { margin-left: auto; background: none; border: none; color: rgba(255,255,255,0.25); font-size: 13px; cursor: pointer; }
+    .toast-close:hover { color: rgba(255,255,255,0.6); }
+    .toast-progress { position: absolute; bottom: 0; left: 0; height: 2px; background: #1d9e75; border-radius: 0 0 0 4px; width: 100%; transform-origin: left; }
+    .toast.show .toast-progress { animation: progressBar 3s linear forwards; }
+    .toast-erro .toast-progress { background: #e24b4a; }
+    @keyframes progressBar { from { transform: scaleX(1); } to { transform: scaleX(0); } }
   </style>
 </head>
 <body>
 
-  <div id="header"></div>
+  <!-- ===== NAVBAR INLINE ===== -->
+  <header class="header">
+    <div class="header-container">
+      <div class="logo-left">
+        <i class="fa-solid fa-book-open" style="font-size:30px;color:#fff;"></i>
+      </div>
+      <nav class="nav-menu">
+        <a href="../pages/TelaHome.html" class="nav-link">INÍCIO</a>
+        <a href="../pages/TelaHome.html#sessao-sobre" class="nav-link">SOBRE</a>
+        <a href="../pages/TelaCatalogoLivros.html" class="nav-link">CATÁLOGO</a>
+        <a href="../pages/TelaHome.html#sessao-contato" class="nav-link">CONTATO</a>
+      </nav>
+      <div class="nav-user-area" id="navUserArea"></div>
+    </div>
+  </header>
+  <!-- ===== FIM NAVBAR ===== -->
 
   <main class="main-layout">
 
     <aside class="sidebar">
 
-      <div class="filter-card">
-        <div class="filter-title">Autor</div>
-        <label class="option"><input type="checkbox" data-filter="autor" value="Brenna Yovanoff"> Brenna Yovanoff</label>
-        <label class="option"><input type="checkbox" data-filter="autor" value="John Fowles"> John Fowles</label>
-        <label class="option"><input type="checkbox" data-filter="autor" value="Stephen King"> Stephen King</label>
-        <label class="option"><input type="checkbox" data-filter="autor" value="Dan Brown"> Dan Brown</label>
-        <label class="option"><input type="checkbox" data-filter="autor" value="André Vianco"> André Vianco</label>
-        <label class="option"><input type="checkbox" data-filter="autor" value="Paula Hawkins"> Paula Hawkins</label>
-        <label class="option"><input type="checkbox" data-filter="autor" value="C. J. Tudor"> C. J. Tudor</label>
-        <label class="option"><input type="checkbox" data-filter="autor" value="Alex Michaelides"> Alex Michaelides</label>
-        <label class="option"><input type="checkbox" data-filter="autor" value="Raphael Montes"> Raphael Montes</label>
-        <label class="option"><input type="checkbox" data-filter="autor" value="Carlos Ruiz Zafón"> Carlos Ruiz Zafón</label>
-        <label class="option"><input type="checkbox" data-filter="autor" value="Josh Malerman"> Josh Malerman</label>
-        <label class="option"><input type="checkbox" data-filter="autor" value="Colleen Hoover"> Colleen Hoover</label>
-      </div>
+      <!-- Busca -->
+      <input class="search-input" id="inputBusca" type="text" placeholder="🔍  Buscar livros...">
 
+      <!-- Categoria (populada dinamicamente) -->
       <div class="filter-card">
         <div class="filter-title">Categoria</div>
-        <label class="option"><input type="checkbox" data-filter="categoria" value="Suspense"> Suspense</label>
-        <label class="option"><input type="checkbox" data-filter="categoria" value="Terror"> Terror</label>
-        <label class="option"><input type="checkbox" data-filter="categoria" value="Romance"> Romance</label>
-        <label class="option"><input type="checkbox" data-filter="categoria" value="Fantasia"> Fantasia</label>
-        <label class="option"><input type="checkbox" data-filter="categoria" value="Mistério"> Mistério</label>
+        <div id="filtrosCategorias">
+          <!-- Preenchido pelo JS -->
+        </div>
       </div>
 
+      <!-- Autor (populada dinamicamente) -->
       <div class="filter-card">
-        <div class="filter-title">Ano</div>
-        <label class="option"><input type="checkbox" data-filter="ano" value="2010"> 2010</label>
-        <label class="option"><input type="checkbox" data-filter="ano" value="2012"> 2012</label>
-        <label class="option"><input type="checkbox" data-filter="ano" value="2015"> 2015</label>
-        <label class="option"><input type="checkbox" data-filter="ano" value="2018"> 2018</label>
-        <label class="option"><input type="checkbox" data-filter="ano" value="2019"> 2019</label>
-        <label class="option"><input type="checkbox" data-filter="ano" value="2023"> 2023</label>
+        <div class="filter-title">Autor</div>
+        <div id="filtrosAutores">
+          <!-- Preenchido pelo JS -->
+        </div>
       </div>
 
       <button class="btn-clear" id="btnLimpar">
@@ -308,166 +296,271 @@
     </aside>
 
     <section class="catalog-section">
-
       <div class="results-info">
-        <span id="resultsCount">12</span> livros encontrados
+        <span id="resultsCount">—</span> livros encontrados
       </div>
 
       <div class="grid" id="grid">
-
-        <div class="book-card" data-autor="Brenna Yovanoff" data-categoria="Fantasia,Suspense" data-ano="2010">
-          <img src="../img/livro1.webp" alt="O Substituto">
-          <h4>O Substituto</h4>
-          <p>Brenna Yovanoff</p>
-          <button class="btn-reserve">Reservar</button>
-        </div>
-
-        <div class="book-card" data-autor="Paula Hawkins" data-categoria="Suspense,Mistério" data-ano="2015">
-          <img src="../img/livro2.webp" alt="A Garota no Trem">
-          <h4>A Garota no Trem</h4>
-          <p>Paula Hawkins</p>
-          <button class="btn-reserve">Reservar</button>
-        </div>
-
-        <div class="book-card" data-autor="C. J. Tudor" data-categoria="Terror,Mistério" data-ano="2018">
-          <img src="../img/livro3.webp" alt="O Homem de Giz">
-          <h4>O Homem de Giz</h4>
-          <p>C. J. Tudor</p>
-          <button class="btn-reserve">Reservar</button>
-        </div>
-
-        <div class="book-card" data-autor="Alex Michaelides" data-categoria="Suspense,Mistério" data-ano="2019">
-          <img src="../img/livro4.webp" alt="A Paciente Silenciosa">
-          <h4>A Paciente Silenciosa</h4>
-          <p>Alex Michaelides</p>
-          <button class="btn-reserve">Reservar</button>
-        </div>
-
-        <div class="book-card" data-autor="Raphael Montes" data-categoria="Suspense,Terror" data-ano="2012">
-          <img src="../img/livro5.webp" alt="Jantar Secreto">
-          <h4>Jantar Secreto</h4>
-          <p>Raphael Montes</p>
-          <button class="btn-reserve">Reservar</button>
-        </div>
-
-        <div class="book-card" data-autor="John Fowles" data-categoria="Suspense,Mistério" data-ano="2012">
-          <img src="../img/livro6.webp" alt="O Colecionador">
-          <h4>O Colecionador</h4>
-          <p>John Fowles</p>
-          <button class="btn-reserve">Reservar</button>
-        </div>
-
-        <div class="book-card" data-autor="Stephen King" data-categoria="Terror" data-ano="2012">
-          <img src="../img/livro7.webp" alt="It: A Coisa">
-          <h4>It: A Coisa</h4>
-          <p>Stephen King</p>
-          <button class="btn-reserve">Reservar</button>
-        </div>
-
-        <div class="book-card" data-autor="Carlos Ruiz Zafón" data-categoria="Mistério,Romance" data-ano="2012">
-          <img src="../img/livro1.webp" alt="A Sombra do Vento">
-          <h4>A Sombra do Vento</h4>
-          <p>Carlos Ruiz Zafón</p>
-          <button class="btn-reserve">Reservar</button>
-        </div>
-
-        <div class="book-card" data-autor="Dan Brown" data-categoria="Suspense,Mistério" data-ano="2012">
-          <img src="../img/livro2.webp" alt="O Código Da Vinci">
-          <h4>O Código Da Vinci</h4>
-          <p>Dan Brown</p>
-          <button class="btn-reserve">Reservar</button>
-        </div>
-
-        <div class="book-card" data-autor="Josh Malerman" data-categoria="Terror,Suspense" data-ano="2019">
-          <img src="../img/livro3.webp" alt="Caixa de Pássaros">
-          <h4>Caixa de Pássaros</h4>
-          <p>Josh Malerman</p>
-          <button class="btn-reserve">Reservar</button>
-        </div>
-
-        <div class="book-card" data-autor="André Vianco" data-categoria="Terror,Fantasia" data-ano="2023">
-          <img src="../img/livro4.webp" alt="Bento">
-          <h4>Bento</h4>
-          <p>André Vianco</p>
-          <button class="btn-reserve">Reservar</button>
-        </div>
-
-        <div class="book-card" data-autor="Colleen Hoover" data-categoria="Romance,Suspense" data-ano="2023">
-          <img src="../img/livro6.webp" alt="Verity">
-          <h4>Verity</h4>
-          <p>Colleen Hoover</p>
-          <button class="btn-reserve">Reservar</button>
-        </div>
-
+        <!-- Skeletons de carregamento -->
+        <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
+        <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
+        <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
+        <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
+        <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
+        <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
       </div>
 
       <div class="empty-state" id="emptyState">
         <i class="fas fa-book-open"></i>
-        <p>Nenhum livro encontrado com os filtros selecionados</p>
+        <p>Nenhum livro encontrado</p>
       </div>
 
-      <div class="pagination">
-        <button class="page active">1</button>
-        <button class="page">2</button>
-        <button class="page">3</button>
-        <span class="page-dots">...</span>
-        <button class="page">></button>
-      </div>
-
+      <div class="pagination" id="pagination"></div>
     </section>
   </main>
 
-  <script>
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    const cards      = document.querySelectorAll('.book-card');
-    const emptyState = document.getElementById('emptyState');
-    const countEl   = document.getElementById('resultsCount');
-    const btnLimpar = document.getElementById('btnLimpar');
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <div class="toast-icon"><i class="fa-solid fa-check" id="toastIconEl"></i></div>
+    <div class="toast-body">
+      <span class="toast-title" id="toastTitulo">—</span>
+      <span class="toast-sub" id="toastMsg">—</span>
+    </div>
+    <button class="toast-close" id="toastClose"><i class="fa-solid fa-xmark"></i></button>
+    <div class="toast-progress"></div>
+  </div>
 
-    function getAtivos(tipo) {
-      return [...document.querySelectorAll(`input[data-filter="${tipo}"]:checked`)]
-        .map(cb => cb.value);
-    }
+  <div id="footer"></div>
 
-    function filtrar() {
-      const autores    = getAtivos('autor');
-      const categorias = getAtivos('categoria');
-      const anos       = getAtivos('ano');
-
-      let visiveis = 0;
-
-      cards.forEach(card => {
-        const autorCard      = card.dataset.autor || '';
-        const categoriasCard = (card.dataset.categoria || '').split(',').map(s => s.trim());
-        const anoCard        = card.dataset.ano || '';
-
-        const passaAutor     = autores.length === 0    || autores.includes(autorCard);
-        const passaCategoria = categorias.length === 0 || categorias.some(c => categoriasCard.includes(c));
-        const passaAno       = anos.length === 0       || anos.includes(anoCard);
-
-        if (passaAutor && passaCategoria && passaAno) {
-          card.classList.remove('hidden');
-          visiveis++;
-        } else {
-          card.classList.add('hidden');
-        }
-      });
-
-      countEl.textContent = visiveis;
-      emptyState.style.display = visiveis === 0 ? 'flex' : 'none';
-    }
-
-    checkboxes.forEach(cb => cb.addEventListener('change', filtrar));
-
-    btnLimpar.addEventListener('click', () => {
-      checkboxes.forEach(cb => cb.checked = false);
-      filtrar();
-    });
-  </script>
-<div id="footer"></div>
   <script src="../scripts/navbar.js"></script>
+  <script>initNavbar();</script>
   <script src="../scripts/include.js"></script>
-  
+
+  <script>
+  // ============================================================
+  //  TelaCatalogoLivros — integrado com banco via livros_listar.php
+  // ============================================================
+  const API_BASE    = '/BibliotecaSA/backend';
+  const POR_PAGINA  = 12;
+
+  let todosLivros   = [];
+  let livrosFiltrados = [];
+  let paginaAtual   = 1;
+  let toastTimer    = null;
+  let buscaTimer    = null;
+
+  const grid        = document.getElementById('grid');
+  const emptyState  = document.getElementById('emptyState');
+  const countEl     = document.getElementById('resultsCount');
+  const paginacao   = document.getElementById('pagination');
+  const inputBusca  = document.getElementById('inputBusca');
+  const btnLimpar   = document.getElementById('btnLimpar');
+  const filtrosCats = document.getElementById('filtrosCategorias');
+  const filtrosAuts = document.getElementById('filtrosAutores');
+  const toast       = document.getElementById('toast');
+
+  // ── Carrega livros da API ──
+  async function carregarLivros() {
+    try {
+      const res = await fetch(`${API_BASE}/livros_listar.php`);
+      todosLivros = await res.json();
+      if (!Array.isArray(todosLivros)) throw new Error('Resposta inválida');
+      popularFiltros();
+      aplicarFiltros();
+    } catch (e) {
+      grid.innerHTML = `<div style="color:rgba(255,255,255,0.3);font-size:13px;grid-column:1/-1;text-align:center;padding:60px 0;">Erro ao carregar livros. Tente recarregar a página.</div>`;
+    }
+  }
+
+  // ── Popula os filtros laterais com valores reais do banco ──
+  function popularFiltros() {
+    const categorias = [...new Set(todosLivros.map(l => l.categoria).filter(Boolean))].sort();
+    const autores    = [...new Set(todosLivros.map(l => l.autor).filter(Boolean))].sort();
+
+    filtrosCats.innerHTML = categorias.map(c => `
+      <label class="option">
+        <input type="checkbox" data-filter="categoria" value="${c}"> ${c}
+      </label>`).join('');
+
+    filtrosAuts.innerHTML = autores.map(a => `
+      <label class="option">
+        <input type="checkbox" data-filter="autor" value="${a}"> ${a}
+      </label>`).join('');
+
+    document.querySelectorAll('input[type="checkbox"]').forEach(cb =>
+      cb.addEventListener('change', () => { paginaAtual = 1; aplicarFiltros(); })
+    );
+  }
+
+  // ── Aplica filtros e busca sobre todosLivros ──
+  function aplicarFiltros() {
+    const busca      = inputBusca.value.trim().toLowerCase();
+    const categorias = getAtivos('categoria');
+    const autores    = getAtivos('autor');
+
+    livrosFiltrados = todosLivros.filter(l => {
+      const passaBusca = !busca ||
+        l.titulo?.toLowerCase().includes(busca) ||
+        l.autor?.toLowerCase().includes(busca);
+      const passaCat   = categorias.length === 0 || categorias.includes(l.categoria);
+      const passaAut   = autores.length === 0    || autores.includes(l.autor);
+      return passaBusca && passaCat && passaAut;
+    });
+
+    renderizar();
+  }
+
+  function getAtivos(tipo) {
+    return [...document.querySelectorAll(`input[data-filter="${tipo}"]:checked`)]
+      .map(cb => cb.value);
+  }
+
+  // ── Renderiza a página atual ──
+  function renderizar() {
+    const total  = livrosFiltrados.length;
+    const inicio = (paginaAtual - 1) * POR_PAGINA;
+    const pagina = livrosFiltrados.slice(inicio, inicio + POR_PAGINA);
+
+    countEl.textContent = total;
+    emptyState.style.display = total === 0 ? 'flex' : 'none';
+
+    grid.innerHTML = pagina.map(l => criarCardHTML(l)).join('');
+
+    // Eventos dos botões dos cards
+    grid.querySelectorAll('.btn-reserve').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const livroId = parseInt(btn.dataset.id);
+        reservarLivro(livroId, btn);
+      });
+    });
+
+    grid.querySelectorAll('.btn-ver-mais').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const livroId = btn.dataset.id;
+        window.location.href = `TelaDoLivro.html?id=${livroId}`;
+      });
+    });
+
+    grid.querySelectorAll('.book-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const id = card.dataset.id;
+        window.location.href = `TelaDoLivro.html?id=${id}`;
+      });
+    });
+
+    renderizarPaginacao(total);
+  }
+
+  // ── HTML de cada card ──
+  function criarCardHTML(l) {
+    const capa = l.capa_path
+      ? `/BibliotecaSA/${l.capa_path}`
+      : '../img/livro-placeholder.webp';
+
+    const badgeClass = l.disponivel ? 'badge-disponivel' : 'badge-indisponivel';
+    const badgeText  = l.disponivel ? 'Disponível' : 'Indisponível';
+
+    return `
+      <div class="book-card" data-id="${l.id}">
+        <img src="${capa}" alt="${l.titulo}" onerror="this.src='../img/livro-placeholder.webp'">
+        <span class="book-badge ${badgeClass}">${badgeText}</span>
+        <h4>${l.titulo}</h4>
+        <p>${l.autor}</p>
+        <button class="btn-reserve" data-id="${l.id}" ${!l.disponivel ? 'disabled' : ''}>
+          <i class="fa-solid fa-bookmark" style="margin-right:5px;"></i> Reservar
+        </button>
+        <button class="btn-ver-mais" data-id="${l.id}">Ver detalhes</button>
+      </div>`;
+  }
+
+  // ── Paginação ──
+  function renderizarPaginacao(total) {
+    const totalPags = Math.ceil(total / POR_PAGINA);
+    if (totalPags <= 1) { paginacao.innerHTML = ''; return; }
+
+    let html = '';
+    for (let i = 1; i <= totalPags; i++) {
+      html += `<button class="page ${i === paginaAtual ? 'active' : ''}" data-p="${i}">${i}</button>`;
+    }
+    paginacao.innerHTML = html;
+
+    paginacao.querySelectorAll('.page').forEach(btn => {
+      btn.addEventListener('click', () => {
+        paginaAtual = parseInt(btn.dataset.p);
+        renderizar();
+        window.scrollTo({ top: 200, behavior: 'smooth' });
+      });
+    });
+  }
+
+  // ── Reservar livro via API ──
+  async function reservarLivro(livroId, btn) {
+    const original = btn.innerHTML;
+    btn.disabled  = true;
+    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+
+    try {
+      const res  = await fetch(`${API_BASE}/reserva_salvar.php`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ livro_id: livroId })
+      });
+      const data = await res.json();
+
+      if (data.sucesso) {
+        mostrarToast('Reservado!', 'Sua reserva foi registrada com sucesso.', false);
+        btn.innerHTML = '<i class="fa-solid fa-check" style="margin-right:5px;"></i> Reservado';
+      } else {
+        mostrarToast('Atenção', data.erro || 'Erro ao reservar.', true);
+        btn.disabled  = false;
+        btn.innerHTML = original;
+      }
+    } catch {
+      mostrarToast('Erro', 'Não foi possível conectar ao servidor.', true);
+      btn.disabled  = false;
+      btn.innerHTML = original;
+    }
+  }
+
+  // ── Toast ──
+  function mostrarToast(titulo, msg, erro = false) {
+    clearTimeout(toastTimer);
+    document.getElementById('toastTitulo').textContent = titulo;
+    document.getElementById('toastMsg').textContent    = msg;
+    document.getElementById('toastIconEl').className   = erro ? 'fa-solid fa-xmark' : 'fa-solid fa-check';
+    toast.classList.toggle('toast-erro', erro);
+
+    const bar = toast.querySelector('.toast-progress');
+    bar.style.animation = 'none'; bar.offsetHeight; bar.style.animation = '';
+
+    toast.classList.add('show');
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 3000);
+  }
+
+  document.getElementById('toastClose').addEventListener('click', () => {
+    toast.classList.remove('show'); clearTimeout(toastTimer);
+  });
+
+  // ── Busca com debounce ──
+  inputBusca.addEventListener('input', () => {
+    clearTimeout(buscaTimer);
+    buscaTimer = setTimeout(() => { paginaAtual = 1; aplicarFiltros(); }, 300);
+  });
+
+  // ── Limpar filtros ──
+  btnLimpar.addEventListener('click', () => {
+    inputBusca.value = '';
+    document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+    paginaAtual = 1;
+    aplicarFiltros();
+  });
+
+  // ── Init ──
+  carregarLivros();
+  </script>
 
 </body>
 </html>

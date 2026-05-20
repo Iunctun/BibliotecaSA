@@ -9,30 +9,123 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <title>Meu Perfil - Biblioteca</title>
+  <style>
+    /* Estilos complementares para os cards de livros */
+    .livro-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .livro-item:last-child { border-bottom: none; }
+
+    .livro-capa {
+      width: 48px;
+      height: 68px;
+      object-fit: cover;
+      border-radius: 3px;
+      background: rgba(255,255,255,0.05);
+      flex-shrink: 0;
+    }
+
+    .livro-info { flex: 1; }
+    .livro-titulo { font-family: 'Playfair Display', serif; font-size: 14px; color: #fff; margin-bottom: 4px; }
+    .livro-autor  { font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 8px; }
+
+    .livro-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 2px;
+    }
+    .badge-ativo    { background: rgba(29,158,117,0.12); color: #5dcaa5; }
+    .badge-pendente { background: rgba(62,91,219,0.12); color: #7a92f5; }
+    .badge-atrasado { background: rgba(226,75,74,0.12); color: #e24b4a; }
+
+    .livro-datas { font-size: 11px; color: rgba(255,255,255,0.3); margin-top: 6px; }
+    .livro-datas strong { color: rgba(255,255,255,0.6); }
+
+    .btn-cancelar-reserva {
+      background: transparent;
+      border: 1px solid rgba(226,75,74,0.25);
+      color: rgba(226,75,74,0.7);
+      padding: 5px 12px;
+      border-radius: 3px;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+    .btn-cancelar-reserva:hover {
+      border-color: #e24b4a;
+      color: #e24b4a;
+      background: rgba(226,75,74,0.05);
+    }
+
+    .lista-vazia {
+      color: rgba(255,255,255,0.2);
+      font-size: 13px;
+      text-align: center;
+      padding: 32px 0;
+    }
+
+    .skeleton-linha {
+      height: 12px;
+      border-radius: 2px;
+      background: linear-gradient(90deg,rgba(255,255,255,0.04) 25%,rgba(255,255,255,0.08) 50%,rgba(255,255,255,0.04) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      margin-bottom: 10px;
+    }
+    .skeleton-linha.short { width: 60%; }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    /* Toast */
+    .toast-perfil {
+      position: fixed; bottom: 32px; right: 32px;
+      display: flex; align-items: center; gap: 14px;
+      background: #111316; border: 1px solid rgba(29,158,117,0.4);
+      border-radius: 4px; padding: 18px 24px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+      z-index: 9999; opacity: 0; transform: translateY(12px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      pointer-events: none; min-width: 280px;
+    }
+    .toast-perfil.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .toast-perfil.erro { border-color: rgba(226,75,74,0.4); }
+    .tp-icon { width: 34px; height: 34px; border-radius: 50%; background: rgba(29,158,117,0.12); display: flex; align-items: center; justify-content: center; }
+    .toast-perfil.erro .tp-icon { background: rgba(226,75,74,0.12); }
+    .tp-icon i { color: #1d9e75; font-size: 14px; }
+    .toast-perfil.erro .tp-icon i { color: #e24b4a; }
+    .tp-msg { font-size: 13px; color: #e8e4de; }
+  </style>
 </head>
 <body>
 
-  <!-- ===== NAVBAR INLINE (sem include.js) ===== -->
+  <!-- ===== NAVBAR INLINE ===== -->
   <header class="header">
     <div class="header-container">
-
       <div class="logo-left">
-        <i class="fa-solid fa-book-open" style="font-size: 30px; color: #fff;"></i>
+        <i class="fa-solid fa-book-open" style="font-size:30px;color:#fff;"></i>
       </div>
-
       <nav class="nav-menu">
         <a href="../pages/TelaHome.html" class="nav-link">INÍCIO</a>
-        <a href="#sessao-sobre" class="nav-link">SOBRE</a>
+        <a href="../pages/TelaHome.html#sessao-sobre" class="nav-link">SOBRE</a>
         <a href="../pages/TelaCatalogoLivros.html" class="nav-link">CATÁLOGO</a>
-        <a href="#sessao-contato" class="nav-link">CONTATO</a>
+        <a href="../pages/TelaHome.html#sessao-contato" class="nav-link">CONTATO</a>
       </nav>
-
-      <!-- Área do usuário: começa vazia, preenchida pelo JS abaixo -->
       <div class="nav-user-area" id="navUserArea"></div>
-
     </div>
   </header>
-  <!-- ===== FIM NAVBAR ===== -->
 
   <div class="container">
 
@@ -41,11 +134,11 @@
       <h3><i class="fas fa-id-card"></i> Dados Pessoais</h3>
       <div class="flex">
         <div class="field-group">
-          <label for="nome">Nome</label>
+          <label>Nome</label>
           <input id="nome" class="input-field" type="text" readonly placeholder="Carregando...">
         </div>
         <div class="field-group">
-          <label for="email">Email</label>
+          <label>Email</label>
           <input id="email" class="input-field" type="email" readonly placeholder="Carregando...">
         </div>
         <div class="field-group">
@@ -61,22 +154,26 @@
       </div>
     </div>
 
-    <!-- Livros + Histórico -->
+    <!-- Livros + Reservas -->
     <div class="flex">
 
       <!-- Empréstimos ativos -->
       <div class="card" style="flex:1">
-        <h3><i class="fas fa-book"></i> Livros Atualmente Emprestados</h3>
+        <h3><i class="fas fa-book"></i> Livros Emprestados</h3>
         <div id="listaEmprestimos">
-          <p class="lista-vazia"><i class="fas fa-circle-notch fa-spin"></i> Carregando...</p>
+          <div class="skeleton-linha"></div>
+          <div class="skeleton-linha short"></div>
+          <div class="skeleton-linha"></div>
+          <div class="skeleton-linha short"></div>
         </div>
       </div>
 
-      <!-- Reservas + Multas -->
+      <!-- Reservas -->
       <div class="card" style="flex:1">
         <h3><i class="fas fa-bookmark"></i> Reservas Pendentes</h3>
         <div id="listaReservas">
-          <p class="lista-vazia"><i class="fas fa-circle-notch fa-spin"></i> Carregando...</p>
+          <div class="skeleton-linha"></div>
+          <div class="skeleton-linha short"></div>
         </div>
 
         <br>
@@ -84,7 +181,6 @@
           <i class="fas fa-trash-alt"></i> Multas
           <i class="fas fa-exclamation-triangle multa-icon"></i>
         </div>
-
         <div class="section">
           <strong>Valor Total:</strong>
           <span id="valor" class="total">R$0.00</span>
@@ -98,22 +194,189 @@
     </div>
   </div>
 
+  <!-- Toast -->
+  <div class="toast-perfil" id="toastPerfil">
+    <div class="tp-icon"><i class="fa-solid fa-check" id="tpIconEl"></i></div>
+    <span class="tp-msg" id="tpMsg">—</span>
+  </div>
+
   <div id="footer"></div>
 
-  <!--
-    ORDEM DE SCRIPTS:
-    1. navbar.js  → define initNavbar()
-    2. footer.js  → carrega apenas o footer (sem mexer no header)
-    3. TelaUsuariologado.js → lógica da página
-    O initNavbar() é chamado diretamente, sem include.js no meio.
-  -->
   <script src="../scripts/navbar.js"></script>
-  <script>
-    // Inicializa o navbar imediatamente (header já está no DOM)
-    initNavbar();
-  </script>
+  <script>initNavbar();</script>
   <script src="../scripts/include.js"></script>
-  <script src="../scripts/TelaUsuariologado.js"></script>
+
+  <script>
+  // ============================================================
+  //  TelaUsuariologado — dados reais do banco via usuario_perfil.php
+  // ============================================================
+  const API = '/BibliotecaSA/backend';
+  let toastTimer = null;
+
+  async function carregarPerfil() {
+    try {
+      const res  = await fetch(`${API}/usuario_perfil.php`, { credentials: 'same-origin' });
+      const data = await res.json();
+
+      if (data.erro) {
+        // Não autenticado → redireciona para login
+        window.location.href = '/BibliotecaSA/pages/TelaLogin.html';
+        return;
+      }
+
+      // ── Dados pessoais ──
+      document.getElementById('nome').value     = data.usuario.nome    || '—';
+      document.getElementById('email').value    = data.usuario.email   || '—';
+      document.getElementById('membroId').value = '#' + String(data.usuario.id).padStart(5, '0');
+
+      if (data.usuario.perfil === 'admin') {
+        document.getElementById('btnGerenciamento').style.display = 'inline-flex';
+      }
+
+      // ── Empréstimos ──
+      renderEmprestimos(data.emprestimos);
+
+      // ── Reservas ──
+      renderReservas(data.reservas);
+
+      // ── Multas (empréstimos atrasados) ──
+      calcularMultas(data.emprestimos);
+
+    } catch (e) {
+      mostrarToast('Erro ao carregar perfil.', true);
+    }
+  }
+
+  function renderEmprestimos(lista) {
+    const el = document.getElementById('listaEmprestimos');
+    if (!lista || lista.length === 0) {
+      el.innerHTML = '<p class="lista-vazia"><i class="fas fa-book-open" style="margin-right:8px;"></i>Nenhum empréstimo ativo.</p>';
+      return;
+    }
+
+    const hoje = new Date(); hoje.setHours(0,0,0,0);
+
+    el.innerHTML = lista.map(e => {
+      const devolucao  = new Date(e.data_devolucao + 'T00:00:00');
+      const atrasado   = devolucao < hoje;
+      const badgeClass = atrasado ? 'badge-atrasado' : 'badge-ativo';
+      const badgeText  = atrasado ? 'Atrasado' : 'Ativo';
+      const capa       = e.capa_path ? `/BibliotecaSA/${e.capa_path}` : '../img/livro-placeholder.webp';
+      const dtDev      = e.data_devolucao ? e.data_devolucao.split('-').reverse().join('/') : '—';
+      const dtRet      = e.data_retirada  ? e.data_retirada.split('-').reverse().join('/')  : '—';
+
+      return `
+        <div class="livro-item">
+          <img class="livro-capa" src="${capa}" alt="${e.titulo}" onerror="this.src='../img/livro-placeholder.webp'">
+          <div class="livro-info">
+            <div class="livro-titulo">${e.titulo}</div>
+            <div class="livro-autor">${e.autor}</div>
+            <span class="livro-badge ${badgeClass}">
+              <i class="fa-solid fa-circle" style="font-size:7px;"></i> ${badgeText}
+            </span>
+            <div class="livro-datas">
+              Retirada: <strong>${dtRet}</strong> &nbsp;|&nbsp; Devolução: <strong>${dtDev}</strong>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  function renderReservas(lista) {
+    const el = document.getElementById('listaReservas');
+    if (!lista || lista.length === 0) {
+      el.innerHTML = '<p class="lista-vazia"><i class="fas fa-bookmark" style="margin-right:8px;"></i>Nenhuma reserva pendente.</p>';
+      return;
+    }
+
+    el.innerHTML = lista.map(r => {
+      const capa  = r.capa_path ? `/BibliotecaSA/${r.capa_path}` : '../img/livro-placeholder.webp';
+      const criado = r.criado_em ? r.criado_em.split(' ')[0].split('-').reverse().join('/') : '—';
+
+      return `
+        <div class="livro-item" id="reserva-${r.id}">
+          <img class="livro-capa" src="${capa}" alt="${r.titulo}" onerror="this.src='../img/livro-placeholder.webp'">
+          <div class="livro-info">
+            <div class="livro-titulo">${r.titulo}</div>
+            <div class="livro-autor">${r.autor}</div>
+            <span class="livro-badge badge-pendente">
+              <i class="fa-solid fa-clock" style="font-size:9px;"></i> Pendente
+            </span>
+            <div class="livro-datas">Reservado em: <strong>${criado}</strong></div>
+            <button class="btn-cancelar-reserva" data-id="${r.id}">
+              <i class="fas fa-times" style="margin-right:5px;"></i> Cancelar
+            </button>
+          </div>
+        </div>`;
+    }).join('');
+
+    // Eventos de cancelar
+    el.querySelectorAll('.btn-cancelar-reserva').forEach(btn => {
+      btn.addEventListener('click', () => cancelarReserva(parseInt(btn.dataset.id)));
+    });
+  }
+
+  async function cancelarReserva(reservaId) {
+    try {
+      const res  = await fetch(`${API}/reserva_cancelar.php`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ reserva_id: reservaId })
+      });
+      const data = await res.json();
+
+      if (data.sucesso) {
+        const el = document.getElementById(`reserva-${reservaId}`);
+        if (el) el.remove();
+        mostrarToast('Reserva cancelada com sucesso.', false);
+        // Se não restar nenhuma reserva, mostra estado vazio
+        const lista = document.getElementById('listaReservas');
+        if (!lista.querySelector('.livro-item')) {
+          lista.innerHTML = '<p class="lista-vazia"><i class="fas fa-bookmark" style="margin-right:8px;"></i>Nenhuma reserva pendente.</p>';
+        }
+      } else {
+        mostrarToast(data.erro || 'Erro ao cancelar reserva.', true);
+      }
+    } catch {
+      mostrarToast('Falha ao conectar ao servidor.', true);
+    }
+  }
+
+  function calcularMultas(emprestimos) {
+    if (!emprestimos || emprestimos.length === 0) return;
+    const hoje  = new Date(); hoje.setHours(0,0,0,0);
+    const DIARIA = 2.00; // R$ 2,00 por dia de atraso
+    let total = 0;
+
+    emprestimos.forEach(e => {
+      const dev = new Date(e.data_devolucao + 'T00:00:00');
+      if (dev < hoje) {
+        const dias = Math.floor((hoje - dev) / (1000 * 60 * 60 * 24));
+        total += dias * DIARIA;
+      }
+    });
+
+    document.getElementById('valor').textContent = `R$ ${total.toFixed(2).replace('.',',')}`;
+  }
+
+  function mostrarToast(msg, erro = false) {
+    clearTimeout(toastTimer);
+    const toast = document.getElementById('toastPerfil');
+    document.getElementById('tpMsg').textContent  = msg;
+    document.getElementById('tpIconEl').className = erro ? 'fa-solid fa-xmark' : 'fa-solid fa-check';
+    toast.classList.toggle('erro', erro);
+    toast.classList.add('show');
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 3000);
+  }
+
+  document.getElementById('btnPagamento').addEventListener('click', () => {
+    mostrarToast('Módulo de pagamento em breve.', false);
+  });
+
+  // ── Init ──
+  carregarPerfil();
+  </script>
 
 </body>
 </html>

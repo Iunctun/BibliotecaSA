@@ -24,7 +24,8 @@ if (!$livro) {
     exit;
 }
 
-$livro['disponivel'] = $livro['quantidade'] > 0;
-$livro['ano']        = substr($livro['data_publicacao'], 0, 4);
+$livro['disponivel']      = $livro['quantidade'] > 0;
+$livro['ano']             = substr($livro['data_publicacao'], 0, 4);
+// data_publicacao mantida para o form de edição (admin)
 
 echo json_encode($livro);

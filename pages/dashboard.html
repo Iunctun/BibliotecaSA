@@ -11,7 +11,21 @@
 </head>
 <body>
 
-    <div id="header"></div>
+    <!-- ===== NAVBAR INLINE ===== -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo-left">
+                <img src="../img/logo_navbar.png" alt="Digital Library" class="logo-img">
+            </div>
+            <nav class="nav-menu">
+                <a href="../pages/TelaHome.html" class="nav-link">INÍCIO</a>
+                <a href="../pages/TelaHome.html#sessao-sobre" class="nav-link">SOBRE</a>
+                <a href="../pages/TelaCatalogoLivros.html" class="nav-link">CATÁLOGO</a>
+                <a href="../pages/TelaHome.html#sessao-contato" class="nav-link">CONTATO</a>
+            </nav>
+            <div class="nav-user-area" id="navUserArea"></div>
+        </div>
+    </header>
 
     <div class="layout">
 
@@ -21,23 +35,14 @@
                 <i class="fa-solid fa-house"></i>
                 <span>Dashboard</span>
             </a>
-           
-            
             <a href="../pages/TelaADDLivro.html" class="sidebar-item">
-                <i class="fa-solid fa-book"></i>
+                <i class="fa-solid fa-book-medical"></i>
                 <span>Adicionar Livro</span>
             </a>
-
-            <!-- 
-            <a href="#" class="sidebar-item">
-                <i class="fa-solid fa-users"></i>
-                <span>Usuários</span>
+            <a href="../pages/TelaCatalogoLivros.html" class="sidebar-item">
+                <i class="fa-solid fa-book-open"></i>
+                <span>Catálogo</span>
             </a>
-            <a href="#" class="sidebar-item">
-                <i class="fa-solid fa-scale-balanced"></i>
-                <span>Controle de Empréstimos</span>
-            </a>
-            -->
         </aside>
 
         <!-- Main -->
@@ -46,73 +51,132 @@
             <div class="main-header">
                 <span class="main-sup">Painel Administrativo</span>
                 <h1>Dashboard</h1>
+                <p class="main-desc">Visão geral do acervo e atividade da biblioteca</p>
             </div>
 
-            <!-- Cards -->
+            <!-- Cards métricas principais -->
             <div class="cards-grid">
+                <div class="metric-card accent-green">
+                    <div class="card-icon-wrap green"><i class="fa-solid fa-book-open"></i></div>
+                    <div class="card-body">
+                        <p class="card-label">Total de Livros</p>
+                        <p class="card-value" id="val-livros">—</p>
+                        <p class="card-sub" id="sub-livros">no acervo</p>
+                    </div>
+                </div>
+                <div class="metric-card accent-blue">
+                    <div class="card-icon-wrap blue"><i class="fa-solid fa-users"></i></div>
+                    <div class="card-body">
+                        <p class="card-label">Total de Usuários</p>
+                        <p class="card-value" id="val-usuarios">—</p>
+                        <p class="card-sub">cadastrados</p>
+                    </div>
+                </div>
+                <div class="metric-card accent-amber">
+                    <div class="card-icon-wrap amber"><i class="fa-solid fa-book-bookmark"></i></div>
+                    <div class="card-body">
+                        <p class="card-label">Livros Emprestados</p>
+                        <p class="card-value" id="val-emprestados">—</p>
+                        <p class="card-sub">em circulação</p>
+                    </div>
+                </div>
+                <div class="metric-card accent-red">
+                    <div class="card-icon-wrap red"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <div class="card-body">
+                        <p class="card-label">Livros Atrasados</p>
+                        <p class="card-value" id="val-atrasados">—</p>
+                        <p class="card-sub">com devolução vencida</p>
+                    </div>
+                </div>
+            </div>
 
-                <div class="metric-card dark">
-                    <i class="fa-solid fa-book-open"></i>
-                    <p class="card-label">Total de Livros</p>
-                    <p class="card-value">167</p>
+            <!-- Cards secundários -->
+            <div class="secondary-grid">
+                <div class="secondary-card">
+                    <div class="sec-icon"><i class="fa-solid fa-layer-group"></i></div>
+                    <div>
+                        <p class="sec-label">Disponíveis</p>
+                        <p class="sec-value" id="val-disponiveis">—</p>
+                    </div>
+                </div>
+                <div class="secondary-card">
+                    <div class="sec-icon orange"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                    <div>
+                        <p class="sec-label">Reservas Ativas</p>
+                        <p class="sec-value" id="val-reservas">—</p>
+                    </div>
+                </div>
+                <div class="secondary-card">
+                    <div class="sec-icon purple"><i class="fa-solid fa-tags"></i></div>
+                    <div>
+                        <p class="sec-label">Categorias</p>
+                        <p class="sec-value" id="val-categorias">—</p>
+                    </div>
+                </div>
+                <div class="secondary-card">
+                    <div class="sec-icon teal"><i class="fa-solid fa-percent"></i></div>
+                    <div>
+                        <p class="sec-label">Taxa de Ocupação</p>
+                        <p class="sec-value" id="val-taxa">—</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráfico + Empréstimos recentes -->
+            <div class="bottom-grid">
+
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <div>
+                            <h2>Empréstimos por Mês</h2>
+                            <p class="chart-sub">Últimos 7 meses — dados reais do banco</p>
+                        </div>
+                        <div class="chart-legend">
+                            <span class="leg-dot green"></span><span>Empréstimos</span>
+                            <span class="leg-dot red" style="margin-left:16px;"></span><span>Atrasos</span>
+                        </div>
+                    </div>
+                    <div class="chart-wrap">
+                        <canvas id="emprestimosChart"></canvas>
+                    </div>
                 </div>
 
-                <div class="metric-card">
-                    <i class="fa-solid fa-users"></i>
-                    <p class="card-label">Total de Usuários</p>
-                    <p class="card-value">167</p>
-                </div>
-
-                <div class="metric-card dark">
-                    <i class="fa-solid fa-book-bookmark"></i>
-                    <p class="card-label">Livros Emprestados</p>
-                    <p class="card-value">14</p>
-                </div>
-
-                <div class="metric-card">
-                    <i class="fa-solid fa-triangle-exclamation"></i>
-                    <p class="card-label">Livros Atrasados</p>
-                    <p class="card-value">1</p>
+                <div class="recent-card">
+                    <div class="recent-header">
+                        <h2>Empréstimos Recentes</h2>
+                        <span class="recent-badge" id="badge-recentes">—</span>
+                    </div>
+                    <div class="recent-list" id="lista-recentes">
+                        <div class="recent-loading">
+                            <i class="fa-solid fa-circle-notch fa-spin"></i>
+                        </div>
+                    </div>
                 </div>
 
             </div>
 
-            <!-- Chart -->
-            <div class="chart-section">
-
-                <div class="chart-left">
-                    <h2>Atividade de Login</h2>
-                    <div class="legend-item">
-                        <span class="legend-dot dark"></span>
-                        <span>Gerencia Usuários</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-dot medium"></span>
-                        <span>Livros Emprestados</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-dot light"></span>
-                        <span>Controle de Empréstimos</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-dot lighter"></span>
-                        <span>Livros Atrasados</span>
-                    </div>
+            <!-- Categorias do acervo -->
+            <div class="categories-card">
+                <div class="categories-header">
+                    <h2>Acervo por Categoria</h2>
+                    <p class="chart-sub">Distribuição de livros no acervo</p>
                 </div>
-
-                <div class="chart-right">
-                    <canvas id="loginChart"></canvas>
+                <div class="categories-body">
+                    <div class="cat-chart-wrap">
+                        <canvas id="categoriasChart"></canvas>
+                    </div>
+                    <div class="cat-list" id="cat-list"></div>
                 </div>
-
             </div>
 
         </main>
     </div>
 
+    <!-- Footer — carregado pelo include.js -->
     <div id="footer"></div>
 
     <script src="../scripts/navbar.js"></script>
-    <script src="../scripts/sessaolivros.js"></script>
+    <script>initNavbar();</script>
     <script src="../scripts/include.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
     <script src="../scripts/dashboard.js"></script>

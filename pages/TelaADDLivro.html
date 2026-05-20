@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,12 +12,27 @@
 </head>
 
 <body>
-    <div id="header"></div>
+
+    <!-- ===== NAVBAR INLINE ===== -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo-left">
+                <i class="fa-solid fa-book-open" style="font-size:30px;color:#fff;"></i>
+            </div>
+            <nav class="nav-menu">
+                <a href="../pages/TelaHome.html" class="nav-link">INÍCIO</a>
+                <a href="../pages/TelaHome.html#sessao-sobre" class="nav-link">SOBRE</a>
+                <a href="../pages/TelaCatalogoLivros.html" class="nav-link">CATÁLOGO</a>
+                <a href="../pages/TelaHome.html#sessao-contato" class="nav-link">CONTATO</a>
+            </nav>
+            <div class="nav-user-area" id="navUserArea"></div>
+        </div>
+    </header>
 
     <div class="add-page">
 
         <div class="add-page-header">
-            <a href="../pages/dashboard.html" title="Voltar para Home">
+            <a href="../pages/dashboard.html" title="Voltar para Dashboard">
                 <i class="fa-solid fa-arrow-left"></i>
             </a>
             <div>
@@ -33,7 +47,7 @@
 
                 <!-- Upload da capa -->
                 <div class="cover-upload-area" id="coverArea" title="Clique para escolher a capa">
-                    <input type="file" id="inputCapa" accept="image/*">
+                    <input type="file" id="inputCapa" accept="image/jpeg,image/png,image/webp">
                     <img class="cover-preview" id="capaPreview" alt="Preview da capa">
                     <div class="cover-placeholder" id="capaPlaceholder">
                         <i class="fa-regular fa-image"></i>
@@ -43,7 +57,7 @@
                     <span class="cover-label" id="capaLabel">Foto da capa</span>
                 </div>
 
-                <!-- Campos principais -->
+                <!-- Campos -->
                 <div class="form-fields">
 
                     <div class="form-group">
@@ -71,6 +85,7 @@
                                 <option value="Biografia">Biografia</option>
                                 <option value="História">História</option>
                                 <option value="Autoajuda">Autoajuda</option>
+                                <option value="Mistério">Mistério</option>
                                 <option value="Outros">Outros</option>
                             </select>
                         </div>
@@ -97,7 +112,7 @@
             </div>
 
             <div class="form-footer">
-                <a class="btn-cancelar" href="../index.html">
+                <a class="btn-cancelar" href="../pages/dashboard.html">
                     <i class="fa-solid fa-xmark"></i> Cancelar
                 </a>
                 <button class="btn-salvar" id="btnSalvar">
@@ -117,8 +132,123 @@
     <div id="footer"></div>
 
     <script src="../scripts/navbar.js"></script>
+    <script>initNavbar();</script>
     <script src="../scripts/include.js"></script>
-    <script src="../scripts/TelaADDLivro.js"></script>
-</body>
 
+    <script>
+    // ============================================================
+    //  TelaADDLivro — salva livro no banco via livros_salvar.php
+    // ============================================================
+    const API = '/BibliotecaSA/backend';
+    let toastTimer = null;
+
+    // ── Preview da capa ──
+    const inputCapa      = document.getElementById('inputCapa');
+    const capaPreview    = document.getElementById('capaPreview');
+    const capaPlaceholder = document.getElementById('capaPlaceholder');
+    const coverArea      = document.getElementById('coverArea');
+
+    coverArea.addEventListener('click', () => inputCapa.click());
+
+    inputCapa.addEventListener('change', () => {
+        const file = inputCapa.files[0];
+        if (!file) return;
+
+        if (file.size > 5 * 1024 * 1024) {
+            mostrarToast('A imagem deve ter no máximo 5 MB.', true);
+            inputCapa.value = '';
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = e => {
+            capaPreview.src = e.target.result;
+            capaPreview.style.display    = 'block';
+            capaPlaceholder.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+    });
+
+    // ── Contador de caracteres do resumo ──
+    const inputResumo = document.getElementById('inputResumo');
+    const charCount   = document.getElementById('charCount');
+    inputResumo.addEventListener('input', () => {
+        charCount.textContent = `${inputResumo.value.length} / 600`;
+    });
+
+    // ── Salvar livro ──
+    document.getElementById('btnSalvar').addEventListener('click', async () => {
+        const titulo    = document.getElementById('inputTitulo').value.trim();
+        const autor     = document.getElementById('inputAutor').value.trim();
+        const categoria = document.getElementById('inputCategoria').value;
+        const data      = document.getElementById('inputDataPublicacao').value;
+        const qtd       = document.getElementById('inputQuantidade').value;
+        const resumo    = inputResumo.value.trim();
+
+        // Validação front-end
+        if (!titulo)    { mostrarToast('Informe o título do livro.', true); return; }
+        if (!autor)     { mostrarToast('Informe o autor do livro.', true); return; }
+        if (!categoria) { mostrarToast('Selecione uma categoria.', true); return; }
+        if (!data)      { mostrarToast('Informe a data de publicação.', true); return; }
+        if (!qtd || parseInt(qtd) < 1) { mostrarToast('Quantidade deve ser no mínimo 1.', true); return; }
+        if (!resumo)    { mostrarToast('Escreva um resumo do livro.', true); return; }
+
+        const btn  = document.getElementById('btnSalvar');
+        const orig = btn.innerHTML;
+        btn.disabled  = true;
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Salvando...';
+
+        // Monta FormData para enviar capa (multipart)
+        const fd = new FormData();
+        fd.append('titulo',           titulo);
+        fd.append('autor',            autor);
+        fd.append('categoria',        categoria);
+        fd.append('data_publicacao',  data);
+        fd.append('quantidade',       qtd);
+        fd.append('resumo',           resumo);
+        if (inputCapa.files[0]) {
+            fd.append('capa', inputCapa.files[0]);
+        }
+
+        try {
+            const res  = await fetch(`${API}/livros_salvar.php`, {
+                method: 'POST',
+                credentials: 'same-origin',
+                body: fd   // Não definir Content-Type — o browser adiciona o boundary
+            });
+            const data2 = await res.json();
+
+            if (data2.sucesso) {
+                mostrarToast('Livro salvo com sucesso! Redirecionando...', false);
+                setTimeout(() => window.location.href = '/BibliotecaSA/pages/TelaCatalogoLivros.html', 2000);
+            } else {
+                btn.disabled  = false;
+                btn.innerHTML = orig;
+                mostrarToast(data2.erro || 'Erro ao salvar o livro.', true);
+            }
+        } catch {
+            btn.disabled  = false;
+            btn.innerHTML = orig;
+            mostrarToast('Falha ao conectar ao servidor.', true);
+        }
+    });
+
+    // ── Toast ──
+    function mostrarToast(msg, erro = false) {
+        clearTimeout(toastTimer);
+        const toast   = document.getElementById('toast-add');
+        const icon    = document.getElementById('toast-icon');
+        const msgEl   = document.getElementById('toast-msg');
+
+        msgEl.textContent = msg;
+        icon.className    = erro ? 'fa-solid fa-circle-xmark' : 'fa-solid fa-circle-check';
+        toast.style.borderColor  = erro ? 'rgba(226,75,74,0.4)' : 'rgba(29,158,117,0.4)';
+        icon.style.color         = erro ? '#e24b4a' : '#1d9e75';
+
+        toast.classList.add('show');
+        toastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+    </script>
+
+</body>
 </html>

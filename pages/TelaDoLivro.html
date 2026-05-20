@@ -7,706 +7,184 @@
     <link rel="stylesheet" href="../styles/footer.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <title>O Substituto - Detalhes</title>
+    <title>Detalhes do Livro - Biblioteca</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: #16181c; color: #e8e4de; font-family: 'DM Sans', sans-serif; }
 
-        body {
-            background-color: #16181c;
-            color: #e8e4de;
-            font-family: 'DM Sans', sans-serif;
-        }
+        .detail-section { width: 100%; padding: 80px 0 100px; margin-top: 100px; }
+        .detail-container { max-width: 1400px; margin: 0 auto; padding: 0 80px; }
 
-        /* ── Área principal ── */
-        .detail-section {
-            width: 100%;
-            padding: 80px 0 100px;
-            margin-top: 100px;
+        /* Loading state */
+        .loading-state {
+            display: flex; align-items: center; justify-content: center;
+            min-height: 60vh; flex-direction: column; gap: 16px;
+            color: rgba(255,255,255,0.3); font-size: 13px; letter-spacing: 2px;
         }
+        .loading-state i { font-size: 32px; }
 
-        .detail-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 80px;
-        }
+        /* Layout */
+        .detail-body { display: grid; grid-template-columns: 280px 1fr; gap: 72px; align-items: start; }
 
-        /* ── Layout capa + info ── */
-        .detail-body {
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 72px;
-            align-items: start;
-        }
+        /* Capa */
+        .detail-cover { position: sticky; top: 40px; }
+        .detail-cover img { width: 100%; border-radius: 4px; box-shadow: 0 24px 60px rgba(0,0,0,0.55); display: block; background: rgba(255,255,255,0.04); min-height: 400px; object-fit: cover; }
+        .detail-cover-status { margin-top: 16px; display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; }
+        .detail-cover-status i { font-size: 9px; }
+        .status-disponivel { color: #5dcaa5; }
+        .status-indisponivel { color: #e24b4a; }
 
-        /* ── Capa ── */
-        .detail-cover {
-            position: sticky;
-            top: 40px;
-        }
+        /* Info */
+        .detail-info { display: flex; flex-direction: column; gap: 32px; padding-top: 8px; }
+        .detail-sup { display: block; font-size: 10px; font-weight: 500; letter-spacing: 4px; text-transform: uppercase; color: #3e5bdb; }
+        .detail-title { font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 400; color: #fff; line-height: 1.15; margin-top: 10px; }
+        .detail-author { font-size: 15px; font-weight: 300; color: rgba(255,255,255,0.55); letter-spacing: 0.5px; }
+        .detail-author span { color: rgba(255,255,255,0.25); margin-right: 6px; }
 
-        .detail-cover img {
-            width: 100%;
-            border-radius: 4px;
-            box-shadow: 0 24px 60px rgba(0,0,0,0.55);
-            display: block;
-        }
+        .detail-rule { display: flex; align-items: center; gap: 16px; }
+        .detail-rule-line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(29,158,117,0.5), transparent); }
+        .detail-rule-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: rgba(29,158,117,0.9); }
 
-        .detail-cover-status {
-            margin-top: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 11px;
-            font-weight: 500;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
+        .detail-synopsis { display: flex; flex-direction: column; gap: 16px; }
+        .detail-synopsis p { font-size: 15px; font-weight: 400; color: rgba(255,255,255,0.72); line-height: 1.85; }
 
-        .detail-cover-status i {
-            font-size: 9px;
-        }
-
-        .status-disponivel {
-            color: #5dcaa5;
-        }
-
-        .status-indisponivel {
-            color: #e24b4a;
-        }
-
-        /* ── Coluna de info ── */
-        .detail-info {
-            display: flex;
-            flex-direction: column;
-            gap: 32px;
-            padding-top: 8px;
-        }
-
-        /* Supratítulo */
-        .detail-sup {
-            display: block;
-            font-size: 10px;
-            font-weight: 500;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: #3e5bdb;
-        }
-
-        /* Título */
-        .detail-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 48px;
-            font-weight: 400;
-            color: #ffffff;
-            line-height: 1.15;
-            margin-top: 10px;
-        }
-
-        /* Autor */
-        .detail-author {
-            font-size: 15px;
-            font-weight: 300;
-            color: rgba(255,255,255,0.55);
-            letter-spacing: 0.5px;
-        }
-
-        .detail-author span {
-            color: rgba(255,255,255,0.25);
-            margin-right: 6px;
-        }
-
-        /* Divisor */
-        .detail-rule {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .detail-rule-line {
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, rgba(29,158,117,0.5), transparent);
-        }
-
-        .detail-rule-label {
-            font-size: 9px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: rgba(29,158,117,0.9);
-        }
-
-        /* Sinopse */
-        .detail-synopsis {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .detail-synopsis p {
-            font-size: 15px;
-            font-weight: 400;
-            color: rgba(255,255,255,0.72);
-            line-height: 1.85;
-        }
-
-        /* ── Preços ── */
-        .detail-prices {
-            display: flex;
-            gap: 40px;
-            align-items: flex-end;
-        }
-
-        .price-item {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .price-label {
-            font-size: 9px;
-            font-weight: 500;
-            letter-spacing: 2.5px;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.3);
-        }
-
-        .price-value {
-            font-family: 'Playfair Display', serif;
-            font-size: 28px;
-            font-weight: 400;
-            color: #e8e4de;
-        }
-
-        .price-item.locar .price-value {
-            color: #e8e4de;
-        }
-
-        .price-sub {
-            font-size: 11px;
-            color: rgba(255,255,255,0.25);
-        }
-
-        .price-divider {
-            width: 1px;
-            height: 40px;
-            background: rgba(255,255,255,0.1);
-            margin-bottom: 4px;
-        }
-
-        /* Botões */
-        .detail-btn-wrap {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
+        .detail-btn-wrap { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 
         .btn-reserve {
-            background: #1d9e75;
-            color: #ffffff;
-            border: none;
-            padding: 14px 36px;
-            border-radius: 3px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 13px;
-            font-weight: 500;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            cursor: pointer;
+            background: #1d9e75; color: #fff; border: none;
+            padding: 14px 36px; border-radius: 3px;
+            font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+            letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
             transition: background 0.25s ease, transform 0.2s ease;
         }
-
-        .btn-reserve:hover {
-            background: #17865f;
-            transform: translateY(-2px);
-        }
-
-        .btn-reserve:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-            transform: none;
-        }
+        .btn-reserve:hover { background: #17865f; transform: translateY(-2px); }
+        .btn-reserve:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
         .btn-locar {
-            background: #3e5bdb;
-            color: #ffffff;
-            border: none;
-            padding: 14px 36px;
-            border-radius: 3px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 13px;
-            font-weight: 500;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            cursor: pointer;
+            background: #3e5bdb; color: #fff; border: none;
+            padding: 14px 36px; border-radius: 3px;
+            font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+            letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
             transition: background 0.25s ease, transform 0.2s ease;
         }
+        .btn-locar:hover { background: #2e48c4; transform: translateY(-2px); }
+        .btn-locar:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
-        .btn-locar:hover {
-            background: #2e48c4;
-            transform: translateY(-2px);
+        .btn-editar {
+            background: transparent; color: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.18);
+            padding: 14px 36px; border-radius: 3px;
+            font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+            letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
+            transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.2s ease;
         }
+        .btn-editar:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.4); color: #fff; transform: translateY(-2px); }
 
-        .btn-locar:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-            transform: none;
-        }
+        /* Modal de edição */
+        .modal-edit { max-width: 640px; max-height: 90vh; overflow-y: auto; }
+        .modal-edit .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .modal-edit textarea.form-input { resize: vertical; min-height: 90px; }
+        .modal-edit .cover-upload-wrap { display: flex; align-items: center; gap: 16px; margin-bottom: 4px; }
+        .modal-edit .cover-thumb { width: 56px; height: 72px; object-fit: cover; border-radius: 3px; background: rgba(255,255,255,0.05); flex-shrink: 0; }
+        .modal-edit .cover-upload-btn { font-size: 12px; color: var(--accent, #70a3f0); cursor: pointer; letter-spacing: 1px; text-transform: uppercase; border: 1px solid rgba(112,163,240,0.3); padding: 6px 14px; border-radius: 3px; transition: background 0.2s; }
+        .modal-edit .cover-upload-btn:hover { background: rgba(112,163,240,0.08); }
 
-        .btn-comprar {
-            background: transparent;
-            color: #e8e4de;
-            border: 1px solid rgba(255,255,255,0.2);
-            padding: 14px 36px;
-            border-radius: 3px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 13px;
-            font-weight: 500;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: border-color 0.25s ease, background 0.25s ease, transform 0.2s ease;
-        }
+        /* Meta */
+        .detail-meta { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 40px; margin-top: 80px; }
+        .detail-meta-item { padding: 24px 28px; border: 1px solid rgba(255,255,255,0.06); border-radius: 3px; background: rgba(255,255,255,0.02); transition: border-color 0.25s ease, background 0.25s ease; }
+        .detail-meta-item:hover { border-color: rgba(29,158,117,0.3); background: rgba(29,158,117,0.04); }
+        .detail-meta-label { font-size: 9px; font-weight: 500; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 8px; }
+        .detail-meta-value { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 400; color: #e8e4de; }
 
-        .btn-comprar:hover {
-            border-color: rgba(255,255,255,0.45);
-            background: rgba(255,255,255,0.05);
-            transform: translateY(-2px);
-        }
+        /* Modal */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: flex; align-items: center; justify-content: center; z-index: 9000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .modal-overlay.open { opacity: 1; pointer-events: auto; }
+        .modal { background: #1e2128; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 40px 36px; width: 100%; max-width: 480px; transform: translateY(20px); transition: transform 0.3s ease; }
+        .modal-overlay.open .modal { transform: translateY(0); }
+        .modal-title { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 400; color: #fff; margin-bottom: 6px; }
+        .modal-sub { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 28px; }
+        .modal-book-info { background: rgba(29,158,117,0.07); border: 1px solid rgba(29,158,117,0.2); border-radius: 4px; padding: 14px 18px; font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.7; margin-bottom: 24px; }
+        .modal-book-info strong { color: #5dcaa5; }
+        .form-group { margin-bottom: 18px; }
+        .form-label { display: block; font-size: 9px; font-weight: 500; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 8px; }
+        .form-input { width: 100%; background: #111316; border: 1px solid rgba(255,255,255,0.12); border-radius: 4px; color: #e8e4de; font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 12px 16px; outline: none; transition: border-color 0.2s ease; }
+        .form-input:focus { border-color: #3e5bdb; }
+        .form-input.error { border-color: #e24b4a; }
+        .form-input[readonly] { opacity: 0.5; cursor: not-allowed; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .modal-footer { display: flex; gap: 12px; margin-top: 28px; }
+        .btn-modal-cancel { background: transparent; color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.12); padding: 13px 22px; border-radius: 3px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: border-color 0.25s ease, color 0.25s ease; }
+        .btn-modal-cancel:hover { border-color: rgba(255,255,255,0.3); color: rgba(255,255,255,0.7); }
+        .btn-modal-confirm { flex: 1; background: #3e5bdb; color: #fff; border: none; padding: 13px 22px; border-radius: 3px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: background 0.25s ease, transform 0.2s ease; }
+        .btn-modal-confirm:hover { background: #2e48c4; transform: translateY(-1px); }
+        .btn-modal-confirm:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-        .btn-wish {
-            background: transparent;
-            color: rgba(255,255,255,0.4);
-            border: 1px solid rgba(255,255,255,0.12);
-            padding: 14px 20px;
-            border-radius: 3px;
-            font-size: 15px;
-            cursor: pointer;
-            transition: border-color 0.25s ease, color 0.25s ease;
-        }
+        /* Toast */
+        .toast { position: fixed; bottom: 40px; right: 40px; display: flex; align-items: center; gap: 16px; background: #111316; border: 1px solid rgba(29,158,117,0.4); border-radius: 4px; padding: 20px 28px; box-shadow: 0 16px 48px rgba(0,0,0,0.5); z-index: 9999; opacity: 0; transform: translateY(16px); transition: opacity 0.35s ease, transform 0.35s ease; pointer-events: none; min-width: 320px; }
+        .toast.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+        .toast.toast-erro { border-color: rgba(226,75,74,0.4); }
+        .toast-icon { width: 40px; height: 40px; border-radius: 50%; background: rgba(29,158,117,0.12); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .toast-erro .toast-icon { background: rgba(226,75,74,0.12); }
+        .toast-icon i { color: #1d9e75; font-size: 16px; }
+        .toast-erro .toast-icon i { color: #e24b4a; }
+        .toast-body { display: flex; flex-direction: column; gap: 4px; }
+        .toast-title { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 400; color: #fff; }
+        .toast-sub { font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.45); letter-spacing: 0.3px; }
+        .toast-close { margin-left: auto; background: none; border: none; color: rgba(255,255,255,0.25); font-size: 14px; cursor: pointer; padding: 4px; transition: color 0.2s ease; flex-shrink: 0; }
+        .toast-close:hover { color: rgba(255,255,255,0.6); }
+        .toast-progress { position: absolute; bottom: 0; left: 0; height: 2px; background: #1d9e75; border-radius: 0 0 0 4px; width: 100%; transform-origin: left; }
+        .toast.show .toast-progress { animation: progressBar 4s linear forwards; }
+        .toast-erro .toast-progress { background: #e24b4a; }
+        @keyframes progressBar { from { transform: scaleX(1); } to { transform: scaleX(0); } }
 
-        .btn-wish:hover {
-            border-color: rgba(255,255,255,0.35);
-            color: rgba(255,255,255,0.8);
-        }
-
-        /* ── Informações técnicas ── */
-        .detail-meta {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2px;
-            border-top: 1px solid rgba(255,255,255,0.08);
-            padding-top: 40px;
-            margin-top: 80px;
-        }
-
-        .detail-meta-item {
-            padding: 24px 28px;
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 3px;
-            background: rgba(255,255,255,0.02);
-            transition: border-color 0.25s ease, background 0.25s ease;
-            cursor: default;
-        }
-
-        .detail-meta-item:hover {
-            border-color: rgba(29,158,117,0.3);
-            background: rgba(29,158,117,0.04);
-        }
-
-        .detail-meta-label {
-            font-size: 9px;
-            font-weight: 500;
-            letter-spacing: 2.5px;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.3);
-            margin-bottom: 8px;
-        }
-
-        .detail-meta-value {
-            font-family: 'Playfair Display', serif;
-            font-size: 16px;
-            font-weight: 400;
-            color: #e8e4de;
-        }
-
-        /* ── Modal de Locação ── */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.75);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .modal-overlay.open {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .modal {
-            background: #1e2128;
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 8px;
-            padding: 40px 36px;
-            width: 100%;
-            max-width: 480px;
-            position: relative;
-            transform: translateY(20px);
-            transition: transform 0.3s ease;
-        }
-
-        .modal-overlay.open .modal {
-            transform: translateY(0);
-        }
-
-        .modal-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 26px;
-            font-weight: 400;
-            color: #ffffff;
-            margin-bottom: 6px;
-        }
-
-        .modal-sub {
-            font-size: 13px;
-            color: rgba(255,255,255,0.4);
-            margin-bottom: 28px;
-        }
-
-        .modal-book-info {
-            background: rgba(29,158,117,0.07);
-            border: 1px solid rgba(29,158,117,0.2);
-            border-radius: 4px;
-            padding: 14px 18px;
-            font-size: 13px;
-            color: rgba(255,255,255,0.55);
-            line-height: 1.7;
-            margin-bottom: 24px;
-        }
-
-        .modal-book-info strong {
-            color: #5dcaa5;
-        }
-
-        .form-group {
-            margin-bottom: 18px;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 9px;
-            font-weight: 500;
-            letter-spacing: 2.5px;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.35);
-            margin-bottom: 8px;
-        }
-
-        .form-input {
-            width: 100%;
-            background: #111316;
-            border: 1px solid rgba(255,255,255,0.12);
-            border-radius: 4px;
-            color: #e8e4de;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 14px;
-            padding: 12px 16px;
-            outline: none;
-            transition: border-color 0.2s ease;
-        }
-
-        .form-input:focus {
-            border-color: #3e5bdb;
-        }
-
-        .form-input.error {
-            border-color: #e24b4a;
-        }
-
-        .form-input[readonly] {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
-        }
-
-        .modal-footer {
-            display: flex;
-            gap: 12px;
-            margin-top: 28px;
-        }
-
-        .btn-modal-cancel {
-            background: transparent;
-            color: rgba(255,255,255,0.4);
-            border: 1px solid rgba(255,255,255,0.12);
-            padding: 13px 22px;
-            border-radius: 3px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 12px;
-            font-weight: 500;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: border-color 0.25s ease, color 0.25s ease;
-        }
-
-        .btn-modal-cancel:hover {
-            border-color: rgba(255,255,255,0.3);
-            color: rgba(255,255,255,0.7);
-        }
-
-        .btn-modal-confirm {
-            flex: 1;
-            background: #3e5bdb;
-            color: #ffffff;
-            border: none;
-            padding: 13px 22px;
-            border-radius: 3px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 12px;
-            font-weight: 500;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: background 0.25s ease, transform 0.2s ease;
-        }
-
-        .btn-modal-confirm:hover {
-            background: #2e48c4;
-            transform: translateY(-1px);
-        }
-
-        /* ── Toast de sucesso ── */
-        .toast {
-            position: fixed;
-            bottom: 40px;
-            right: 40px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            background: #111316;
-            border: 1px solid rgba(29, 158, 117, 0.4);
-            border-radius: 4px;
-            padding: 20px 28px;
-            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
-            z-index: 9999;
-            opacity: 0;
-            transform: translateY(16px);
-            transition: opacity 0.35s ease, transform 0.35s ease;
-            pointer-events: none;
-            min-width: 320px;
-        }
-
-        .toast.show {
-            opacity: 1;
-            transform: translateY(0);
-            pointer-events: auto;
-        }
-
-        .toast-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(29, 158, 117, 0.12);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .toast-icon i {
-            color: #1d9e75;
-            font-size: 16px;
-        }
-
-        .toast-body {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .toast-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 16px;
-            font-weight: 400;
-            color: #ffffff;
-        }
-
-        .toast-sub {
-            font-size: 12px;
-            font-weight: 300;
-            color: rgba(255, 255, 255, 0.45);
-            letter-spacing: 0.3px;
-        }
-
-        .toast-close {
-            margin-left: auto;
-            background: none;
-            border: none;
-            color: rgba(255, 255, 255, 0.25);
-            font-size: 14px;
-            cursor: pointer;
-            padding: 4px;
-            transition: color 0.2s ease;
-            flex-shrink: 0;
-        }
-
-        .toast-close:hover {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .toast-progress {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            height: 2px;
-            background: #1d9e75;
-            border-radius: 0 0 0 4px;
-            width: 100%;
-            transform-origin: left;
-            animation: none;
-        }
-
-        .toast.show .toast-progress {
-            animation: progress 4s linear forwards;
-        }
-
-        @keyframes progress {
-            from { transform: scaleX(1); }
-            to   { transform: scaleX(0); }
-        }
+        /* Skeleton */
+        .sk { background: linear-gradient(90deg,rgba(255,255,255,0.04) 25%,rgba(255,255,255,0.08) 50%,rgba(255,255,255,0.04) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 4px; }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
     </style>
 </head>
 <body>
 
-    <div id="header"></div>
+    <!-- ===== NAVBAR INLINE ===== -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo-left">
+                <i class="fa-solid fa-book-open" style="font-size:30px;color:#fff;"></i>
+            </div>
+            <nav class="nav-menu">
+                <a href="../pages/TelaHome.html" class="nav-link">INÍCIO</a>
+                <a href="../pages/TelaHome.html#sessao-sobre" class="nav-link">SOBRE</a>
+                <a href="../pages/TelaCatalogoLivros.html" class="nav-link">CATÁLOGO</a>
+                <a href="../pages/TelaHome.html#sessao-contato" class="nav-link">CONTATO</a>
+            </nav>
+            <div class="nav-user-area" id="navUserArea"></div>
+        </div>
+    </header>
 
     <section class="detail-section">
-        <div class="detail-container">
-
-            <!-- Corpo principal -->
-            <div class="detail-body">
-
-                <!-- Capa -->
-                <div class="detail-cover">
-                    <img src="../img/livro1.webp" alt="Capa O Substituto">
-                    <div class="detail-cover-status" id="statusBadge">
-                        <i class="fa-solid fa-circle status-disponivel" id="statusIcon"></i>
-                        <span class="status-disponivel" id="statusText">Disponível</span>
-                    </div>
-                </div>
-
-                <!-- Informações -->
-                <div class="detail-info">
-                    <div>
-                        <span class="detail-sup">Fantasia</span>
-                        <h1 class="detail-title">Está chovendo estrelas</h1>
-                        <p class="detail-author"><span>por</span> Au J.Thomson</p>
-                    </div>
-
-                    <div class="detail-rule">
-                        <div class="detail-rule-line"></div>
-                        <span class="detail-rule-label">sinopse</span>
-                        <div class="detail-rule-line"></div>
-                    </div>
-
-                    <div class="detail-synopsis">
-                        <p>É normal que muitos jovens se sintam excluídos, mas, nessa fantasia sinistra, Mackie Doyle tem boas razões para se sentir assim.</p>
-                        <p>Aos sete anos, recebeu a espada Dandelion Silver, forjada em aço celeste e imbuída de magias ancestrais. Aos treze, já era um esgrimista habilidoso, embora a magia que deveria brotar naturalmente teimasse em lhe escapar. A chegada da Lanterna, sua segunda herança, acendeu uma centelha de esperança — e, claro, mais responsabilidades.</p>
-                        <p>Enquanto isso, nas sombras, uma antiga escuridão começa a despertar, prometendo um crepúsculo sem precedentes para a terra. O peso do mundo repousa sobre Myrddin, que terá que enfrentar forças muito maiores do que ele — e talvez, aprender que nem sempre o destino é tão grandioso quanto parece.</p>
-                    </div>
-
-                    <!-- Preços -->
-                    <div class="detail-rule">
-                        <div class="detail-rule-line"></div>
-                        <span class="detail-rule-label">preços</span>
-                        <div class="detail-rule-line"></div>
-                    </div>
-
-                    <div class="detail-prices">
-                        <div class="price-item">
-                            <div class="price-label">Locar</div>
-                            <div class="price-value">R$ 12,00</div>
-                            <div class="price-sub">Por 15 dias</div>
-                        </div>
-                    </div>
-
-                    <div class="detail-btn-wrap">
-                        <button class="btn-reserve" id="btnReservar">
-                            <i class="fa-solid fa-bookmark" style="margin-right:8px;"></i>
-                            Reservar
-                        </button>
-                        <button class="btn-locar" id="btnLocar">
-                            <i class="fa-solid fa-file-contract" style="margin-right:8px;"></i>
-                            Locar
-                        </button>
-                        <button class="btn-wish">
-                            <i class="fa-regular fa-heart"></i>
-                        </button>
-                    </div>
-                </div>
-
-            </div><!-- /detail-body -->
-
-            <!-- Informações técnicas -->
-            <div class="detail-meta">
-                <div class="detail-meta-item">
-                    <div class="detail-meta-label">Autor</div>
-                    <div class="detail-meta-value">Au J.Thomson</div>
-                </div>
-                <div class="detail-meta-item">
-                    <div class="detail-meta-label">Gênero</div>
-                    <div class="detail-meta-value">Fantasia</div>
-                </div>
-                <div class="detail-meta-item">
-                    <div class="detail-meta-label">Idioma</div>
-                    <div class="detail-meta-value">Português</div>
-                </div>
-                <div class="detail-meta-item">
-                    <div class="detail-meta-label">Disponibilidade</div>
-                    <div class="detail-meta-value" id="metaDisponibilidade">Disponível</div>
-                </div>
+        <div class="detail-container" id="conteudo">
+            <!-- Conteúdo injetado pelo JS -->
+            <div class="loading-state">
+                <i class="fa-solid fa-circle-notch fa-spin"></i>
+                <p>CARREGANDO LIVRO...</p>
             </div>
-
-        </div><!-- /detail-container -->
+        </div>
     </section>
 
-    <!-- ── Modal de Locação ── -->
+    <!-- Modal de Locação -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal">
             <p class="modal-title">Locar livro</p>
             <p class="modal-sub">Preencha os dados para confirmar a locação</p>
 
-            <div class="modal-book-info">
-                <strong>Está chovendo estrelas</strong> — Au J. Thomson<br>
-                Prazo: 15 dias &nbsp;|&nbsp; Valor: <strong>R$ 12,00</strong>
-            </div>
+            <div class="modal-book-info" id="modalBookInfo">—</div>
 
             <div class="form-group">
                 <label class="form-label">Nome completo</label>
                 <input class="form-input" id="fNome" type="text" placeholder="Seu nome completo">
             </div>
-
             <div class="form-group">
                 <label class="form-label">CPF</label>
                 <input class="form-input" id="fCpf" type="text" placeholder="000.000.000-00" maxlength="14">
             </div>
-
             <div class="form-row">
                 <div class="form-group">
                     <label class="form-label">Data de retirada</label>
@@ -717,7 +195,6 @@
                     <input class="form-input" id="fDevolucao" type="date" readonly>
                 </div>
             </div>
-
             <div class="form-group">
                 <label class="form-label">Contato (telefone ou e-mail)</label>
                 <input class="form-input" id="fContato" type="text" placeholder="(11) 99999-9999 ou email@exemplo.com">
@@ -733,169 +210,490 @@
         </div>
     </div>
 
-    <!-- ── Toast de sucesso ── -->
+    <!-- Toast -->
     <div class="toast" id="toastReserva">
-        <div class="toast-icon">
-            <i class="fa-solid fa-check"></i>
-        </div>
+        <div class="toast-icon"><i class="fa-solid fa-check" id="toastIconEl"></i></div>
         <div class="toast-body">
-            <span class="toast-title" id="toastTitulo">Livro reservado!</span>
-            <span class="toast-sub" id="toastMensagem">Sua reserva foi realizada com sucesso.</span>
+            <span class="toast-title" id="toastTitulo">—</span>
+            <span class="toast-sub" id="toastMensagem">—</span>
         </div>
-        <button class="toast-close" id="toastClose">
-            <i class="fa-solid fa-xmark"></i>
-        </button>
+        <button class="toast-close" id="toastClose"><i class="fa-solid fa-xmark"></i></button>
         <div class="toast-progress"></div>
+    </div>
+
+    <!-- Modal de Edição (admin) -->
+    <div class="modal-overlay" id="modalEditOverlay">
+        <div class="modal modal-edit">
+            <p class="modal-title">Editar Livro</p>
+            <p class="modal-sub">Altere os dados e salve para atualizar o acervo</p>
+
+            <!-- Capa -->
+            <div class="form-group">
+                <label class="form-label">Capa do Livro</label>
+                <div class="cover-upload-wrap">
+                    <img id="editCapaThumb" class="cover-thumb" src="" alt="capa">
+                    <label class="cover-upload-btn" for="editInputCapa">
+                        <i class="fa-solid fa-arrow-up-from-bracket" style="margin-right:6px;"></i>Trocar capa
+                    </label>
+                    <input type="file" id="editInputCapa" accept="image/jpeg,image/png,image/webp" style="display:none;">
+                    <span id="editCapaNome" style="font-size:11px;color:rgba(255,255,255,0.3);margin-left:8px;"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Título <span style="color:#e24b4a;">*</span></label>
+                <input class="form-input" id="editTitulo" type="text" maxlength="120">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Autor <span style="color:#e24b4a;">*</span></label>
+                    <input class="form-input" id="editAutor" type="text" maxlength="80">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Categoria <span style="color:#e24b4a;">*</span></label>
+                    <select class="form-input" id="editCategoria">
+                        <option value="">Selecione</option>
+                        <option>Terror</option><option>Drama</option><option>Romance</option>
+                        <option>Suspense</option><option>Comédia</option><option>Fantasia</option>
+                        <option>Ficção Científica</option><option>Aventura</option>
+                        <option>Biografia</option><option>História</option>
+                        <option>Autoajuda</option><option>Mistério</option><option>Outros</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Data de Publicação <span style="color:#e24b4a;">*</span></label>
+                    <input class="form-input" id="editDataPublicacao" type="date">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Quantidade em Estoque <span style="color:#e24b4a;">*</span></label>
+                    <input class="form-input" id="editQuantidade" type="number" min="0">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Resumo <span style="color:#e24b4a;">*</span></label>
+                <textarea class="form-input" id="editResumo" maxlength="600" rows="4"></textarea>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-modal-cancel" id="btnEditCancelar">Cancelar</button>
+                <button class="btn-modal-confirm" id="btnEditSalvar">
+                    <i class="fa-solid fa-floppy-disk" style="margin-right:8px;"></i>
+                    Salvar Alterações
+                </button>
+            </div>
+        </div>
     </div>
 
     <div id="footer"></div>
 
     <script src="../scripts/navbar.js"></script>
+    <script>initNavbar();</script>
     <script src="../scripts/include.js"></script>
 
     <script>
-        /* ── Elementos ── */
-        const btnReservar       = document.getElementById('btnReservar');
-        const btnLocar          = document.getElementById('btnLocar');
-        const modalOverlay      = document.getElementById('modalOverlay');
-        const btnCancelar       = document.getElementById('btnCancelar');
-        const btnConfirmar      = document.getElementById('btnConfirmar');
-        const toast             = document.getElementById('toastReserva');
-        const toastClose        = document.getElementById('toastClose');
-        const toastTitulo       = document.getElementById('toastTitulo');
-        const toastMensagem     = document.getElementById('toastMensagem');
-        const statusIcon        = document.getElementById('statusIcon');
-        const statusText        = document.getElementById('statusText');
-        const metaDisponibilidade = document.getElementById('metaDisponibilidade');
-        const fNome             = document.getElementById('fNome');
-        const fCpf              = document.getElementById('fCpf');
-        const fRetirada         = document.getElementById('fRetirada');
-        const fDevolucao        = document.getElementById('fDevolucao');
-        const fContato          = document.getElementById('fContato');
+    // ============================================================
+    //  TelaDoLivro — carrega livro do banco via ?id=X
+    // ============================================================
+    const API = '/BibliotecaSA/backend';
 
-        let isDisponivel = true;
-        let toastTimer   = null;
+    let livroAtual   = null;
+    let toastTimer   = null;
 
-        /* ── Status: marcar como indisponível ── */
-        function marcarIndisponivel() {
-            isDisponivel = false;
+    // ── Pega o ID da URL ──
+    const params  = new URLSearchParams(window.location.search);
+    const livroId = parseInt(params.get('id'));
 
-            statusIcon.className = 'fa-solid fa-circle status-indisponivel';
-            statusText.className = 'status-indisponivel';
-            statusText.textContent = 'Indisponível';
-            metaDisponibilidade.textContent = 'Indisponível';
+    // ── Referências do modal ──
+    const modalOverlay  = document.getElementById('modalOverlay');
+    const fNome         = document.getElementById('fNome');
+    const fCpf          = document.getElementById('fCpf');
+    const fRetirada     = document.getElementById('fRetirada');
+    const fDevolucao    = document.getElementById('fDevolucao');
+    const fContato      = document.getElementById('fContato');
+    const btnConfirmar  = document.getElementById('btnConfirmar');
+    const modalBookInfo = document.getElementById('modalBookInfo');
 
-            btnLocar.disabled    = true;
-            btnReservar.disabled = true;
+    // ── Carrega livro da API ──
+    async function carregarLivro() {
+        if (!livroId || isNaN(livroId)) {
+            renderErro('ID de livro inválido. <a href="TelaCatalogoLivros.html" style="color:#1d9e75;">Voltar ao catálogo</a>');
+            return;
         }
 
-        /* ── Modal: abrir ── */
-        function abrirModal() {
-            if (!isDisponivel) return;
+        try {
+            const res   = await fetch(`${API}/livros_detalhe.php?id=${livroId}`);
+            const dados = await res.json();
 
-            const hoje = new Date().toISOString().split('T')[0];
-            fRetirada.value = hoje;
-            calcularDevolucao();
+            if (dados.erro) { renderErro(dados.erro); return; }
+            livroAtual = dados;
+            renderLivro(dados);
+        } catch {
+            renderErro('Erro ao carregar o livro. Verifique sua conexão.');
+        }
+    }
 
-            modalOverlay.classList.add('open');
+    // ── Renderiza o livro na página ──
+    function renderLivro(l) {
+        const capa = l.capa_path
+            ? `/BibliotecaSA/${l.capa_path}`
+            : '../img/livro-placeholder.webp';
+
+        const statusClass = l.disponivel ? 'status-disponivel' : 'status-indisponivel';
+        const statusText  = l.disponivel ? 'Disponível' : 'Indisponível';
+
+        document.title = `${l.titulo} - Biblioteca`;
+
+        document.getElementById('conteudo').innerHTML = `
+            <div class="detail-body">
+                <div class="detail-cover">
+                    <img src="${capa}" alt="${l.titulo}" onerror="this.src='../img/livro-placeholder.webp'">
+                    <div class="detail-cover-status">
+                        <i class="fa-solid fa-circle ${statusClass}" id="statusIcon" style="font-size:9px;"></i>
+                        <span class="${statusClass}" id="statusText">${statusText}</span>
+                    </div>
+                </div>
+
+                <div class="detail-info">
+                    <div>
+                        <span class="detail-sup">${l.categoria || 'Literatura'}</span>
+                        <h1 class="detail-title">${l.titulo}</h1>
+                        <p class="detail-author"><span>por</span> ${l.autor}</p>
+                    </div>
+
+                    <div class="detail-rule">
+                        <div class="detail-rule-line"></div>
+                        <span class="detail-rule-label">sinopse</span>
+                        <div class="detail-rule-line"></div>
+                    </div>
+
+                    <div class="detail-synopsis">
+                        <p>${l.resumo || 'Sem sinopse disponível.'}</p>
+                    </div>
+
+                    <div class="detail-rule">
+                        <div class="detail-rule-line"></div>
+                        <span class="detail-rule-label">disponibilidade</span>
+                        <div class="detail-rule-line"></div>
+                    </div>
+
+                    <div style="font-size:13px;color:rgba(255,255,255,0.45);">
+                        <i class="fa-solid fa-layer-group" style="margin-right:8px;color:#3e5bdb;"></i>
+                        <strong style="color:#e8e4de;">${l.quantidade}</strong> exemplar(es) no acervo
+                    </div>
+
+                    <div class="detail-btn-wrap">
+                        <button class="btn-reserve" id="btnReservar" ${!l.disponivel ? 'disabled' : ''}>
+                            <i class="fa-solid fa-bookmark" style="margin-right:8px;"></i>
+                            Reservar
+                        </button>
+                        <button class="btn-locar" id="btnLocar" ${!l.disponivel ? 'disabled' : ''}>
+                            <i class="fa-solid fa-file-contract" style="margin-right:8px;"></i>
+                            Locar
+                        </button>
+                        <button class="btn-editar" id="btnEditar" style="display:none;">
+                            <i class="fa-solid fa-pen-to-square" style="margin-right:8px;"></i>
+                            Editar Livro
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detail-meta">
+                <div class="detail-meta-item">
+                    <div class="detail-meta-label">Autor</div>
+                    <div class="detail-meta-value">${l.autor}</div>
+                </div>
+                <div class="detail-meta-item">
+                    <div class="detail-meta-label">Gênero</div>
+                    <div class="detail-meta-value">${l.categoria || '—'}</div>
+                </div>
+                <div class="detail-meta-item">
+                    <div class="detail-meta-label">Publicação</div>
+                    <div class="detail-meta-value">${l.ano || '—'}</div>
+                </div>
+                <div class="detail-meta-item">
+                    <div class="detail-meta-label">Disponibilidade</div>
+                    <div class="detail-meta-value" id="metaDisponibilidade">${statusText}</div>
+                </div>
+            </div>
+        `;
+
+        // Vincula os botões após renderizar
+        document.getElementById('btnReservar').addEventListener('click', acaoReservar);
+        document.getElementById('btnLocar').addEventListener('click', abrirModal);
+
+        // Mostra botão editar se admin
+        fetch(`${API}/sessao.php`, { credentials: 'same-origin' })
+            .then(r => r.json())
+            .then(s => {
+                if (s.logado && s.perfil === 'admin') {
+                    const btnEditar = document.getElementById('btnEditar');
+                    if (btnEditar) {
+                        btnEditar.style.display = '';
+                        btnEditar.addEventListener('click', () => abrirModalEdicao(l));
+                    }
+                }
+            })
+            .catch(() => {});
+
+        // Atualiza modal com info do livro
+        modalBookInfo.innerHTML = `<strong>${l.titulo}</strong> — ${l.autor}<br>Prazo: 15 dias`;
+    }
+
+    function renderErro(msg) {
+        document.getElementById('conteudo').innerHTML = `
+            <div class="loading-state" style="color:rgba(226,75,74,0.7);">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <p>${msg}</p>
+            </div>`;
+    }
+
+    // ── Reservar via API ──
+    async function acaoReservar() {
+        const btn = document.getElementById('btnReservar');
+        btn.disabled = true;
+        const orig   = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin" style="margin-right:8px;"></i> Reservando...';
+
+        try {
+            const res  = await fetch(`${API}/reserva_salvar.php`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'same-origin',
+                body: JSON.stringify({ livro_id: livroId })
+            });
+            const data = await res.json();
+
+            if (data.sucesso) {
+                btn.innerHTML = '<i class="fa-solid fa-check" style="margin-right:8px;"></i> Reservado';
+                mostrarToast('Reservado!', 'Sua reserva foi registrada. Confira em seu perfil.', false);
+            } else {
+                btn.disabled  = false;
+                btn.innerHTML = orig;
+                mostrarToast('Atenção', data.erro || 'Erro ao reservar.', true);
+            }
+        } catch {
+            btn.disabled  = false;
+            btn.innerHTML = orig;
+            mostrarToast('Erro', 'Falha ao conectar ao servidor.', true);
+        }
+    }
+
+    // ── Modal de locação ──
+    function abrirModal() {
+        const hoje = new Date().toISOString().split('T')[0];
+        fRetirada.value = hoje;
+        calcularDevolucao();
+        modalOverlay.classList.add('open');
+    }
+
+    function fecharModal() {
+        modalOverlay.classList.remove('open');
+        [fNome, fCpf, fContato].forEach(el => el.classList.remove('error'));
+    }
+
+    function calcularDevolucao() {
+        if (!fRetirada.value) return;
+        const d = new Date(fRetirada.value);
+        d.setDate(d.getDate() + 15);
+        fDevolucao.value = d.toISOString().split('T')[0];
+    }
+
+    // Máscara CPF
+    fCpf.addEventListener('input', () => {
+        let v = fCpf.value.replace(/\D/g,'').slice(0,11);
+        v = v.replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d{1,2})$/,'$1-$2');
+        fCpf.value = v;
+    });
+    fRetirada.addEventListener('change', calcularDevolucao);
+
+    // Confirmar locação via API
+    btnConfirmar.addEventListener('click', async () => {
+        [fNome, fCpf, fContato].forEach(el => el.classList.remove('error'));
+        let valido = true;
+        if (!fNome.value.trim())    { fNome.classList.add('error');    valido = false; }
+        if (!fCpf.value.trim())     { fCpf.classList.add('error');     valido = false; }
+        if (!fContato.value.trim()) { fContato.classList.add('error'); valido = false; }
+        if (!valido) return;
+
+        btnConfirmar.disabled = true;
+        const orig = btnConfirmar.innerHTML;
+        btnConfirmar.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin" style="margin-right:8px;"></i> Processando...';
+
+        try {
+            const res  = await fetch(`${API}/emprestimo_salvar.php`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'same-origin',
+                body: JSON.stringify({
+                    livro_id:       livroId,
+                    nome:           fNome.value.trim(),
+                    cpf:            fCpf.value.trim(),
+                    data_retirada:  fRetirada.value,
+                    data_devolucao: fDevolucao.value,
+                    contato:        fContato.value.trim()
+                })
+            });
+            const data = await res.json();
+
+            if (data.sucesso) {
+                fecharModal();
+                // Atualiza status na tela
+                const btnLocar    = document.getElementById('btnLocar');
+                const btnReservar = document.getElementById('btnReservar');
+                if (btnLocar)    { btnLocar.disabled = true; }
+                if (btnReservar) { btnReservar.disabled = true; }
+                document.getElementById('statusText').textContent = 'Indisponível';
+                document.getElementById('statusText').className   = 'status-indisponivel';
+                document.getElementById('statusIcon').className   = 'fa-solid fa-circle status-indisponivel';
+                if (document.getElementById('metaDisponibilidade'))
+                    document.getElementById('metaDisponibilidade').textContent = 'Indisponível';
+
+                const devolucao = fDevolucao.value.split('-').reverse().join('/');
+                mostrarToast('Locado com sucesso!', `Devolução até ${devolucao}. Confira em seu perfil.`, false);
+            } else {
+                btnConfirmar.disabled = false;
+                btnConfirmar.innerHTML = orig;
+                mostrarToast('Erro', data.erro || 'Não foi possível registrar a locação.', true);
+            }
+        } catch {
+            btnConfirmar.disabled = false;
+            btnConfirmar.innerHTML = orig;
+            mostrarToast('Erro', 'Falha ao conectar ao servidor.', true);
+        }
+    });
+
+    document.getElementById('btnCancelar').addEventListener('click', fecharModal);
+    modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) fecharModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharModal(); });
+
+    // ── Toast ──
+    function mostrarToast(titulo, mensagem, erro = false) {
+        clearTimeout(toastTimer);
+        document.getElementById('toastTitulo').textContent   = titulo;
+        document.getElementById('toastMensagem').textContent = mensagem;
+        document.getElementById('toastIconEl').className     = erro ? 'fa-solid fa-xmark' : 'fa-solid fa-check';
+        const t = document.getElementById('toastReserva');
+        t.classList.toggle('toast-erro', erro);
+        const bar = t.querySelector('.toast-progress');
+        bar.style.animation = 'none'; bar.offsetHeight; bar.style.animation = '';
+        t.classList.add('show');
+        toastTimer = setTimeout(() => t.classList.remove('show'), 4000);
+    }
+
+    document.getElementById('toastClose').addEventListener('click', () => {
+        document.getElementById('toastReserva').classList.remove('show');
+        clearTimeout(toastTimer);
+    });
+
+    // ── Modal de edição (admin) ──
+    const modalEditOverlay = document.getElementById('modalEditOverlay');
+
+    function abrirModalEdicao(l) {
+        // Preenche os campos com os dados atuais
+        document.getElementById('editTitulo').value         = l.titulo || '';
+        document.getElementById('editAutor').value          = l.autor || '';
+        document.getElementById('editCategoria').value      = l.categoria || '';
+        document.getElementById('editDataPublicacao').value = l.data_publicacao || '';
+        document.getElementById('editQuantidade').value     = l.quantidade ?? '';
+        document.getElementById('editResumo').value         = l.resumo || '';
+
+        const thumb = document.getElementById('editCapaThumb');
+        thumb.src = l.capa_path ? `/BibliotecaSA/${l.capa_path}` : '../img/livro-placeholder.webp';
+        thumb.onerror = () => { thumb.src = '../img/livro-placeholder.webp'; };
+
+        document.getElementById('editCapaNome').textContent = '';
+        document.getElementById('editInputCapa').value = '';
+
+        modalEditOverlay.classList.add('open');
+    }
+
+    function fecharModalEdicao() {
+        modalEditOverlay.classList.remove('open');
+    }
+
+    document.getElementById('btnEditCancelar').addEventListener('click', fecharModalEdicao);
+    modalEditOverlay.addEventListener('click', e => { if (e.target === modalEditOverlay) fecharModalEdicao(); });
+
+    // Preview da nova capa no modal de edição
+    document.getElementById('editInputCapa').addEventListener('change', function () {
+        const file = this.files[0];
+        if (!file) return;
+        if (file.size > 5 * 1024 * 1024) {
+            mostrarToast('Atenção', 'A imagem deve ter no máximo 5 MB.', true);
+            this.value = '';
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = e => {
+            document.getElementById('editCapaThumb').src = e.target.result;
+            document.getElementById('editCapaNome').textContent = file.name;
+        };
+        reader.readAsDataURL(file);
+    });
+
+    // Salvar edição
+    document.getElementById('btnEditSalvar').addEventListener('click', async () => {
+        const titulo    = document.getElementById('editTitulo').value.trim();
+        const autor     = document.getElementById('editAutor').value.trim();
+        const categoria = document.getElementById('editCategoria').value;
+        const dataPub   = document.getElementById('editDataPublicacao').value;
+        const qtd       = document.getElementById('editQuantidade').value;
+        const resumo    = document.getElementById('editResumo').value.trim();
+
+        if (!titulo || !autor || !categoria || !dataPub || !qtd || !resumo) {
+            mostrarToast('Atenção', 'Preencha todos os campos obrigatórios.', true);
+            return;
         }
 
-        /* ── Modal: fechar ── */
-        function fecharModal() {
-            modalOverlay.classList.remove('open');
-            limparErros();
+        const btn  = document.getElementById('btnEditSalvar');
+        const orig = btn.innerHTML;
+        btn.disabled  = true;
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin" style="margin-right:8px;"></i> Salvando...';
+
+        const fd = new FormData();
+        fd.append('id',               livroId);
+        fd.append('titulo',           titulo);
+        fd.append('autor',            autor);
+        fd.append('categoria',        categoria);
+        fd.append('data_publicacao',  dataPub);
+        fd.append('quantidade',       qtd);
+        fd.append('resumo',           resumo);
+        const novaCapaFile = document.getElementById('editInputCapa').files[0];
+        if (novaCapaFile) fd.append('capa', novaCapaFile);
+
+        try {
+            const res  = await fetch(`${API}/livros_editar.php`, {
+                method: 'POST',
+                credentials: 'same-origin',
+                body: fd
+            });
+            const data = await res.json();
+
+            if (data.sucesso) {
+                fecharModalEdicao();
+                mostrarToast('Livro atualizado!', 'As alterações foram salvas com sucesso.', false);
+                // Recarrega os dados na página
+                setTimeout(() => carregarLivro(), 1200);
+            } else {
+                btn.disabled  = false;
+                btn.innerHTML = orig;
+                mostrarToast('Erro', data.erro || 'Não foi possível salvar as alterações.', true);
+            }
+        } catch {
+            btn.disabled  = false;
+            btn.innerHTML = orig;
+            mostrarToast('Erro', 'Falha ao conectar ao servidor.', true);
         }
+    });
 
-        /* ── Calcular data de devolução (+15 dias) ── */
-        function calcularDevolucao() {
-            if (!fRetirada.value) return;
-            const data = new Date(fRetirada.value);
-            data.setDate(data.getDate() + 15);
-            fDevolucao.value = data.toISOString().split('T')[0];
-        }
-
-        /* ── Máscara de CPF ── */
-        fCpf.addEventListener('input', () => {
-            let v = fCpf.value.replace(/\D/g, '');
-            if (v.length > 11) v = v.slice(0, 11);
-            v = v
-                .replace(/(\d{3})(\d)/, '$1.$2')
-                .replace(/(\d{3})(\d)/, '$1.$2')
-                .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-            fCpf.value = v;
-        });
-
-        fRetirada.addEventListener('change', calcularDevolucao);
-
-        /* ── Validação e confirmação ── */
-        function limparErros() {
-            [fNome, fCpf, fContato].forEach(el => el.classList.remove('error'));
-        }
-
-        btnConfirmar.addEventListener('click', () => {
-            limparErros();
-            let valido = true;
-
-            if (!fNome.value.trim())    { fNome.classList.add('error');    valido = false; }
-            if (!fCpf.value.trim())     { fCpf.classList.add('error');     valido = false; }
-            if (!fContato.value.trim()) { fContato.classList.add('error'); valido = false; }
-            if (!fRetirada.value)       { valido = false; }
-
-            if (!valido) return;
-
-            fecharModal();
-            marcarIndisponivel();
-            mostrarToast(
-                'Livro locado!',
-                'Devolução até ' + formatarData(fDevolucao.value)
-            );
-        });
-
-        /* ── Formatar data para exibição ── */
-        function formatarData(iso) {
-            if (!iso) return '';
-            const [y, m, d] = iso.split('-');
-            return `${d}/${m}/${y}`;
-        }
-
-        /* ── Toast ── */
-        function mostrarToast(titulo, mensagem) {
-            toastTitulo.textContent   = titulo;
-            toastMensagem.textContent = mensagem;
-
-            const bar = toast.querySelector('.toast-progress');
-            bar.style.animation = 'none';
-            bar.offsetHeight; // reflow
-            bar.style.animation = '';
-
-            toast.classList.add('show');
-            clearTimeout(toastTimer);
-            toastTimer = setTimeout(fecharToast, 4000);
-        }
-
-        function fecharToast() {
-            toast.classList.remove('show');
-            clearTimeout(toastTimer);
-        }
-
-        /* ── Botão Reservar ── */
-        btnReservar.addEventListener('click', () => {
-            if (!isDisponivel) return;
-            mostrarToast('Livro reservado!', 'Sua reserva foi realizada com sucesso.');
-        });
-
-        /* ── Eventos do modal ── */
-        btnLocar.addEventListener('click', abrirModal);
-        btnCancelar.addEventListener('click', fecharModal);
-        toastClose.addEventListener('click', fecharToast);
-
-        modalOverlay.addEventListener('click', (e) => {
-            if (e.target === modalOverlay) fecharModal();
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') fecharModal();
-        });
+    // ── Init ──
+    carregarLivro();
     </script>
 
 </body>

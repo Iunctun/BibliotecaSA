@@ -52,7 +52,7 @@
 }
 
 .logo-left { flex: 0 0 auto; }
-.logo-left img { height: 60px; width: auto; }
+.logo-left img { height: 28px; width: 158px; }
 
 .nav-menu {
     display: flex;

@@ -1,15 +1,6 @@
 <!--
   =====================================================================
   NAVBAR INLINE — Cole este bloco no <body> de cada página HTML.
-  Substitui o antigo <div id="header"></div> + include.js carregando o navbar.
-
-  COMO USAR:
-  1. Cole o bloco <header>...</header> abaixo no topo do <body>
-  2. Ajuste os links de <a href="..."> conforme a profundidade da pasta:
-       - Páginas em /pages/  → href="../pages/TelaHome.html"  (já está correto abaixo)
-       - Páginas na raiz     → href="pages/TelaHome.html"
-  3. Inclua navbar.js e chame initNavbar() como mostrado ao final
-  4. NÃO inclua mais o include.js para o header — só para footer/carrossel
   =====================================================================
 -->
 
@@ -18,7 +9,7 @@
   <div class="header-container">
 
     <div class="logo-left">
-      <i class="fa-solid fa-book-open" style="font-size: 30px; color: #fff;"></i>
+      <img src="../img/logo_navbar.png" alt="Digital Library" class="logo-img">
     </div>
 
     <nav class="nav-menu">
@@ -43,14 +34,14 @@
 
   <script src="../scripts/navbar.js"></script>
   <script>
-    initNavbar(); <!-- Chama imediatamente — header já está no DOM -->
+    initNavbar();
   </script>
-  <script src="../scripts/include.js"></script>  <!-- Só footer/carrossel agora -->
+  <script src="../scripts/include.js"></script>
   <script src="../scripts/SuaPageScript.js"></script>
 
   =====================================================================
-  PÁGINAS QUE PRECISAM SER ATUALIZADAS (remover <div id="header"> e
-  adicionar o navbar inline acima):
+  PÁGINAS QUE PRECISAM SER ATUALIZADAS (substituir o ícone fa-book-open
+  pela tag <img> da logo, conforme este arquivo):
 
   - TelaHome.html
   - TelaCatalogoLivros.html
@@ -58,7 +49,7 @@
   - TelaCadastrarUser.html
   - TelaDoLivro.html
   - TelaADDLivro.html
-  - dashboard.html
-  - TelaUsuariologado.html  ← já atualizado
+  - TelaUsuariologado.html
+  (dashboard.html já tem a logo correta)
   =====================================================================
 -->

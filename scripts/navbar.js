@@ -82,10 +82,13 @@ function renderUsuario(area, sessao) {
 
             <div class="nav-dropdown" id="navDropdown">
                 <a href="${perfilLink}" class="nav-dropdown-item">
-                    <i class="fa-solid fa-user"></i>
+                    <i class="fa-solid fa-gauge"></i>
                     ${sessao.perfil === 'admin' ? 'Dashboard' : 'Meu Perfil'}
                 </a>
                 ${sessao.perfil === 'admin' ? `
+                <a href="/BibliotecaSA/pages/TelaUsuariologado.html" class="nav-dropdown-item">
+                    <i class="fa-solid fa-user"></i> Meu Perfil
+                </a>
                 <a href="/BibliotecaSA/pages/TelaADDLivro.html" class="nav-dropdown-item">
                     <i class="fa-solid fa-book"></i> Adicionar Livro
                 </a>` : ''}
