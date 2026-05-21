@@ -1,8 +1,8 @@
 // ============================================================
-//  navbar.js  — v2
+//  navbar.js  — v3
 //  - Efeito de scroll no header
 //  - Detecta sessão PHP e adapta o canto direito:
-//      Logado    → avatar com inicial + nome + dropdown
+//      Logado    → avatar com inicial + nome + dropdown (só Meu Perfil e Sair)
 //      Deslogado → botão LOGIN
 //
 //  IMPORTANTE: initNavbar() é chamado inline na própria página,
@@ -68,10 +68,7 @@ function renderUsuario(area, sessao) {
     const inicial      = sessao.nome ? sessao.nome.charAt(0).toUpperCase() : '?';
     const primeiroNome = sessao.nome ? sessao.nome.split(' ')[0] : 'Usuário';
 
-    const perfilLink = sessao.perfil === 'admin'
-        ? '/BibliotecaSA/pages/dashboard.html'
-        : '/BibliotecaSA/pages/TelaUsuariologado.html';
-
+    // Dropdown agora só tem Meu Perfil e Sair (para todos os perfis)
     area.innerHTML = `
         <div class="nav-avatar-wrap" id="navAvatarWrap">
             <div class="nav-avatar" id="navAvatar">
@@ -81,17 +78,9 @@ function renderUsuario(area, sessao) {
             <i class="fa-solid fa-chevron-down nav-chevron" id="navChevron"></i>
 
             <div class="nav-dropdown" id="navDropdown">
-                <a href="${perfilLink}" class="nav-dropdown-item">
-                    <i class="fa-solid fa-gauge"></i>
-                    ${sessao.perfil === 'admin' ? 'Dashboard' : 'Meu Perfil'}
-                </a>
-                ${sessao.perfil === 'admin' ? `
                 <a href="/BibliotecaSA/pages/TelaUsuariologado.html" class="nav-dropdown-item">
                     <i class="fa-solid fa-user"></i> Meu Perfil
                 </a>
-                <a href="/BibliotecaSA/pages/TelaADDLivro.html" class="nav-dropdown-item">
-                    <i class="fa-solid fa-book"></i> Adicionar Livro
-                </a>` : ''}
                 <div class="nav-dropdown-sep"></div>
                 <a href="/BibliotecaSA/backend/logout.php" class="nav-dropdown-item nav-dropdown-logout">
                     <i class="fa-solid fa-right-from-bracket"></i> Sair

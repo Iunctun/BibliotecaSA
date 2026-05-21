@@ -1,10 +1,10 @@
 <?php
-// ============================================================
+
 //  reserva_salvar.php
 //  POST (JSON) — botão Reservar no catálogo e perfil
 //  Campos: livro_id
 //  Retorna JSON { sucesso: true } ou { erro: "msg" }
-// ============================================================
+
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');

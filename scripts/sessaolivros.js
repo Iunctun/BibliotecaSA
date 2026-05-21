@@ -1,6 +1,6 @@
-// ============================================================
+
 //  Dados fixos dos livros (base original)
-// ============================================================
+
 
 const livrosFixos = [
     {
@@ -225,10 +225,10 @@ const livrosFixos = [
     }
 ];
 
-// ============================================================
+
 //  Mapa de classes CSS por gênero
 //  Adicione novos gêneros aqui conforme necessário
-// ============================================================
+
 
 const GENERO_CSS = {
     'Terror':  'terror',
@@ -241,18 +241,18 @@ function getGeneroClass(genero) {
     return GENERO_CSS[genero] || 'default';
 }
 
-// ============================================================
+
 //  Carrega livros do localStorage e mescla com os fixos
-// ============================================================
+
 
 function carregarTodosLivros() {
     const livrosCadastrados = JSON.parse(localStorage.getItem('livrosCadastrados') || '[]');
     return [...livrosFixos, ...livrosCadastrados];
 }
 
-// ============================================================
+
 //  Monta catálogos por gênero dinamicamente
-// ============================================================
+
 
 function montarCatalogos(todosLivros) {
     const generosSet = new Set(todosLivros.map(l => l.genero));
@@ -272,9 +272,9 @@ function montarCatalogos(todosLivros) {
     return catalogos;
 }
 
-// ============================================================
+
 //  Injeta o HTML completo dentro de #sessaolivros
-// ============================================================
+
 
 function renderizarSessaoLivros(catalogos) {
     const sessao = document.getElementById('sessaolivros');
@@ -316,9 +316,9 @@ function renderizarSessaoLivros(catalogos) {
     sessao.innerHTML = html;
 }
 
-// ============================================================
+
 //  Classe do carrossel
-// ============================================================
+
 
 class Carousel {
 
@@ -404,9 +404,9 @@ class Carousel {
     }
 }
 
-// ============================================================
+
 //  Inicialização — chamada pelo include.js após injetar HTML
-// ============================================================
+
 
 function initCarousels() {
     const todosLivros = carregarTodosLivros();

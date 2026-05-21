@@ -10,7 +10,67 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <title>Meu Perfil - Biblioteca</title>
   <style>
-    /* Estilos complementares para os cards de livros */
+    /* ── Layout com sidebar ── */
+    .page-wrapper {
+      display: flex;
+      min-height: 100vh;
+      padding-top: 70px;
+    }
+
+    .nav-sidebar {
+      width: 230px;
+      flex-shrink: 0;
+      background: rgba(255,255,255,0.015);
+      border-right: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 36px 0;
+      position: fixed;
+      top: 70px;
+      left: 0;
+      bottom: 0;
+      overflow-y: auto;
+      z-index: 100;
+    }
+
+    /* Itens exclusivos de admin — ocultos por padrão, exibidos pelo JS */
+    .nav-sidebar .admin-only { display: none; }
+
+    .nav-sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 24px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.38);
+      text-decoration: none;
+      margin-right: 12px;
+      border-radius: 0 4px 4px 0;
+      border-left: 2px solid transparent;
+      transition: color 0.2s, background 0.2s, border-color 0.2s;
+    }
+    .nav-sidebar-item:hover {
+      background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.7);
+    }
+    .nav-sidebar-item.active {
+      background: rgba(100,160,255,0.08);
+      border-left-color: #7aadff;
+      color: #7aadff;
+    }
+    .nav-sidebar-item i { width: 16px; text-align: center; font-size: 14px; }
+
+    /* Empurra o conteúdo para dar espaço ao sidebar fixo */
+    .container {
+      margin-left: 230px;
+    }
+
+    /* ── Estilos originais dos livros e cards ── */
     .livro-item {
       display: flex;
       align-items: flex-start;
@@ -107,6 +167,17 @@
     .tp-icon i { color: #1d9e75; font-size: 14px; }
     .toast-perfil.erro .tp-icon i { color: #e24b4a; }
     .tp-msg { font-size: 13px; color: #e8e4de; }
+    /* ── Cabeçalho da página ── */
+    .page-header { margin-bottom: 32px; }
+    .page-sup {
+        display: block; font-size: 10px; font-weight: 500;
+        letter-spacing: 4px; text-transform: uppercase; color: #7aadff; margin-bottom: 8px;
+    }
+    .page-header h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: 38px; font-weight: 400; color: #fff; margin-bottom: 6px;
+    }
+    .page-desc { font-size: 13px; color: rgba(255,255,255,0.35); font-weight: 300; }
   </style>
 </head>
 <body>
@@ -115,7 +186,7 @@
   <header class="header">
     <div class="header-container">
       <div class="logo-left">
-        <i class="fa-solid fa-book-open" style="font-size:30px;color:#fff;"></i>
+        <img src="../img/logo_navbar.png" alt="Digital Library" class="logo-img">
       </div>
       <nav class="nav-menu">
         <a href="../pages/TelaHome.html" class="nav-link">INÍCIO</a>
@@ -127,71 +198,96 @@
     </div>
   </header>
 
-  <div class="container">
+  <div class="page-wrapper">
 
-    <!-- Dados Pessoais -->
-    <div class="card">
-      <h3><i class="fas fa-id-card"></i> Dados Pessoais</h3>
+    <!-- Nav sidebar -->
+    <aside class="nav-sidebar" id="navSidebar">
+      <a href="../pages/dashboard.html" class="nav-sidebar-item admin-only" id="sidebarDashboard">
+        <i class="fa-solid fa-house"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="../pages/TelaADDLivro.html" class="nav-sidebar-item admin-only" id="sidebarAddLivro">
+        <i class="fa-solid fa-book-medical"></i>
+        <span>Adicionar Livro</span>
+      </a>
+      <a href="../pages/TelaCatalogoLivros.html" class="nav-sidebar-item">
+        <i class="fa-solid fa-book-open"></i>
+        <span>Catálogo</span>
+      </a>
+      <a href="../pages/TelaUsuariologado.html" class="nav-sidebar-item active">
+        <i class="fa-solid fa-user"></i>
+        <span>Meu Perfil</span>
+      </a>
+    </aside>
+
+    <div class="container">
+
+      <!-- Cabeçalho da página -->
+      <div class="page-header">
+        <span class="page-sup">Área do Membro</span>
+        <h1>Meu Perfil</h1>
+        <p class="page-desc">Gerencie seus dados, empréstimos e reservas</p>
+      </div>
+
+      <!-- Dados Pessoais -->
+      <div class="card">
+        <h3><i class="fas fa-id-card"></i> Dados Pessoais</h3>
+        <div class="flex">
+          <div class="field-group">
+            <label>Nome</label>
+            <input id="nome" class="input-field" type="text" readonly placeholder="Carregando...">
+          </div>
+          <div class="field-group">
+            <label>Email</label>
+            <input id="email" class="input-field" type="email" readonly placeholder="Carregando...">
+          </div>
+          <div class="field-group">
+            <label>ID de Membro</label>
+            <input id="membroId" class="input-field" type="text" readonly placeholder="—">
+          </div>
+        </div>
+      </div>
+
+      <!-- Livros + Reservas -->
       <div class="flex">
-        <div class="field-group">
-          <label>Nome</label>
-          <input id="nome" class="input-field" type="text" readonly placeholder="Carregando...">
+
+        <!-- Empréstimos ativos -->
+        <div class="card" style="flex:1">
+          <h3><i class="fas fa-book"></i> Livros Emprestados</h3>
+          <div id="listaEmprestimos">
+            <div class="skeleton-linha"></div>
+            <div class="skeleton-linha short"></div>
+            <div class="skeleton-linha"></div>
+            <div class="skeleton-linha short"></div>
+          </div>
         </div>
-        <div class="field-group">
-          <label>Email</label>
-          <input id="email" class="input-field" type="email" readonly placeholder="Carregando...">
+
+        <!-- Reservas -->
+        <div class="card" style="flex:1">
+          <h3><i class="fas fa-bookmark"></i> Reservas Pendentes</h3>
+          <div id="listaReservas">
+            <div class="skeleton-linha"></div>
+            <div class="skeleton-linha short"></div>
+          </div>
+
+          <br>
+          <div class="section">
+            <i class="fas fa-trash-alt"></i> Multas
+            <i class="fas fa-exclamation-triangle multa-icon"></i>
+          </div>
+          <div class="section">
+            <strong>Valor Total:</strong>
+            <span id="valor" class="total">R$0.00</span>
+            <br><br>
+            <button class="btn-primary" id="btnPagamento">
+              <i class="fas fa-credit-card"></i> Pagamento
+            </button>
+          </div>
         </div>
-        <div class="field-group">
-          <label>ID de Membro</label>
-          <input id="membroId" class="input-field" type="text" readonly placeholder="—">
-        </div>
-      </div>
-      <br>
-      <div class="btn-row">
-        <a href="dashboard.html" class="btn-gerenciamento" id="btnGerenciamento" style="display:none">
-          <i class="fas fa-sliders-h"></i> Gerenciamento da Biblioteca
-        </a>
+
       </div>
     </div>
 
-    <!-- Livros + Reservas -->
-    <div class="flex">
-
-      <!-- Empréstimos ativos -->
-      <div class="card" style="flex:1">
-        <h3><i class="fas fa-book"></i> Livros Emprestados</h3>
-        <div id="listaEmprestimos">
-          <div class="skeleton-linha"></div>
-          <div class="skeleton-linha short"></div>
-          <div class="skeleton-linha"></div>
-          <div class="skeleton-linha short"></div>
-        </div>
-      </div>
-
-      <!-- Reservas -->
-      <div class="card" style="flex:1">
-        <h3><i class="fas fa-bookmark"></i> Reservas Pendentes</h3>
-        <div id="listaReservas">
-          <div class="skeleton-linha"></div>
-          <div class="skeleton-linha short"></div>
-        </div>
-
-        <br>
-        <div class="section">
-          <i class="fas fa-trash-alt"></i> Multas
-          <i class="fas fa-exclamation-triangle multa-icon"></i>
-        </div>
-        <div class="section">
-          <strong>Valor Total:</strong>
-          <span id="valor" class="total">R$0.00</span>
-          <br><br>
-          <button class="btn-primary" id="btnPagamento">
-            <i class="fas fa-credit-card"></i> Pagamento
-          </button>
-        </div>
-      </div>
-
-    </div>
   </div>
 
   <!-- Toast -->
@@ -219,7 +315,6 @@
       const data = await res.json();
 
       if (data.erro) {
-        // Não autenticado → redireciona para login
         window.location.href = '/BibliotecaSA/pages/TelaLogin.html';
         return;
       }
@@ -229,8 +324,9 @@
       document.getElementById('email').value    = data.usuario.email   || '—';
       document.getElementById('membroId').value = '#' + String(data.usuario.id).padStart(5, '0');
 
+      // ── Exibe itens admin no sidebar se for admin ──
       if (data.usuario.perfil === 'admin') {
-        document.getElementById('btnGerenciamento').style.display = 'inline-flex';
+        document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'flex');
       }
 
       // ── Empréstimos ──
@@ -290,7 +386,7 @@
     }
 
     el.innerHTML = lista.map(r => {
-      const capa  = r.capa_path ? `/BibliotecaSA/${r.capa_path}` : '../img/livro-placeholder.webp';
+      const capa   = r.capa_path ? `/BibliotecaSA/${r.capa_path}` : '../img/livro-placeholder.webp';
       const criado = r.criado_em ? r.criado_em.split(' ')[0].split('-').reverse().join('/') : '—';
 
       return `
@@ -330,7 +426,6 @@
         const el = document.getElementById(`reserva-${reservaId}`);
         if (el) el.remove();
         mostrarToast('Reserva cancelada com sucesso.', false);
-        // Se não restar nenhuma reserva, mostra estado vazio
         const lista = document.getElementById('listaReservas');
         if (!lista.querySelector('.livro-item')) {
           lista.innerHTML = '<p class="lista-vazia"><i class="fas fa-bookmark" style="margin-right:8px;"></i>Nenhuma reserva pendente.</p>';
@@ -345,9 +440,9 @@
 
   function calcularMultas(emprestimos) {
     if (!emprestimos || emprestimos.length === 0) return;
-    const hoje  = new Date(); hoje.setHours(0,0,0,0);
-    const DIARIA = 2.00; // R$ 2,00 por dia de atraso
-    let total = 0;
+    const hoje   = new Date(); hoje.setHours(0,0,0,0);
+    const DIARIA = 2.00;
+    let total    = 0;
 
     emprestimos.forEach(e => {
       const dev = new Date(e.data_devolucao + 'T00:00:00');

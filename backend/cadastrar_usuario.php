@@ -1,9 +1,9 @@
 <?php
-// ============================================================
+
 //  cadastrar_usuario.php
 //  Recebe POST (JSON) do TelaCadastrarUser.js
 //  Retorna JSON { sucesso: true } ou { erro: "mensagem" }
-// ============================================================
+
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');

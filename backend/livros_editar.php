@@ -1,9 +1,9 @@
 <?php
-// ============================================================
+
 //  livros_editar.php
 //  POST — atualiza os dados de um livro existente
 //  Apenas admins autenticados podem chamar este endpoint
-// ============================================================
+
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');

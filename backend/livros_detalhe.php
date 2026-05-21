@@ -1,9 +1,9 @@
 <?php
-// ============================================================
+
 //  livros_detalhe.php
 //  GET ?id=5  — retorna um livro pelo ID
 //  Usado por: TelaLivro.js (substituir sessionStorage)
-// ============================================================
+
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');

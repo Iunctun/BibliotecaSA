@@ -1,8 +1,8 @@
-// ============================================================
+
 //  include.js  — v4
 //  Carrega footer e carrossel via fetch.
 //  Detecta automaticamente o path correto baseado na URL.
-// ============================================================
+
 
 function loadComponent(id, file, callback) {
     fetch(file)

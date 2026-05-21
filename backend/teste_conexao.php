@@ -1,9 +1,9 @@
 <?php
-// ============================================================
+
 //  teste_conexao.php
 //  Acesse no browser: http://localhost/projeto/php/teste_conexao.php
 //  DELETE este arquivo após confirmar que está funcionando
-// ============================================================
+
 
 require_once __DIR__ . '/conexao.php';
 

@@ -1,6 +1,6 @@
-// ============================================================
+
 //  Tela do Livro — carrega dados do banco pelo ?id= na URL
-// ============================================================
+
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -30,9 +30,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 });
 
-// ============================================================
+
 //  Toast
-// ============================================================
+
 
 function showToast(mensagem, tipo = 'erro') {
     const toastExistente = document.getElementById('toast-notificacao');
@@ -71,9 +71,9 @@ function showToast(mensagem, tipo = 'erro') {
     }, 3500);
 }
 
-// ============================================================
+
 //  Máscara e validação de CPF
-// ============================================================
+
 
 function aplicarMascaraCPF(input) {
     input.addEventListener('input', () => {
@@ -89,9 +89,9 @@ function validarCPF(cpf) {
     return cpf.replace(/\D/g, '').length === 11;
 }
 
-// ============================================================
+
 //  Preenche a página com dados do livro
-// ============================================================
+
 
 function preencherPagina(livro) {
     document.title = `${livro.titulo} - Biblioteca`;
@@ -117,9 +117,9 @@ function preencherPagina(livro) {
     }
 }
 
-// ============================================================
+
 //  Modal de locação
-// ============================================================
+
 
 function configurarModal(livro) {
     const modal       = document.getElementById('modal-aluguel');

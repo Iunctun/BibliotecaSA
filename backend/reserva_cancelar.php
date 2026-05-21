@@ -1,10 +1,10 @@
 <?php
-// ============================================================
+
 //  reserva_cancelar.php
 //  POST (JSON) — cancela uma reserva pendente do usuário logado
 //  Campos: reserva_id
 //  Retorna JSON { sucesso: true } ou { erro: "msg" }
-// ============================================================
+
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');

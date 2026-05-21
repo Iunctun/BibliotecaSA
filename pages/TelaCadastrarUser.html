@@ -8,6 +8,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Syne:wght@400;700&display=swap" rel="stylesheet">
     <title>Cadastro - Biblioteca</title>
+    <style>
+        /* Select de estado — herda aparência do input */
+        #estado:focus {
+            border-color: var(--accent2) !important;
+            box-shadow: 0 0 0 3px rgba(92,146,255,0.14) !important;
+        }
+        #estado option {
+            background: #2a2a2a;
+            color: #e8ecf4;
+        }
+        #estado.is-err {
+            border-color: var(--err) !important;
+            box-shadow: 0 0 0 3px rgba(224,123,106,0.12) !important;
+        }
+    </style>
 </head>
 <body>
 
@@ -97,7 +112,36 @@
                             <label for="estado">Estado</label>
                             <div class="input-row">
                                 <i class="fas fa-map-marker-alt ico"></i>
-                                <input id="estado" type="text" placeholder="Ex: São Paulo" autocomplete="address-level1" />
+                                <select id="estado" style="width:100%;background:var(--charcoal3);border:1px solid rgba(255,255,255,0.08);border-radius:var(--r);color:var(--white);font-family:var(--font-sans);font-size:13px;padding:11px 36px;outline:none;transition:border-color 0.2s,box-shadow 0.2s;appearance:none;cursor:pointer;">
+                                    <option value="" disabled selected>Selecione seu estado</option>
+                                    <option value="AC">AC</option>
+                                    <option value="AL">AL</option>
+                                    <option value="AP">AP</option>
+                                    <option value="AM">AM</option>
+                                    <option value="BA">BA</option>
+                                    <option value="CE">CE</option>
+                                    <option value="DF">DF</option>
+                                    <option value="ES">ES</option>
+                                    <option value="GO">GO</option>
+                                    <option value="MA">MA</option>
+                                    <option value="MT">MT</option>
+                                    <option value="MS">MS</option>
+                                    <option value="MG">MG</option>
+                                    <option value="PA">PA</option>
+                                    <option value="PB">PB</option>
+                                    <option value="PR">PR</option>
+                                    <option value="PE">PE</option>
+                                    <option value="PI">PI</option>
+                                    <option value="RJ">RJ</option>
+                                    <option value="RN">RN</option>
+                                    <option value="RS">RS</option>
+                                    <option value="RO">RO</option>
+                                    <option value="RR">RR</option>
+                                    <option value="SC">SC</option>
+                                    <option value="SP">SP</option>
+                                    <option value="SE">SE</option>
+                                    <option value="TO">TO</option>
+                                </select>
                             </div>
                             <span class="err" id="estadoErr"></span>
                         </div>

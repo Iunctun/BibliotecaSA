@@ -1,11 +1,11 @@
 <?php
-// ============================================================
+
 //  livros_salvar.php
 //  POST multipart/form-data do TelaADDLivro.js
 //  Campos: titulo, autor, categoria, data_publicacao,
 //          quantidade, resumo, capa (file)
 //  Retorna JSON { sucesso: true, id: X } ou { erro: "msg" }
-// ============================================================
+
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');

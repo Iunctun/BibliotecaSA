@@ -1,55 +1,16 @@
-<!--
-  =====================================================================
-  NAVBAR INLINE — Cole este bloco no <body> de cada página HTML.
-  =====================================================================
--->
-
-<!-- ===== NAVBAR INLINE ===== -->
 <header class="header">
-  <div class="header-container">
-
-    <div class="logo-left">
-      <img src="../img/logo_navbar.png" alt="Digital Library" class="logo-img">
+    <div class="header-container">
+        <div class="logo-left">
+            <img src="../img/logo_navbar.png" alt="Digital Library" class="logo-img">
+        </div>
+        <nav class="nav-menu">
+            <a href="../pages/TelaHome.html" class="nav-link">INÍCIO</a>
+            <a href="../pages/TelaHome.html#sessao-sobre" class="nav-link">SOBRE</a>
+            <a href="../pages/TelaCatalogoLivros.html" class="nav-link">CATÁLOGO</a>
+            <a href="../pages/TelaHome.html#sessao-contato" class="nav-link">CONTATO</a>
+        </nav>
+        <div class="nav-user-area" id="navUserArea"></div>
     </div>
-
-    <nav class="nav-menu">
-      <a href="../pages/TelaHome.html" class="nav-link">INÍCIO</a>
-      <a href="#sessao-sobre" class="nav-link">SOBRE</a>
-      <a href="../pages/TelaCatalogoLivros.html" class="nav-link">CATÁLOGO</a>
-      <a href="#sessao-contato" class="nav-link">CONTATO</a>
-    </nav>
-
-    <!-- Deixe VAZIO — o navbar.js preenche após checar a sessão -->
-    <div class="nav-user-area" id="navUserArea"></div>
-
-  </div>
 </header>
-<!-- ===== FIM NAVBAR ===== -->
 
-
-<!--
-  =====================================================================
-  SCRIPTS — coloque antes do </body>, nesta ordem:
-  =====================================================================
-
-  <script src="../scripts/navbar.js"></script>
-  <script>
-    initNavbar();
-  </script>
-  <script src="../scripts/include.js"></script>
-  <script src="../scripts/SuaPageScript.js"></script>
-
-  =====================================================================
-  PÁGINAS QUE PRECISAM SER ATUALIZADAS (substituir o ícone fa-book-open
-  pela tag <img> da logo, conforme este arquivo):
-
-  - TelaHome.html
-  - TelaCatalogoLivros.html
-  - TelaLogin.html
-  - TelaCadastrarUser.html
-  - TelaDoLivro.html
-  - TelaADDLivro.html
-  - TelaUsuariologado.html
-  (dashboard.html já tem a logo correta)
-  =====================================================================
--->
+<script>initNavbar();</script>

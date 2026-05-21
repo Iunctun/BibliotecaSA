@@ -1,12 +1,12 @@
 <?php
-// ============================================================
+
 //  livros_listar.php  — v2
 //  GET  — retorna todos os livros
 //  GET ?categoria=Terror  — filtra por categoria
 //  GET ?busca=texto       — busca por título ou autor
 //  Disponibilidade real: considera quantidade no estoque
 //  Usado por: TelaCatalogoLivros, sessaolivros.js
-// ============================================================
+
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');

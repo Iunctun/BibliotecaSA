@@ -1,10 +1,10 @@
 <?php
-// ============================================================
+
 //  login.php
 //  Recebe POST (JSON) do TelaLogin.js
 //  Retorna JSON { sucesso: true, perfil: "admin"|"usuario" }
 //  ou { erro: "mensagem" }
-// ============================================================
+
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');

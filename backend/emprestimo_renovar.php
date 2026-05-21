@@ -1,9 +1,9 @@
 <?php
-// ============================================================
+
 //  emprestimo_renovar.php
 //  POST (JSON) — renova um empréstimo por mais 15 dias
 //  Campos: emprestimo_id
-// ============================================================
+
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');

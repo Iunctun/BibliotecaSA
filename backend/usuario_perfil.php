@@ -1,9 +1,9 @@
 <?php
-// ============================================================
+
 //  usuario_perfil.php
 //  GET — retorna dados do usuário logado + empréstimos + reservas
 //  Usado por: TelaUsuariologado.js
-// ============================================================
+
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');

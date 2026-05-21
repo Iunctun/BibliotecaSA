@@ -12,24 +12,82 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background-color: #16181c; color: #e8e4de; font-family: 'DM Sans', sans-serif; min-height: 100vh; }
 
-    .main-layout {
+    /* ── Layout principal: nav-sidebar + conteúdo ── */
+    .page-wrapper {
       display: flex;
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 140px 80px 100px;
-      gap: 48px;
+      min-height: 100vh;
+      padding-top: 70px; /* altura do header */
+    }
+
+    /* ── Nav sidebar (navegação entre páginas) ── */
+    .nav-sidebar {
+      width: 230px;
+      flex-shrink: 0;
+      background: rgba(255,255,255,0.015);
+      border-right: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 36px 0;
+      position: fixed;
+      top: 70px;
+      left: 0;
+      bottom: 0;
+      overflow-y: auto;
+      z-index: 100;
+    }
+
+    /* Itens visíveis somente para admin — ocultados por JS se não for admin */
+    .nav-sidebar .admin-only { display: none; }
+
+    .nav-sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 24px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.38);
+      text-decoration: none;
+      margin-right: 12px;
+      border-radius: 0 4px 4px 0;
+      border-left: 2px solid transparent;
+      transition: color 0.2s, background 0.2s, border-color 0.2s;
+    }
+    .nav-sidebar-item:hover {
+      background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.7);
+    }
+    .nav-sidebar-item.active {
+      background: rgba(100,160,255,0.08);
+      border-left-color: #7aadff;
+      color: #7aadff;
+    }
+    .nav-sidebar-item i { width: 16px; text-align: center; font-size: 14px; }
+
+    /* ── Conteúdo principal (deslocado pelo nav-sidebar) ── */
+    .main-layout {
+      margin-left: 230px;
+      display: flex;
+      width: 100%;
+      padding: 68px 48px 100px 48px;
+      gap: 40px;
       align-items: flex-start;
     }
 
-    /* ── Sidebar ── */
+    /* ── Filter sidebar (direita) ── */
     .sidebar {
-      width: 200px;
+      width: 220px;
       flex-shrink: 0;
       display: flex;
       flex-direction: column;
       gap: 12px;
       position: sticky;
-      top: 120px;
+      top: 88px;
+      align-self: flex-start;
     }
 
     .filter-card {
@@ -119,11 +177,23 @@
     /* ── Catálogo ── */
     .catalog-section { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 40px; }
 
+    /* ── Cabeçalho da página ── */
+    .page-header { width: 100%; margin-bottom: 8px; }
+    .page-sup {
+        display: block; font-size: 10px; font-weight: 500;
+        letter-spacing: 4px; text-transform: uppercase; color: #7aadff; margin-bottom: 8px;
+    }
+    .page-header h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: 38px; font-weight: 400; color: #fff; margin-bottom: 6px;
+    }
+    .page-desc { font-size: 13px; color: rgba(255,255,255,0.35); font-weight: 300; }
+
     .results-info { width: 100%; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.25); }
     .results-info span { color: #1d9e75; }
 
     /* ── Grid ── */
-    .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px; width: 100%; }
+    .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; width: 100%; }
 
     .book-card { display: flex; flex-direction: column; cursor: pointer; transition: transform 0.2s ease; }
     .book-card:hover { transform: translateY(-4px); }
@@ -253,7 +323,7 @@
   <header class="header">
     <div class="header-container">
       <div class="logo-left">
-        <i class="fa-solid fa-book-open" style="font-size:30px;color:#fff;"></i>
+        <img src="../img/logo_navbar.png" alt="Digital Library" class="logo-img">
       </div>
       <nav class="nav-menu">
         <a href="../pages/TelaHome.html" class="nav-link">INÍCIO</a>
@@ -264,60 +334,89 @@
       <div class="nav-user-area" id="navUserArea"></div>
     </div>
   </header>
-  <!-- ===== FIM NAVBAR ===== -->
 
-  <main class="main-layout">
+  <div class="page-wrapper">
 
-    <aside class="sidebar">
-
-      <!-- Busca -->
-      <input class="search-input" id="inputBusca" type="text" placeholder="🔍  Buscar livros...">
-
-      <!-- Categoria (populada dinamicamente) -->
-      <div class="filter-card">
-        <div class="filter-title">Categoria</div>
-        <div id="filtrosCategorias">
-          <!-- Preenchido pelo JS -->
-        </div>
-      </div>
-
-      <!-- Autor (populada dinamicamente) -->
-      <div class="filter-card">
-        <div class="filter-title">Autor</div>
-        <div id="filtrosAutores">
-          <!-- Preenchido pelo JS -->
-        </div>
-      </div>
-
-      <button class="btn-clear" id="btnLimpar">
-        <i class="fas fa-times" style="margin-right:6px;"></i> Limpar filtros
-      </button>
-
+    <!-- Nav sidebar (navegação entre páginas) — visível somente se logado -->
+    <aside class="nav-sidebar" id="navSidebar" style="display:none;">
+      <a href="../pages/dashboard.html" class="nav-sidebar-item admin-only" id="sidebarDashboard">
+        <i class="fa-solid fa-house"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="../pages/TelaADDLivro.html" class="nav-sidebar-item admin-only" id="sidebarAddLivro">
+        <i class="fa-solid fa-book-medical"></i>
+        <span>Adicionar Livro</span>
+      </a>
+      <a href="../pages/TelaCatalogoLivros.html" class="nav-sidebar-item active">
+        <i class="fa-solid fa-book-open"></i>
+        <span>Catálogo</span>
+      </a>
+      <a href="../pages/TelaUsuariologado.html" class="nav-sidebar-item">
+        <i class="fa-solid fa-user"></i>
+        <span>Meu Perfil</span>
+      </a>
     </aside>
 
-    <section class="catalog-section">
-      <div class="results-info">
-        <span id="resultsCount">—</span> livros encontrados
-      </div>
+    <main class="main-layout" id="mainLayout">
 
-      <div class="grid" id="grid">
-        <!-- Skeletons de carregamento -->
-        <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
-        <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
-        <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
-        <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
-        <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
-        <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
-      </div>
+      <section class="catalog-section">
 
-      <div class="empty-state" id="emptyState">
-        <i class="fas fa-book-open"></i>
-        <p>Nenhum livro encontrado</p>
-      </div>
+        <div class="page-header">
+          <span class="page-sup">Acervo Digital</span>
+          <h1>Catálogo de Livros</h1>
+          <p class="page-desc">Explore, filtre e reserve livros do nosso acervo</p>
+        </div>
 
-      <div class="pagination" id="pagination"></div>
-    </section>
-  </main>
+        <div class="results-info">
+          <span id="resultsCount">—</span> livros encontrados
+        </div>
+
+        <div class="grid" id="grid">
+          <!-- Skeletons de carregamento -->
+          <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
+          <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
+          <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
+          <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
+          <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
+        </div>
+
+        <div class="empty-state" id="emptyState">
+          <i class="fas fa-book-open"></i>
+          <p>Nenhum livro encontrado</p>
+        </div>
+
+        <div class="pagination" id="pagination"></div>
+      </section>
+
+      <aside class="sidebar">
+
+        <!-- Busca -->
+        <input class="search-input" id="inputBusca" type="text" placeholder="🔍  Buscar livros...">
+
+        <!-- Categoria (populada dinamicamente) -->
+        <div class="filter-card">
+          <div class="filter-title">Categoria</div>
+          <div id="filtrosCategorias">
+            <!-- Preenchido pelo JS -->
+          </div>
+        </div>
+
+        <!-- Autor (populada dinamicamente) -->
+        <div class="filter-card">
+          <div class="filter-title">Autor</div>
+          <div id="filtrosAutores">
+            <!-- Preenchido pelo JS -->
+          </div>
+        </div>
+
+        <button class="btn-clear" id="btnLimpar">
+          <i class="fas fa-times" style="margin-right:6px;"></i> Limpar filtros
+        </button>
+
+      </aside>
+    </main>
+
+  </div>
 
   <!-- Toast -->
   <div class="toast" id="toast">
@@ -343,11 +442,11 @@
   const API_BASE    = '/BibliotecaSA/backend';
   const POR_PAGINA  = 12;
 
-  let todosLivros   = [];
+  let todosLivros     = [];
   let livrosFiltrados = [];
-  let paginaAtual   = 1;
-  let toastTimer    = null;
-  let buscaTimer    = null;
+  let paginaAtual     = 1;
+  let toastTimer      = null;
+  let buscaTimer      = null;
 
   const grid        = document.getElementById('grid');
   const emptyState  = document.getElementById('emptyState');
@@ -358,6 +457,26 @@
   const filtrosCats = document.getElementById('filtrosCategorias');
   const filtrosAuts = document.getElementById('filtrosAutores');
   const toast       = document.getElementById('toast');
+
+  // ── Detecta sessão e exibe/configura o nav sidebar ──
+  (async () => {
+    try {
+      const resp   = await fetch(`${API_BASE}/sessao.php`, { credentials: 'same-origin' });
+      const sessao = await resp.json();
+
+      if (sessao.logado) {
+        // Mostra o nav sidebar
+        document.getElementById('navSidebar').style.display = 'flex';
+        // Empurra o main para dar espaço ao sidebar
+        document.getElementById('mainLayout').style.marginLeft = '230px';
+
+        if (sessao.perfil === 'admin') {
+          // Exibe itens exclusivos de admin
+          document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'flex');
+        }
+      }
+    } catch { /* não logado, sem sidebar */ }
+  })();
 
   // ── Carrega livros da API ──
   async function carregarLivros() {

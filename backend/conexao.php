@@ -1,11 +1,11 @@
 <?php
-// ============================================================
+
 //  conexao.php — conexão PDO com o banco
 //  Inclua este arquivo em todos os outros PHP:
 //  require_once __DIR__ . '/conexao.php';
-// ============================================================
 
-define('DB_HOST', 'localhost');
+
+define('DB_HOST', '172.30.176.1');
 define('DB_NAME', 'digital_library');
 define('DB_USER', 'root');       // altere para seu usuário MySQL
 define('DB_PASS', '');           // altere para sua senha MySQL

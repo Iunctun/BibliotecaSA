@@ -1,11 +1,11 @@
 <?php
-// ============================================================
+
 //  emprestimo_salvar.php  — v2
 //  POST (JSON) do TelaDoLivro — modal de locação
 //  Campos: livro_id, nome, cpf, data_retirada, data_devolucao, contato
 //  Ao confirmar empréstimo, cancela reserva pendente do mesmo usuário (se houver)
 //  Retorna JSON { sucesso: true } ou { erro: "msg" }
-// ============================================================
+
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');

@@ -3,7 +3,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    background-color: #0f1117;
+    background-color: #16181c;
     font-family: 'DM Sans', sans-serif;
     color: #e8e4de;
 }
@@ -35,6 +35,7 @@ body {
     align-items: center;
     gap: 12px;
     padding: 13px 24px;
+    font-family: 'DM Sans', sans-serif;
     font-size: 12px;
     font-weight: 500;
     letter-spacing: 0.8px;

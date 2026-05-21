@@ -9,6 +9,66 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="../styles/TelaADDLivro.css">
+    <style>
+        /* Sobrescreve o add-page do CSS externo para funcionar com sidebar */
+        .add-page {
+            margin-left: 0 !important;
+            max-width: none !important;
+            margin-top: 0 !important;
+            padding: 52px 56px 80px !important;
+        }
+        .add-page-header {
+            margin-bottom: 36px;
+        }
+
+        /* ── Layout idêntico ao dashboard ── */
+        .layout {
+            display: flex;
+            min-height: 100vh;
+            padding-top: 70px;
+        }
+
+        /* ── Sidebar (mesmo padrão do dashboard.css) ── */
+        .sidebar {
+            width: 230px;
+            background: rgba(255,255,255,0.015);
+            border-right: 1px solid rgba(255,255,255,0.06);
+            padding: 36px 0;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            position: sticky;
+            top: 70px;
+            height: calc(100vh - 70px);
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 13px 24px;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.38);
+            text-decoration: none;
+            margin-right: 12px;
+            border-radius: 0 4px 4px 0;
+            border-left: 2px solid transparent;
+            transition: color 0.2s, background 0.2s, border-color 0.2s;
+        }
+        .sidebar-item:hover { background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.7); }
+        .sidebar-item.active { background: rgba(100,160,255,0.08); border-left-color: #7aadff; color: #7aadff; }
+        .sidebar-item i { width: 16px; text-align: center; font-size: 14px; }
+
+        /* Itens admin ocultos por padrão */
+        .admin-only { display: none; }
+
+        /* ── Main ── */
+        .main { flex: 1; min-width: 0; overflow: hidden; }
+    </style>
 </head>
 
 <body>
@@ -17,7 +77,7 @@
     <header class="header">
         <div class="header-container">
             <div class="logo-left">
-                <i class="fa-solid fa-book-open" style="font-size:30px;color:#fff;"></i>
+                <img src="../img/logo_navbar.png" alt="Digital Library" class="logo-img">
             </div>
             <nav class="nav-menu">
                 <a href="../pages/TelaHome.html" class="nav-link">INÍCIO</a>
@@ -29,98 +89,120 @@
         </div>
     </header>
 
-    <div class="add-page">
+    <div class="layout">
 
-        <div class="add-page-header">
-            <a href="../pages/dashboard.html" title="Voltar para Dashboard">
-                <i class="fa-solid fa-arrow-left"></i>
+        <!-- Sidebar — mesmo padrão do dashboard -->
+        <aside class="sidebar">
+            <a href="../pages/dashboard.html" class="sidebar-item admin-only">
+                <i class="fa-solid fa-house"></i>
+                <span>Dashboard</span>
             </a>
-            <div>
-                <span class="add-page-sup">Acervo Digital</span>
-                <h1>Adicionar Novo Livro</h1>
-            </div>
-        </div>
+            <a href="../pages/TelaADDLivro.html" class="sidebar-item admin-only active">
+                <i class="fa-solid fa-book-medical"></i>
+                <span>Adicionar Livro</span>
+            </a>
+            <a href="../pages/TelaCatalogoLivros.html" class="sidebar-item">
+                <i class="fa-solid fa-book-open"></i>
+                <span>Catálogo</span>
+            </a>
+            <a href="../pages/TelaUsuariologado.html" class="sidebar-item">
+                <i class="fa-solid fa-user"></i>
+                <span>Meu Perfil</span>
+            </a>
+        </aside>
 
-        <div class="form-card">
+        <main class="main">
+            <div class="add-page">
 
-            <div class="form-top">
-
-                <!-- Upload da capa -->
-                <div class="cover-upload-area" id="coverArea" title="Clique para escolher a capa">
-                    <input type="file" id="inputCapa" accept="image/jpeg,image/png,image/webp">
-                    <img class="cover-preview" id="capaPreview" alt="Preview da capa">
-                    <div class="cover-placeholder" id="capaPlaceholder">
-                        <i class="fa-regular fa-image"></i>
-                        <span>Clique para adicionar a capa do livro</span>
-                        <small>JPG, PNG, WEBP — Máx. 5 MB</small>
+                <div class="add-page-header">
+                    <div>
+                        <span class="add-page-sup">Acervo Digital</span>
+                        <h1>Adicionar Novo Livro</h1>
                     </div>
-                    <span class="cover-label" id="capaLabel">Foto da capa</span>
                 </div>
 
-                <!-- Campos -->
-                <div class="form-fields">
+                <div class="form-card">
 
-                    <div class="form-group">
-                        <label for="inputTitulo">Título <span class="required">*</span></label>
-                        <input type="text" id="inputTitulo" placeholder="Ex: Dom Quixote" maxlength="120">
+                    <div class="form-top">
+
+                        <!-- Upload da capa -->
+                        <div class="cover-upload-area" id="coverArea" title="Clique para escolher a capa">
+                            <input type="file" id="inputCapa" accept="image/jpeg,image/png,image/webp">
+                            <img class="cover-preview" id="capaPreview" alt="Preview da capa">
+                            <div class="cover-placeholder" id="capaPlaceholder">
+                                <i class="fa-regular fa-image"></i>
+                                <span>Clique para adicionar a capa do livro</span>
+                                <small>JPG, PNG, WEBP — Máx. 5 MB</small>
+                            </div>
+                            <span class="cover-label" id="capaLabel">Foto da capa</span>
+                        </div>
+
+                        <!-- Campos -->
+                        <div class="form-fields">
+
+                            <div class="form-group">
+                                <label for="inputTitulo">Título <span class="required">*</span></label>
+                                <input type="text" id="inputTitulo" placeholder="Ex: Dom Quixote" maxlength="120">
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="inputAutor">Autor <span class="required">*</span></label>
+                                    <input type="text" id="inputAutor" placeholder="Ex: Miguel de Cervantes" maxlength="80">
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputCategoria">Categoria <span class="required">*</span></label>
+                                    <select id="inputCategoria">
+                                        <option value="">Selecione uma categoria</option>
+                                        <option value="Terror">Terror</option>
+                                        <option value="Drama">Drama</option>
+                                        <option value="Romance">Romance</option>
+                                        <option value="Suspense">Suspense</option>
+                                        <option value="Comédia">Comédia</option>
+                                        <option value="Fantasia">Fantasia</option>
+                                        <option value="Ficção Científica">Ficção Científica</option>
+                                        <option value="Aventura">Aventura</option>
+                                        <option value="Biografia">Biografia</option>
+                                        <option value="História">História</option>
+                                        <option value="Autoajuda">Autoajuda</option>
+                                        <option value="Mistério">Mistério</option>
+                                        <option value="Outros">Outros</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="inputDataPublicacao">Data de Publicação <span class="required">*</span></label>
+                                    <input type="date" id="inputDataPublicacao">
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputQuantidade">Quantidade em Estoque <span class="required">*</span></label>
+                                    <input type="number" id="inputQuantidade" min="1" max="9999" placeholder="Ex: 3">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inputResumo">Resumo <span class="required">*</span></label>
+                                <textarea id="inputResumo" placeholder="Escreva uma sinopse do livro..." maxlength="600"></textarea>
+                                <span class="char-count" id="charCount">0 / 600</span>
+                            </div>
+
+                        </div>
                     </div>
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="inputAutor">Autor <span class="required">*</span></label>
-                            <input type="text" id="inputAutor" placeholder="Ex: Miguel de Cervantes" maxlength="80">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputCategoria">Categoria <span class="required">*</span></label>
-                            <select id="inputCategoria">
-                                <option value="">Selecione uma categoria</option>
-                                <option value="Terror">Terror</option>
-                                <option value="Drama">Drama</option>
-                                <option value="Romance">Romance</option>
-                                <option value="Suspense">Suspense</option>
-                                <option value="Comédia">Comédia</option>
-                                <option value="Fantasia">Fantasia</option>
-                                <option value="Ficção Científica">Ficção Científica</option>
-                                <option value="Aventura">Aventura</option>
-                                <option value="Biografia">Biografia</option>
-                                <option value="História">História</option>
-                                <option value="Autoajuda">Autoajuda</option>
-                                <option value="Mistério">Mistério</option>
-                                <option value="Outros">Outros</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="inputDataPublicacao">Data de Publicação <span class="required">*</span></label>
-                            <input type="date" id="inputDataPublicacao">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputQuantidade">Quantidade em Estoque <span class="required">*</span></label>
-                            <input type="number" id="inputQuantidade" min="1" max="9999" placeholder="Ex: 3">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="inputResumo">Resumo <span class="required">*</span></label>
-                        <textarea id="inputResumo" placeholder="Escreva uma sinopse do livro..." maxlength="600"></textarea>
-                        <span class="char-count" id="charCount">0 / 600</span>
+                    <div class="form-footer">
+                        <a class="btn-cancelar" href="../pages/dashboard.html">
+                            <i class="fa-solid fa-xmark"></i> Cancelar
+                        </a>
+                        <button class="btn-salvar" id="btnSalvar">
+                            <i class="fa-solid fa-floppy-disk"></i> Salvar Livro
+                        </button>
                     </div>
 
                 </div>
             </div>
-
-            <div class="form-footer">
-                <a class="btn-cancelar" href="../pages/dashboard.html">
-                    <i class="fa-solid fa-xmark"></i> Cancelar
-                </a>
-                <button class="btn-salvar" id="btnSalvar">
-                    <i class="fa-solid fa-floppy-disk"></i> Salvar Livro
-                </button>
-            </div>
-
-        </div>
+        </main>
     </div>
 
     <!-- Toast -->
@@ -137,39 +219,53 @@
 
     <script>
     // ============================================================
-    //  TelaADDLivro — salva livro no banco via livros_salvar.php
+    //  TelaADDLivro — proteção de rota (somente admin)
     // ============================================================
     const API = '/BibliotecaSA/backend';
     let toastTimer = null;
 
+    // ── Proteção de rota + exibe itens admin no sidebar ──
+    (async () => {
+        try {
+            const resp = await fetch(`${API}/sessao.php`, { credentials: 'same-origin' });
+            const data = await resp.json();
+            if (!data.logado || data.perfil !== 'admin') {
+                window.location.href = '/BibliotecaSA/pages/TelaLogin.html';
+                return;
+            }
+            // Exibe itens admin no sidebar
+            document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'flex');
+        } catch {
+            window.location.href = '/BibliotecaSA/pages/TelaLogin.html';
+        }
+    })();
+
     // ── Preview da capa ──
-    const inputCapa      = document.getElementById('inputCapa');
-    const capaPreview    = document.getElementById('capaPreview');
+    const inputCapa       = document.getElementById('inputCapa');
+    const capaPreview     = document.getElementById('capaPreview');
     const capaPlaceholder = document.getElementById('capaPlaceholder');
-    const coverArea      = document.getElementById('coverArea');
+    const coverArea       = document.getElementById('coverArea');
 
     coverArea.addEventListener('click', () => inputCapa.click());
 
     inputCapa.addEventListener('change', () => {
         const file = inputCapa.files[0];
         if (!file) return;
-
         if (file.size > 5 * 1024 * 1024) {
             mostrarToast('A imagem deve ter no máximo 5 MB.', true);
             inputCapa.value = '';
             return;
         }
-
         const reader = new FileReader();
         reader.onload = e => {
             capaPreview.src = e.target.result;
-            capaPreview.style.display    = 'block';
+            capaPreview.style.display     = 'block';
             capaPlaceholder.style.display = 'none';
         };
         reader.readAsDataURL(file);
     });
 
-    // ── Contador de caracteres do resumo ──
+    // ── Contador de caracteres ──
     const inputResumo = document.getElementById('inputResumo');
     const charCount   = document.getElementById('charCount');
     inputResumo.addEventListener('input', () => {
@@ -185,7 +281,6 @@
         const qtd       = document.getElementById('inputQuantidade').value;
         const resumo    = inputResumo.value.trim();
 
-        // Validação front-end
         if (!titulo)    { mostrarToast('Informe o título do livro.', true); return; }
         if (!autor)     { mostrarToast('Informe o autor do livro.', true); return; }
         if (!categoria) { mostrarToast('Selecione uma categoria.', true); return; }
@@ -198,26 +293,20 @@
         btn.disabled  = true;
         btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Salvando...';
 
-        // Monta FormData para enviar capa (multipart)
         const fd = new FormData();
-        fd.append('titulo',           titulo);
-        fd.append('autor',            autor);
-        fd.append('categoria',        categoria);
-        fd.append('data_publicacao',  data);
-        fd.append('quantidade',       qtd);
-        fd.append('resumo',           resumo);
-        if (inputCapa.files[0]) {
-            fd.append('capa', inputCapa.files[0]);
-        }
+        fd.append('titulo',          titulo);
+        fd.append('autor',           autor);
+        fd.append('categoria',       categoria);
+        fd.append('data_publicacao', data);
+        fd.append('quantidade',      qtd);
+        fd.append('resumo',          resumo);
+        if (inputCapa.files[0]) fd.append('capa', inputCapa.files[0]);
 
         try {
-            const res  = await fetch(`${API}/livros_salvar.php`, {
-                method: 'POST',
-                credentials: 'same-origin',
-                body: fd   // Não definir Content-Type — o browser adiciona o boundary
+            const res   = await fetch(`${API}/livros_salvar.php`, {
+                method: 'POST', credentials: 'same-origin', body: fd
             });
             const data2 = await res.json();
-
             if (data2.sucesso) {
                 mostrarToast('Livro salvo com sucesso! Redirecionando...', false);
                 setTimeout(() => window.location.href = '/BibliotecaSA/pages/TelaCatalogoLivros.html', 2000);
@@ -236,15 +325,13 @@
     // ── Toast ──
     function mostrarToast(msg, erro = false) {
         clearTimeout(toastTimer);
-        const toast   = document.getElementById('toast-add');
-        const icon    = document.getElementById('toast-icon');
-        const msgEl   = document.getElementById('toast-msg');
-
-        msgEl.textContent = msg;
-        icon.className    = erro ? 'fa-solid fa-circle-xmark' : 'fa-solid fa-circle-check';
-        toast.style.borderColor  = erro ? 'rgba(226,75,74,0.4)' : 'rgba(29,158,117,0.4)';
-        icon.style.color         = erro ? '#e24b4a' : '#1d9e75';
-
+        const toast = document.getElementById('toast-add');
+        const icon  = document.getElementById('toast-icon');
+        const msgEl = document.getElementById('toast-msg');
+        msgEl.textContent       = msg;
+        icon.className          = erro ? 'fa-solid fa-circle-xmark' : 'fa-solid fa-circle-check';
+        toast.style.borderColor = erro ? 'rgba(226,75,74,0.4)' : 'rgba(29,158,117,0.4)';
+        icon.style.color        = erro ? '#e24b4a' : '#1d9e75';
         toast.classList.add('show');
         toastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
     }
