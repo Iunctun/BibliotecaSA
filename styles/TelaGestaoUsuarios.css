@@ -230,8 +230,8 @@ html, body {
   padding: 3px 10px;
   border-radius: 2px;
 }
-.badge-admin  { background: rgba(122,173,255,0.12); color: #7aadff; }
-.badge-membro { background: rgba(29,158,117,0.10);  color: #5dcaa5; }
+.badge-admin   { background: rgba(122,173,255,0.12); color: #7aadff; }
+.badge-usuario { background: rgba(29,158,117,0.10);  color: #5dcaa5; }
 
 /* Botões de ação na tabela */
 .btn-acao {

@@ -54,65 +54,61 @@
       </a>
     </aside>
 
-    <!-- ===== CONTEÚDO PRINCIPAL ===== -->
+    <!-- ===== CONTEÚDO ===== -->
     <div class="container">
 
-      <!-- Cabeçalho -->
       <div class="page-header">
         <span class="page-sup">Administração</span>
         <h1>Gestão de Usuários</h1>
         <p class="page-desc">Visualize, edite e gerencie todos os membros cadastrados no sistema</p>
       </div>
 
-      <!-- Barra de ações -->
+      <!-- Toolbar -->
       <div class="toolbar">
         <div class="toolbar-left">
           <div class="search-wrapper">
             <i class="fas fa-search search-icon"></i>
             <input type="text" id="campoBusca" class="search-input" placeholder="Buscar por nome, email ou ID...">
           </div>
-          <div class="filter-group">
-            <select id="filtroPerfil" class="select-filter">
-              <option value="">Todos os perfis</option>
-              <option value="admin">Admin</option>
-              <option value="membro">Membro</option>
-            </select>
-          </div>
+          <select id="filtroPerfil" class="select-filter">
+            <option value="">Todos os perfis</option>
+            <option value="admin">Admin</option>
+            <option value="usuario">Usuário</option>
+          </select>
         </div>
-        <div class="toolbar-right">
-          <span class="total-badge" id="totalUsuarios">— usuários</span>
-        </div>
+        <span class="total-badge" id="totalUsuarios">— usuários</span>
       </div>
 
-      <!-- Tabela de usuários -->
+      <!-- Tabela -->
       <div class="card table-card">
         <div class="table-wrapper">
-          <table class="user-table" id="tabelaUsuarios">
+          <table class="user-table">
             <thead>
               <tr>
                 <th>ID</th>
                 <th>Nome</th>
                 <th>Email</th>
                 <th>Telefone</th>
+                <th>CPF</th>
+                <th>Estado</th>
                 <th>Perfil</th>
                 <th>Cadastro</th>
                 <th class="col-acoes">Ações</th>
               </tr>
             </thead>
             <tbody id="corpoTabela">
-              <!-- Skeleton loading -->
-              <tr class="skeleton-row"><td colspan="7"><div class="skeleton-linha"></div></td></tr>
-              <tr class="skeleton-row"><td colspan="7"><div class="skeleton-linha short"></div></td></tr>
-              <tr class="skeleton-row"><td colspan="7"><div class="skeleton-linha"></div></td></tr>
+              <tr class="skeleton-row"><td colspan="9"><div class="skeleton-linha"></div></td></tr>
+              <tr class="skeleton-row"><td colspan="9"><div class="skeleton-linha short"></div></td></tr>
+              <tr class="skeleton-row"><td colspan="9"><div class="skeleton-linha"></div></td></tr>
             </tbody>
           </table>
         </div>
       </div>
 
-    </div><!-- /container -->
-  </div><!-- /page-wrapper -->
+    </div>
+  </div>
 
-  <!-- ===== MODAL EDITAR USUÁRIO ===== -->
+  <!-- ===== MODAL EDITAR ===== -->
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal" id="modalEditar">
       <div class="modal-header">
@@ -120,13 +116,10 @@
           <span class="modal-sup">Administração</span>
           <h2 class="modal-title">Editar Usuário</h2>
         </div>
-        <button class="modal-close" id="btnFecharModal">
-          <i class="fas fa-times"></i>
-        </button>
+        <button class="modal-close" id="btnFecharModal"><i class="fas fa-times"></i></button>
       </div>
       <div class="modal-body">
         <input type="hidden" id="editId">
-
         <div class="modal-grid">
           <div class="field-group full">
             <label>Nome Completo</label>
@@ -141,9 +134,32 @@
             <input type="text" id="editTelefone" class="input-field" placeholder="(00) 00000-0000">
           </div>
           <div class="field-group">
+            <label>CPF</label>
+            <input type="text" id="editCpf" class="input-field" placeholder="000.000.000-00">
+          </div>
+          <div class="field-group">
+            <label>Data de Nascimento</label>
+            <input type="date" id="editNascimento" class="input-field">
+          </div>
+          <div class="field-group">
+            <label>Estado</label>
+            <select id="editEstado" class="input-field select-field">
+              <option value="">Selecione</option>
+              <option value="AC">AC</option><option value="AL">AL</option><option value="AP">AP</option>
+              <option value="AM">AM</option><option value="BA">BA</option><option value="CE">CE</option>
+              <option value="DF">DF</option><option value="ES">ES</option><option value="GO">GO</option>
+              <option value="MA">MA</option><option value="MT">MT</option><option value="MS">MS</option>
+              <option value="MG">MG</option><option value="PA">PA</option><option value="PB">PB</option>
+              <option value="PR">PR</option><option value="PE">PE</option><option value="PI">PI</option>
+              <option value="RJ">RJ</option><option value="RN">RN</option><option value="RS">RS</option>
+              <option value="RO">RO</option><option value="RR">RR</option><option value="SC">SC</option>
+              <option value="SP">SP</option><option value="SE">SE</option><option value="TO">TO</option>
+            </select>
+          </div>
+          <div class="field-group full">
             <label>Perfil de Acesso</label>
             <select id="editPerfil" class="input-field select-field">
-              <option value="membro">Membro</option>
+              <option value="usuario">Usuário</option>
               <option value="admin">Administrador</option>
             </select>
           </div>
@@ -170,14 +186,10 @@
           <span class="modal-sup">Atenção</span>
           <h2 class="modal-title">Remover Usuário</h2>
         </div>
-        <button class="modal-close" id="btnFecharConfirm">
-          <i class="fas fa-times"></i>
-        </button>
+        <button class="modal-close" id="btnFecharConfirm"><i class="fas fa-times"></i></button>
       </div>
       <div class="modal-body">
-        <div class="confirm-icon">
-          <i class="fas fa-user-slash"></i>
-        </div>
+        <div class="confirm-icon"><i class="fas fa-user-slash"></i></div>
         <p class="confirm-msg">Tem certeza que deseja remover o usuário <strong id="confirmNome"></strong>? Esta ação não pode ser desfeita.</p>
       </div>
       <div class="modal-footer">
