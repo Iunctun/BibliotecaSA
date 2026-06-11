@@ -3,7 +3,7 @@
 //  livros_salvar.php
 //  POST multipart/form-data do TelaADDLivro.js
 //  Campos: titulo, autor, categoria, data_publicacao,
-//          quantidade, resumo, capa (file)
+//          quantidade, resumo, preco_aluguel, capa (file)
 //  Retorna JSON { sucesso: true, id: X } ou { erro: "msg" }
 
 
@@ -35,6 +35,16 @@ if ($quantidade < 1) {
     exit;
 }
 
+// Preço do aluguel — padrão R$ 10,00 se não informado
+$preco_aluguel = isset($_POST['preco_aluguel']) && $_POST['preco_aluguel'] !== ''
+    ? (float)str_replace(',', '.', $_POST['preco_aluguel'])
+    : 10.00;
+
+if ($preco_aluguel < 0) {
+    echo json_encode(['erro' => 'O preço não pode ser negativo.']);
+    exit;
+}
+
 // Upload da capa (opcional)
 $capa_path = null;
 if (!empty($_FILES['capa']['tmp_name'])) {
@@ -43,7 +53,7 @@ if (!empty($_FILES['capa']['tmp_name'])) {
         mkdir($upload_dir, 0755, true);
     }
 
-    $ext        = pathinfo($_FILES['capa']['name'], PATHINFO_EXTENSION);
+    $ext          = pathinfo($_FILES['capa']['name'], PATHINFO_EXTENSION);
     $nome_arquivo = uniqid('capa_') . '.' . $ext;
     $destino      = $upload_dir . $nome_arquivo;
 
@@ -63,10 +73,10 @@ if (!empty($_FILES['capa']['tmp_name'])) {
     }
 }
 
-// Insere o livro
+// Insere o livro com preço
 $stmt = $pdo->prepare('
-    INSERT INTO livros (titulo, autor, categoria, data_publicacao, quantidade, resumo, capa_path)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO livros (titulo, autor, categoria, data_publicacao, quantidade, resumo, preco_aluguel, capa_path)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
 ');
 $stmt->execute([
     trim($_POST['titulo']),
@@ -75,6 +85,7 @@ $stmt->execute([
     $_POST['data_publicacao'],
     $quantidade,
     trim($_POST['resumo']),
+    $preco_aluguel,
     $capa_path
 ]);
 

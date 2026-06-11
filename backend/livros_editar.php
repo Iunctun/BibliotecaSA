@@ -1,88 +1,63 @@
 <?php
 
 //  livros_editar.php
-//  POST — atualiza os dados de um livro existente
-//  Apenas admins autenticados podem chamar este endpoint
-
+//  POST (JSON) — atualiza campos editáveis de um livro
+//  Atualmente suporta: preco_aluguel
+//  Apenas admin pode usar este endpoint
+//  Retorna JSON { sucesso: true } ou { erro: "msg" }
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 
-require_once __DIR__ . '/conexao.php';
 session_start();
 
-// ── Proteção: apenas admin ──
+// Apenas admin
 if (empty($_SESSION['usuario_id']) || $_SESSION['usuario_perfil'] !== 'admin') {
-    http_response_code(403);
     echo json_encode(['erro' => 'Acesso negado.']);
     exit;
 }
 
-$id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
-if (!$id) {
-    echo json_encode(['erro' => 'ID inválido.']);
+require_once __DIR__ . '/conexao.php';
+
+$dados = json_decode(file_get_contents('php://input'), true);
+
+if (empty($dados['id'])) {
+    echo json_encode(['erro' => 'ID do livro obrigatório.']);
     exit;
 }
 
-$titulo          = trim($_POST['titulo']          ?? '');
-$autor           = trim($_POST['autor']           ?? '');
-$categoria       = trim($_POST['categoria']       ?? '');
-$data_publicacao = trim($_POST['data_publicacao'] ?? '');
-$quantidade      = (int)($_POST['quantidade']     ?? 0);
-$resumo          = trim($_POST['resumo']          ?? '');
+$id = (int)$dados['id'];
 
-if (!$titulo || !$autor || !$categoria || !$data_publicacao || $quantidade < 1 || !$resumo) {
-    echo json_encode(['erro' => 'Preencha todos os campos obrigatórios.']);
+// Verifica se o livro existe
+$stmt = $pdo->prepare('SELECT id FROM livros WHERE id = ? LIMIT 1');
+$stmt->execute([$id]);
+if (!$stmt->fetch()) {
+    echo json_encode(['erro' => 'Livro não encontrado.']);
     exit;
 }
 
-// ── Upload de nova capa (opcional) ──
-$capa_sql   = '';
-$capa_param = [];
+// Monta os campos a atualizar dinamicamente
+$campos   = [];
+$valores  = [];
 
-if (!empty($_FILES['capa']['tmp_name'])) {
-    $file      = $_FILES['capa'];
-    $ext       = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-    $permitidos = ['jpg','jpeg','png','webp'];
-
-    if (!in_array($ext, $permitidos)) {
-        echo json_encode(['erro' => 'Formato de imagem inválido. Use JPG, PNG ou WEBP.']);
+if (isset($dados['preco_aluguel'])) {
+    $preco = (float)$dados['preco_aluguel'];
+    if ($preco < 0) {
+        echo json_encode(['erro' => 'O preço não pode ser negativo.']);
         exit;
     }
-    if ($file['size'] > 5 * 1024 * 1024) {
-        echo json_encode(['erro' => 'A imagem deve ter no máximo 5 MB.']);
-        exit;
-    }
-
-    $nomeArquivo = 'capa_' . $id . '_' . time() . '.' . $ext;
-    $destino     = __DIR__ . '/../img/capas/' . $nomeArquivo;
-
-    if (!is_dir(dirname($destino))) {
-        mkdir(dirname($destino), 0755, true);
-    }
-
-    if (!move_uploaded_file($file['tmp_name'], $destino)) {
-        echo json_encode(['erro' => 'Falha ao salvar a imagem.']);
-        exit;
-    }
-
-    $capa_sql   = ', capa_path = ?';
-    $capa_param = ['img/capas/' . $nomeArquivo];
+    $campos[]  = 'preco_aluguel = ?';
+    $valores[] = $preco;
 }
 
-$params = array_merge(
-    [$titulo, $autor, $categoria, $data_publicacao, $quantidade, $resumo],
-    $capa_param,
-    [$id]
-);
+if (empty($campos)) {
+    echo json_encode(['erro' => 'Nenhum campo para atualizar.']);
+    exit;
+}
 
-$stmt = $pdo->prepare("
-    UPDATE livros
-    SET titulo = ?, autor = ?, categoria = ?, data_publicacao = ?, quantidade = ?, resumo = ?
-    {$capa_sql}
-    WHERE id = ?
-");
+$valores[] = $id;
 
-$stmt->execute($params);
+$pdo->prepare('UPDATE livros SET ' . implode(', ', $campos) . ' WHERE id = ?')
+    ->execute($valores);
 
 echo json_encode(['sucesso' => true]);

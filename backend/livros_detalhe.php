@@ -15,7 +15,7 @@ if (empty($_GET['id']) || !is_numeric($_GET['id'])) {
     exit;
 }
 
-$stmt = $pdo->prepare('SELECT id, titulo, autor, categoria, data_publicacao, quantidade, resumo, capa_path FROM livros WHERE id = ? LIMIT 1');
+$stmt = $pdo->prepare('SELECT id, titulo, autor, categoria, data_publicacao, quantidade, resumo, preco_aluguel, capa_path FROM livros WHERE id = ? LIMIT 1');
 $stmt->execute([(int)$_GET['id']]);
 $livro = $stmt->fetch();
 

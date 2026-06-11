@@ -186,6 +186,20 @@
                                 </div>
                             </div>
 
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="inputPreco">Preço do Aluguel (R$) <span class="required">*</span></label>
+                                    <div style="position:relative;">
+                                        <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,0.35);font-size:13px;pointer-events:none;">R$</span>
+                                        <input type="number" id="inputPreco" min="0" step="0.01" placeholder="10,00"
+                                               style="padding-left:36px;">
+                                    </div>
+                                </div>
+                                <div class="form-group" style="visibility:hidden;">
+                                    <!-- espaçador para manter layout de 2 colunas -->
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <label for="inputResumo">Resumo <span class="required">*</span></label>
                                 <textarea id="inputResumo" placeholder="Escreva uma sinopse do livro..." maxlength="600"></textarea>
@@ -284,12 +298,14 @@
         const data      = document.getElementById('inputDataPublicacao').value;
         const qtd       = document.getElementById('inputQuantidade').value;
         const resumo    = inputResumo.value.trim();
+        const preco     = document.getElementById('inputPreco').value;
 
         if (!titulo)    { mostrarToast('Informe o título do livro.', true); return; }
         if (!autor)     { mostrarToast('Informe o autor do livro.', true); return; }
         if (!categoria) { mostrarToast('Selecione uma categoria.', true); return; }
         if (!data)      { mostrarToast('Informe a data de publicação.', true); return; }
         if (!qtd || parseInt(qtd) < 1) { mostrarToast('Quantidade deve ser no mínimo 1.', true); return; }
+        if (preco === '' || parseFloat(preco) < 0) { mostrarToast('Informe um preço de aluguel válido (mínimo R$ 0,00).', true); return; }
         if (!resumo)    { mostrarToast('Escreva um resumo do livro.', true); return; }
 
         const btn  = document.getElementById('btnSalvar');
@@ -303,6 +319,7 @@
         fd.append('categoria',       categoria);
         fd.append('data_publicacao', data);
         fd.append('quantidade',      qtd);
+        fd.append('preco_aluguel',   preco !== '' ? preco : '10.00');
         fd.append('resumo',          resumo);
         if (inputCapa.files[0]) fd.append('capa', inputCapa.files[0]);
 

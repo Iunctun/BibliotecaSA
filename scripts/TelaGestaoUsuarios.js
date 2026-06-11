@@ -89,6 +89,9 @@ function renderTabela(lista) {
                 <button class="btn-acao btn-edit" data-id="${u.id}" title="Editar">
                     <i class="fas fa-pen-to-square"></i> Editar
                 </button>
+                <button class="btn-acao btn-historico" data-id="${u.id}" data-nome="${escapeHtml(u.nome)}" title="Ver empréstimos">
+                    <i class="fas fa-clock-rotate-left"></i> Histórico
+                </button>
                 <button class="btn-acao btn-remove" data-id="${u.id}" data-nome="${escapeHtml(u.nome)}" title="Remover">
                     <i class="fas fa-trash-alt"></i> Remover
                 </button>
@@ -98,6 +101,9 @@ function renderTabela(lista) {
 
     corpoTabela.querySelectorAll('.btn-edit').forEach(btn =>
         btn.addEventListener('click', () => abrirModalEdicao(parseInt(btn.dataset.id)))
+    );
+    corpoTabela.querySelectorAll('.btn-historico').forEach(btn =>
+        btn.addEventListener('click', () => abrirModalHistorico(parseInt(btn.dataset.id), btn.dataset.nome))
     );
     corpoTabela.querySelectorAll('.btn-remove').forEach(btn =>
         btn.addEventListener('click', () => abrirModalConfirm(parseInt(btn.dataset.id), btn.dataset.nome))
@@ -188,7 +194,108 @@ async function salvarEdicao() {
     }
 }
 
-// ── 6. Modal Confirmar Remoção ──
+// ── 6. Modal Histórico de Empréstimos ──
+async function abrirModalHistorico(id, nome) {
+    document.getElementById('historicoNome').textContent = nome;
+    document.getElementById('historicoLista').innerHTML = `
+        <div class="hist-loading"><i class="fas fa-circle-notch fa-spin"></i> Carregando...</div>`;
+    document.getElementById('modalHistoricoOverlay').classList.add('open');
+
+    try {
+        const resp  = await fetch(`${API}/emprestimos_usuario.php?usuario_id=${id}`, { credentials: 'same-origin' });
+        const dados = await resp.json();
+
+        if (dados.erro) { document.getElementById('historicoLista').innerHTML = `<p class="hist-vazio">${dados.erro}</p>`; return; }
+
+        const lista = dados.emprestimos || [];
+        if (lista.length === 0) {
+            document.getElementById('historicoLista').innerHTML = `<p class="hist-vazio"><i class="fas fa-inbox"></i> Nenhum empréstimo encontrado.</p>`;
+            return;
+        }
+
+        document.getElementById('historicoLista').innerHTML = lista.map(e => {
+            const retirada   = e.data_retirada   ? e.data_retirada.split('-').reverse().join('/') : '—';
+            const devolucao  = e.data_devolucao  ? e.data_devolucao.split('-').reverse().join('/') : '—';
+            const valor      = e.valor_cobrado > 0 ? `R$ ${parseFloat(e.valor_cobrado).toFixed(2).replace('.',',')}` : 'Gratuito';
+            const statusMap  = { ativo: ['badge-ativo','Ativo'], devolvido: ['badge-devolvido','Devolvido'], cancelado: ['badge-cancelado','Cancelado'] };
+            const [badgeCls, badgeLabel] = statusMap[e.status] || ['badge-ativo', e.status];
+            const capa = e.capa_path ? `/BibliotecaSA/${e.capa_path}` : '../img/livro-placeholder.webp';
+
+            const btnCancelar = e.status !== 'cancelado' ? `
+                <button class="btn-cancelar-emp" data-id="${e.id}" data-valor="${e.valor_cobrado}">
+                    <i class="fas fa-ban"></i> Cancelar
+                </button>` : '';
+
+            return `
+            <div class="hist-item" id="hist-emp-${e.id}">
+                <img class="hist-capa" src="${capa}" onerror="this.src='../img/livro-placeholder.webp'" alt="${escapeHtml(e.livro_titulo)}">
+                <div class="hist-info">
+                    <div class="hist-titulo">${escapeHtml(e.livro_titulo)}</div>
+                    <div class="hist-autor">${escapeHtml(e.livro_autor)}</div>
+                    <div class="hist-datas">
+                        <span><i class="fas fa-arrow-right-from-bracket"></i> ${retirada}</span>
+                        <span><i class="fas fa-arrow-right-to-bracket"></i> ${devolucao}</span>
+                        <span><i class="fas fa-tag"></i> ${valor}</span>
+                    </div>
+                </div>
+                <div class="hist-actions">
+                    <span class="badge-status ${badgeCls}">${badgeLabel}</span>
+                    ${btnCancelar}
+                </div>
+            </div>`;
+        }).join('');
+
+        // Eventos de cancelamento
+        document.querySelectorAll('.btn-cancelar-emp').forEach(btn => {
+            btn.addEventListener('click', () => cancelarEmprestimo(parseInt(btn.dataset.id), parseFloat(btn.dataset.valor), btn));
+        });
+
+    } catch {
+        document.getElementById('historicoLista').innerHTML = `<p class="hist-vazio">Falha ao carregar empréstimos.</p>`;
+    }
+}
+
+function fecharModalHistorico() {
+    document.getElementById('modalHistoricoOverlay').classList.remove('open');
+}
+
+async function cancelarEmprestimo(empId, valor, btn) {
+    const valorStr = valor > 0 ? ` O valor de R$ ${valor.toFixed(2).replace('.',',')} será estornado em créditos.` : '';
+    if (!confirm(`Cancelar este empréstimo?${valorStr}`)) return;
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i>';
+
+    try {
+        const resp  = await fetch(`${API}/emprestimos_usuario.php`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'same-origin',
+            body: JSON.stringify({ acao: 'cancelar', emprestimo_id: empId })
+        });
+        const dados = await resp.json();
+
+        if (dados.sucesso) {
+            const item = document.getElementById(`hist-emp-${empId}`);
+            if (item) {
+                item.querySelector('.badge-status').className = 'badge-status badge-cancelado';
+                item.querySelector('.badge-status').textContent = 'Cancelado';
+                btn.remove();
+            }
+            mostrarToast('Empréstimo cancelado. Créditos estornados.', false);
+        } else {
+            mostrarToast(dados.erro || 'Erro ao cancelar.', true);
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-ban"></i> Cancelar';
+        }
+    } catch {
+        mostrarToast('Falha ao conectar ao servidor.', true);
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-ban"></i> Cancelar';
+    }
+}
+
+// ── 7. Modal Confirmar Remoção ──
 function abrirModalConfirm(id, nome) {
     idParaRemover = id;
     confirmNomeEl.textContent = nome;
@@ -230,7 +337,7 @@ async function removerUsuario() {
     }
 }
 
-// ── 7. Skeleton ──
+// ── 8. Skeleton ──
 function mostrarSkeleton() {
     corpoTabela.innerHTML = [1,2,3,4].map(() => `
         <tr class="skeleton-row"><td colspan="9"><div class="skeleton-linha"></div></td></tr>`).join('');
@@ -260,6 +367,9 @@ function escapeHtml(str) {
 function registrarEventos() {
     campoBusca.addEventListener('input', filtrarTabela);
     filtroPerfil.addEventListener('change', filtrarTabela);
+
+    document.getElementById('btnFecharHistorico').addEventListener('click', fecharModalHistorico);
+    document.getElementById('modalHistoricoOverlay').addEventListener('click', e => { if (e.target === document.getElementById('modalHistoricoOverlay')) fecharModalHistorico(); });
 
     document.getElementById('btnFecharModal').addEventListener('click', fecharModalEdicao);
     document.getElementById('btnCancelarModal').addEventListener('click', fecharModalEdicao);

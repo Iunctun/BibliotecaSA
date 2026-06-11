@@ -9,6 +9,50 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <title>Gestão de Usuários - Biblioteca</title>
+  <style>
+    /* ── Modal Histórico ── */
+    .modal-historico { max-width: 680px; max-height: 85vh; display: flex; flex-direction: column; }
+    .modal-historico .modal-body { overflow-y: auto; padding-top: 8px; flex: 1; }
+    .modal-historico .modal-body::-webkit-scrollbar { width: 4px; }
+    .modal-historico .modal-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+    .hist-loading { text-align: center; padding: 40px; color: rgba(255,255,255,0.3); font-size: 13px; }
+    .hist-vazio   { text-align: center; padding: 40px; color: rgba(255,255,255,0.25); font-size: 13px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .hist-vazio i { font-size: 28px; }
+
+    .hist-item {
+      display: flex; align-items: flex-start; gap: 16px;
+      padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .hist-item:last-child { border-bottom: none; }
+
+    .hist-capa { width: 44px; height: 60px; object-fit: cover; border-radius: 3px; flex-shrink: 0; background: rgba(255,255,255,0.04); }
+    .hist-info { flex: 1; min-width: 0; }
+    .hist-titulo { font-size: 14px; font-weight: 500; color: #e8e4de; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .hist-autor  { font-size: 11px; color: rgba(255,255,255,0.35); margin: 3px 0 8px; }
+    .hist-datas  { display: flex; flex-wrap: wrap; gap: 12px; font-size: 11px; color: rgba(255,255,255,0.4); }
+    .hist-datas i { margin-right: 4px; color: rgba(255,255,255,0.2); }
+
+    .hist-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
+
+    .badge-status { font-size: 9px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 8px; border-radius: 2px; }
+    .badge-ativo      { background: rgba(122,173,255,0.12); color: #7aadff; }
+    .badge-devolvido  { background: rgba(29,158,117,0.12);  color: #5dcaa5; }
+    .badge-cancelado  { background: rgba(226,75,74,0.12);   color: #e24b4a; }
+
+    .btn-cancelar-emp {
+      background: transparent; border: 1px solid rgba(226,75,74,0.3); color: #e24b4a;
+      font-size: 10px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase;
+      padding: 5px 10px; border-radius: 3px; cursor: pointer; transition: background 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+    .btn-cancelar-emp:hover { background: rgba(226,75,74,0.1); border-color: rgba(226,75,74,0.6); }
+    .btn-cancelar-emp:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* Botão histórico na tabela */
+    .btn-historico { color: #7aadff !important; border-color: rgba(122,173,255,0.3) !important; }
+    .btn-historico:hover { background: rgba(122,173,255,0.08) !important; }
+  </style>
 </head>
 <body>
 
@@ -105,6 +149,22 @@
         </div>
       </div>
 
+    </div>
+  </div>
+
+  <!-- ===== MODAL HISTÓRICO DE EMPRÉSTIMOS ===== -->
+  <div class="modal-overlay" id="modalHistoricoOverlay">
+    <div class="modal modal-historico" id="modalHistorico">
+      <div class="modal-header">
+        <div>
+          <span class="modal-sup">Administração</span>
+          <h2 class="modal-title">Histórico de <span id="historicoNome" style="color:#7aadff;"></span></h2>
+        </div>
+        <button class="modal-close" id="btnFecharHistorico"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div id="historicoLista"></div>
+      </div>
     </div>
   </div>
 

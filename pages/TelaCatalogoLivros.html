@@ -282,6 +282,32 @@
     .empty-state i { font-size: 36px; }
     .empty-state p { font-size: 13px; letter-spacing: 1px; }
 
+    /* ── Preço no card ── */
+    .book-price {
+      font-size: 12px; font-weight: 500; color: #5dcaa5;
+      margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+    }
+    .price-edit-wrap { display: none; align-items: center; gap: 6px; margin-bottom: 8px; }
+    .price-edit-wrap.visible { display: flex; }
+    .price-display { font-size: 12px; font-weight: 500; color: #5dcaa5; flex: 1; }
+    .btn-edit-price {
+      background: none; border: none; color: rgba(255,255,255,0.25);
+      font-size: 11px; cursor: pointer; padding: 2px 4px; transition: color 0.2s;
+    }
+    .btn-edit-price:hover { color: #7aadff; }
+    .price-input-wrap { display: none; align-items: center; gap: 4px; margin-bottom: 8px; }
+    .price-input-wrap.editing { display: flex; }
+    .price-input-wrap input {
+      width: 70px; background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(122,173,255,0.4); border-radius: 3px;
+      color: #fff; font-size: 12px; padding: 4px 8px; outline: none;
+    }
+    .btn-price-ok, .btn-price-cancel {
+      background: none; border: none; cursor: pointer; font-size: 12px; padding: 2px 4px;
+    }
+    .btn-price-ok { color: #1d9e75; }
+    .btn-price-cancel { color: rgba(255,255,255,0.3); }
+
     /* Paginação */
     .pagination { display: flex; align-items: center; gap: 6px; }
     .page { background: transparent; border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.4); padding: 8px 14px; border-radius: 3px; font-family: 'DM Sans', sans-serif; font-size: 12px; cursor: pointer; transition: border-color 0.25s ease, color 0.25s ease, background 0.25s ease; }
@@ -451,6 +477,7 @@
   let paginaAtual     = 1;
   let toastTimer      = null;
   let buscaTimer      = null;
+  let isAdmin         = false;
 
   const grid        = document.getElementById('grid');
   const emptyState  = document.getElementById('emptyState');
@@ -475,6 +502,7 @@
         document.getElementById('mainLayout').style.marginLeft = '230px';
 
         if (sessao.perfil === 'admin') {
+          isAdmin = true;
           // Exibe itens exclusivos de admin
           document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'flex');
         }
@@ -566,6 +594,78 @@
       });
     });
 
+    // ── Edição de preço inline (somente admin) ──
+    if (isAdmin) {
+      grid.querySelectorAll('.btn-edit-price').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const wrap   = btn.closest('.price-edit-wrap');
+          const id     = wrap.dataset.id;
+          const editWrap = grid.querySelector(`.price-input-wrap[data-id="${id}"]`);
+          wrap.classList.remove('visible');
+          editWrap.classList.add('editing');
+          editWrap.querySelector('input').focus();
+        });
+      });
+
+      grid.querySelectorAll('.btn-price-cancel').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const editWrap = btn.closest('.price-input-wrap');
+          const id       = editWrap.dataset.id;
+          editWrap.classList.remove('editing');
+          grid.querySelector(`.price-edit-wrap[data-id="${id}"]`).classList.add('visible');
+        });
+      });
+
+      grid.querySelectorAll('.btn-price-ok').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          const editWrap = btn.closest('.price-input-wrap');
+          const id       = editWrap.dataset.id;
+          const novoPreco = parseFloat(editWrap.querySelector('input').value);
+
+          if (isNaN(novoPreco) || novoPreco < 0) {
+            mostrarToast('Atenção', 'Preço inválido.', true);
+            return;
+          }
+
+          btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+
+          try {
+            const res  = await fetch(`${API_BASE}/livros_editar.php`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              credentials: 'same-origin',
+              body: JSON.stringify({ id: parseInt(id), preco_aluguel: novoPreco })
+            });
+            const data = await res.json();
+
+            if (data.sucesso) {
+              // Atualiza o dado local e o display
+              const livro = todosLivros.find(l => l.id == id);
+              if (livro) livro.preco_aluguel = novoPreco;
+
+              const displayWrap = grid.querySelector(`.price-edit-wrap[data-id="${id}"]`);
+              displayWrap.querySelector('.price-display').textContent =
+                'R$ ' + novoPreco.toFixed(2).replace('.', ',');
+
+              editWrap.classList.remove('editing');
+              displayWrap.classList.add('visible');
+              btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+              mostrarToast('Preço atualizado!', `Novo valor: R$ ${novoPreco.toFixed(2).replace('.', ',')}`, false);
+            } else {
+              mostrarToast('Erro', data.erro || 'Não foi possível atualizar.', true);
+              btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+            }
+          } catch {
+            mostrarToast('Erro', 'Falha ao conectar ao servidor.', true);
+            btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+          }
+        });
+      });
+    }
+
     grid.querySelectorAll('.book-card').forEach(card => {
       card.addEventListener('click', () => {
         const id = card.dataset.id;
@@ -584,6 +684,24 @@
 
     const badgeClass = l.disponivel ? 'badge-disponivel' : 'badge-indisponivel';
     const badgeText  = l.disponivel ? 'Disponível' : 'Indisponível';
+    const preco      = parseFloat(l.preco_aluguel ?? 10).toFixed(2).replace('.', ',');
+
+    // Bloco de preço: admin vê com botão de editar, usuário comum vê somente o valor
+    const precoHTML = isAdmin ? `
+      <div class="price-edit-wrap visible" data-id="${l.id}">
+        <span class="price-display">R$ ${preco}</span>
+        <button class="btn-edit-price" title="Editar preço">
+          <i class="fa-solid fa-pen-to-square"></i>
+        </button>
+      </div>
+      <div class="price-input-wrap" data-id="${l.id}">
+        <input type="number" min="0" step="0.01" value="${parseFloat(l.preco_aluguel ?? 10).toFixed(2)}">
+        <button class="btn-price-ok"     title="Salvar"><i class="fa-solid fa-check"></i></button>
+        <button class="btn-price-cancel" title="Cancelar"><i class="fa-solid fa-xmark"></i></button>
+      </div>` : `
+      <div class="book-price">
+        <i class="fa-solid fa-tag"></i> R$ ${preco}
+      </div>`;
 
     return `
       <div class="book-card" data-id="${l.id}">
@@ -591,6 +709,7 @@
         <span class="book-badge ${badgeClass}">${badgeText}</span>
         <h4>${l.titulo}</h4>
         <p>${l.autor}</p>
+        ${precoHTML}
         <button class="btn-reserve" data-id="${l.id}" ${!l.disponivel ? 'disabled' : ''}>
           <i class="fa-solid fa-bookmark" style="margin-right:5px;"></i> Reservar
         </button>

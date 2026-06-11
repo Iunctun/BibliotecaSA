@@ -215,9 +215,9 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="form-label">Contato (telefone ou e-mail)</label>
-                <input class="form-input" id="fContato" type="text" placeholder="(11) 99999-9999 ou email@exemplo.com" maxlength="60">
-                <span id="fContatoHint" style="font-size:10px;color:rgba(255,255,255,0.25);margin-top:4px;display:block;">Digite um telefone ou e-mail válido</span>
+                <label class="form-label">E-mail</label>
+                <input class="form-input" id="fContato" type="email" placeholder="email@exemplo.com" maxlength="120">
+                <span id="fContatoHint" style="font-size:10px;color:rgba(255,255,255,0.25);margin-top:4px;display:block;">E-mail inválido</span>
             </div>
 
             <div class="modal-footer">
@@ -547,6 +547,19 @@
         const hoje = new Date().toISOString().split('T')[0];
         fRetirada.value = hoje;
         calcularDevolucao();
+
+        // Pré-preenche com dados da sessão
+        fetch(`${API}/sessao.php`, { credentials: 'same-origin' })
+            .then(r => r.json())
+            .then(s => {
+                if (s.logado) {
+                    if (s.nome  && !fNome.value)    fNome.value    = s.nome;
+                    if (s.cpf   && !fCpf.value)     fCpf.value     = s.cpf;
+                    if (s.email && !fContato.value)  fContato.value = s.email;
+                }
+            })
+            .catch(() => {});
+
         modalOverlay.classList.add('open');
     }
 
@@ -569,33 +582,18 @@
         fCpf.value = v;
     });
 
-    // Máscara e validação do campo contato (telefone ou e-mail)
+    // Validação do campo e-mail
     const fContatoHint = document.getElementById('fContatoHint');
     fContato.addEventListener('input', () => {
-        let v = fContato.value;
-        // Se começa com dígito, trata como telefone e aplica máscara
-        if (/^\d/.test(v)) {
-            v = v.replace(/\D/g,'').slice(0,11);
-            if (v.length <= 10) {
-                v = v.replace(/(\d{2})(\d)/,'($1) $2').replace(/(\d{4})(\d)/,'$1-$2');
-            } else {
-                v = v.replace(/(\d{2})(\d)/,'($1) $2').replace(/(\d{5})(\d)/,'$1-$2');
-            }
-            fContato.value = v;
-            fContatoHint.textContent = v.replace(/\D/g,'').length >= 10 ? '' : 'Telefone incompleto';
-        } else {
-            // E-mail — só valida, sem máscara
-            const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-            fContatoHint.textContent = v.length > 0 && !emailValido ? 'E-mail inválido' : '';
-        }
+        const v = fContato.value.trim();
+        const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+        fContatoHint.textContent = v.length > 0 && !emailValido ? 'E-mail inválido' : '';
     });
 
     // Valida contato antes de confirmar
     function contatoValido() {
         const v = fContato.value.trim();
-        const isTel   = /^\(\d{2}\) \d{4,5}-\d{4}$/.test(v);
-        const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-        return isTel || isEmail;
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
     }
     fRetirada.addEventListener('change', calcularDevolucao);
 
