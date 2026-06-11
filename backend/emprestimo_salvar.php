@@ -35,7 +35,7 @@ $livro_id   = (int)$dados['livro_id'];
 $usuario_id = (int)$_SESSION['usuario_id'];
 
 // Verifica se o livro existe e tem estoque
-$stmt = $pdo->prepare('SELECT id, quantidade FROM livros WHERE id = ? LIMIT 1');
+$stmt = $pdo->prepare('SELECT id, quantidade, preco_aluguel FROM livros WHERE id = ? LIMIT 1');
 $stmt->execute([$livro_id]);
 $livro = $stmt->fetch();
 
@@ -46,6 +46,18 @@ if (!$livro) {
 
 if ($livro['quantidade'] < 1) {
     echo json_encode(['erro' => 'Livro indisponível no momento.']);
+    exit;
+}
+
+// Verifica saldo de créditos do usuário
+$stmtCredito = $pdo->prepare('SELECT creditos FROM usuarios WHERE id = ? LIMIT 1');
+$stmtCredito->execute([$usuario_id]);
+$usuarioCredito = $stmtCredito->fetch();
+$saldo = (float)($usuarioCredito['creditos'] ?? 0);
+$precoAluguel = (float)($livro['preco_aluguel'] ?? 0);
+
+if ($saldo < $precoAluguel) {
+    echo json_encode(['erro' => 'Saldo insuficiente. Adicione créditos em seu perfil para continuar.']);
     exit;
 }
 
@@ -61,8 +73,8 @@ $pdo->beginTransaction();
 try {
     // Insere empréstimo
     $stmt = $pdo->prepare('
-        INSERT INTO emprestimos (usuario_id, livro_id, nome_locatario, cpf_locatario, contato, data_retirada, data_devolucao)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO emprestimos (usuario_id, livro_id, nome_locatario, cpf_locatario, contato, data_retirada, data_devolucao, valor_cobrado)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     ');
     $stmt->execute([
         $usuario_id,
@@ -71,12 +83,19 @@ try {
         trim($dados['cpf']),
         trim($dados['contato']),
         $dados['data_retirada'],
-        $dados['data_devolucao']
+        $dados['data_devolucao'],
+        $precoAluguel
     ]);
 
     // Decrementa estoque
     $stmt = $pdo->prepare('UPDATE livros SET quantidade = quantidade - 1 WHERE id = ?');
     $stmt->execute([$livro_id]);
+
+    // Desconta créditos do usuário
+    if ($precoAluguel > 0) {
+        $stmt = $pdo->prepare('UPDATE usuarios SET creditos = creditos - ? WHERE id = ?');
+        $stmt->execute([$precoAluguel, $usuario_id]);
+    }
 
     // Cancela reserva pendente do mesmo usuário para este livro (se houver)
     $stmt = $pdo->prepare('

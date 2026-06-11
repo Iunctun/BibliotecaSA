@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../styles/navbar.css">
     <link rel="stylesheet" href="../styles/dashboard.css">
+    <style>.admin-only { display: none; }</style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="../styles/footer.css">
     <title>Dashboard - Biblioteca</title>
@@ -31,15 +32,15 @@
 
         <!-- Sidebar -->
         <aside class="sidebar">
-            <a href="../pages/dashboard.html" class="sidebar-item active">
+            <a href="../pages/dashboard.html" class="sidebar-item admin-only active">
                 <i class="fa-solid fa-house"></i>
                 <span>Dashboard</span>
             </a>
-            <a href="../pages/TelaADDLivro.html" class="sidebar-item">
+            <a href="../pages/TelaADDLivro.html" class="sidebar-item admin-only">
                 <i class="fa-solid fa-book-medical"></i>
                 <span>Adicionar Livro</span>
             </a>
-            <a href="../pages/TelaGestaoUsuarios.html" class="sidebar-item">
+            <a href="../pages/TelaGestaoUsuarios.html" class="sidebar-item admin-only">
                 <i class="fa-solid fa-users-gear"></i>
                 <span>Gestão de Usuários</span>
             </a>
@@ -187,6 +188,20 @@
     <script>initNavbar();</script>
     <script src="../scripts/include.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+        <script>
+    const _API = "/BibliotecaSA/backend";
+    (async () => {
+        try {
+            const r = await fetch(_API + "/sessao.php", { credentials: "same-origin" });
+            const s = await r.json();
+            if (!s.logado || s.perfil !== "admin") {
+                window.location.href = "/BibliotecaSA/pages/TelaLogin.html";
+                return;
+            }
+            document.querySelectorAll(".admin-only").forEach(el => el.style.display = "flex");
+        } catch { window.location.href = "/BibliotecaSA/pages/TelaLogin.html"; }
+    })();
+    </script>
     <script src="../scripts/dashboard.js"></script>
 </body>
 </html>

@@ -149,6 +149,68 @@
     .skeleton-linha.short { width: 60%; }
     @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
+    /* Saldo de créditos */
+    .creditos-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(29,158,117,0.07); border: 1px solid rgba(29,158,117,0.18);
+      border-radius: 6px; padding: 16px 22px; margin-bottom: 28px;
+    }
+    .creditos-left { display: flex; align-items: center; gap: 14px; }
+    .creditos-icon { width: 38px; height: 38px; border-radius: 50%; background: rgba(29,158,117,0.15); display: flex; align-items: center; justify-content: center; }
+    .creditos-icon i { color: #5dcaa5; font-size: 15px; }
+    .creditos-label { font-size: 10px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 2px; }
+    .creditos-valor { font-family: 'Playfair Display', serif; font-size: 22px; color: #5dcaa5; }
+    .btn-add-creditos {
+      background: rgba(29,158,117,0.12); border: 1px solid rgba(29,158,117,0.3);
+      color: #5dcaa5; border-radius: 4px; padding: 10px 20px;
+      font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+      letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .btn-add-creditos:hover { background: rgba(29,158,117,0.2); border-color: rgba(29,158,117,0.5); }
+
+    /* Modal créditos */
+    .modal-creditos-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 9000; opacity: 0; pointer-events: none;
+      transition: opacity 0.25s;
+    }
+    .modal-creditos-overlay.open { opacity: 1; pointer-events: auto; }
+    .modal-creditos {
+      background: #1e2128; border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px; padding: 36px; width: 100%; max-width: 400px;
+      transform: translateY(16px); transition: transform 0.25s;
+    }
+    .modal-creditos-overlay.open .modal-creditos { transform: translateY(0); }
+    .modal-creditos h2 { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 400; color: #fff; margin-bottom: 6px; }
+    .modal-creditos p  { font-size: 13px; color: rgba(255,255,255,0.35); margin-bottom: 24px; }
+    .modal-creditos label { display: block; font-size: 10px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 8px; }
+    .modal-creditos input {
+      width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 4px; color: #e8e4de; font-family: 'DM Sans', sans-serif;
+      font-size: 18px; padding: 12px 16px; outline: none;
+      transition: border-color 0.2s;
+    }
+    .modal-creditos input:focus { border-color: rgba(29,158,117,0.5); }
+    .modal-creditos-footer { display: flex; gap: 10px; margin-top: 24px; }
+    .btn-creditos-cancelar {
+      background: transparent; border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.4); border-radius: 4px; padding: 12px 20px;
+      font-family: 'DM Sans', sans-serif; font-size: 12px; letter-spacing: 1px;
+      text-transform: uppercase; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-creditos-cancelar:hover { border-color: rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); }
+    .btn-creditos-confirmar {
+      flex: 1; background: #1d9e75; border: none; color: #fff;
+      border-radius: 4px; padding: 12px 20px;
+      font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+      letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-creditos-confirmar:hover { background: #17865f; }
+    .btn-creditos-confirmar:disabled { opacity: 0.5; cursor: not-allowed; }
+
     /* Toast */
     .toast-perfil {
       position: fixed; bottom: 32px; right: 32px;
@@ -227,6 +289,20 @@
     <div class="container">
 
       <!-- Cabeçalho da página -->
+      <!-- Barra de créditos -->
+      <div class="creditos-bar" id="creditosBar">
+        <div class="creditos-left">
+          <div class="creditos-icon"><i class="fa-solid fa-coins"></i></div>
+          <div>
+            <div class="creditos-label">Meus Créditos</div>
+            <div class="creditos-valor" id="creditosValor">R$ 0,00</div>
+          </div>
+        </div>
+        <button class="btn-add-creditos" id="btnAddCreditos">
+          <i class="fa-solid fa-plus" style="margin-right:6px;"></i> Adicionar Créditos
+        </button>
+      </div>
+
       <div class="page-header">
         <span class="page-sup">Área do Membro</span>
         <h1>Meu Perfil</h1>
@@ -300,6 +376,22 @@
     <span class="tp-msg" id="tpMsg">—</span>
   </div>
 
+  <!-- Modal Adicionar Créditos -->
+  <div class="modal-creditos-overlay" id="modalCreditosOverlay">
+    <div class="modal-creditos">
+      <h2>Adicionar Créditos</h2>
+      <p>Informe o valor que deseja adicionar à sua conta</p>
+      <label>Valor (R$)</label>
+      <input type="number" id="inputCreditos" min="1" max="10000" step="0.01" placeholder="0,00">
+      <div class="modal-creditos-footer">
+        <button class="btn-creditos-cancelar" id="btnCreditosCancelar">Cancelar</button>
+        <button class="btn-creditos-confirmar" id="btnCreditosConfirmar">
+          <i class="fa-solid fa-check" style="margin-right:6px;"></i> Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+
   <div id="footer"></div>
 
   <script src="../scripts/navbar.js"></script>
@@ -327,6 +419,7 @@
       document.getElementById('nome').value     = data.usuario.nome    || '—';
       document.getElementById('email').value    = data.usuario.email   || '—';
       document.getElementById('membroId').value = '#' + String(data.usuario.id).padStart(5, '0');
+      atualizarCreditos(data.usuario.creditos ?? 0);
 
       // ── Exibe itens admin no sidebar se for admin ──
       if (data.usuario.perfil === 'admin') {
@@ -471,6 +564,63 @@
 
   document.getElementById('btnPagamento').addEventListener('click', () => {
     mostrarToast('Módulo de pagamento em breve.', false);
+  });
+
+  // ── Créditos ──
+  function atualizarCreditos(valor) {
+    const v = parseFloat(valor) || 0;
+    document.getElementById('creditosValor').textContent =
+      'R$ ' + v.toFixed(2).replace('.', ',');
+  }
+
+  const modalCreditosOverlay = document.getElementById('modalCreditosOverlay');
+
+  document.getElementById('btnAddCreditos').addEventListener('click', () => {
+    document.getElementById('inputCreditos').value = '';
+    modalCreditosOverlay.classList.add('open');
+  });
+
+  document.getElementById('btnCreditosCancelar').addEventListener('click', () => {
+    modalCreditosOverlay.classList.remove('open');
+  });
+
+  modalCreditosOverlay.addEventListener('click', e => {
+    if (e.target === modalCreditosOverlay) modalCreditosOverlay.classList.remove('open');
+  });
+
+  document.getElementById('btnCreditosConfirmar').addEventListener('click', async () => {
+    const valor = parseFloat(document.getElementById('inputCreditos').value);
+    if (!valor || valor <= 0) {
+      mostrarToast('Informe um valor válido.', true); return;
+    }
+
+    const btn  = document.getElementById('btnCreditosConfirmar');
+    const orig = btn.innerHTML;
+    btn.disabled  = true;
+    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+
+    try {
+      const res  = await fetch(`${API}/creditos_adicionar.php`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ valor })
+      });
+      const data = await res.json();
+
+      if (data.sucesso) {
+        atualizarCreditos(data.novo_saldo);
+        modalCreditosOverlay.classList.remove('open');
+        mostrarToast(`R$ ${valor.toFixed(2).replace('.',',')} adicionados com sucesso!`, false);
+      } else {
+        mostrarToast(data.erro || 'Erro ao adicionar créditos.', true);
+      }
+    } catch {
+      mostrarToast('Falha ao conectar ao servidor.', true);
+    } finally {
+      btn.disabled  = false;
+      btn.innerHTML = orig;
+    }
   });
 
   // ── Init ──

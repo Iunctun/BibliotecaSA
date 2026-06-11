@@ -20,7 +20,7 @@ if (empty($_SESSION['usuario_id'])) {
 $id = (int)$_SESSION['usuario_id'];
 
 // Dados do usuário
-$stmt = $pdo->prepare('SELECT id, nome, email, perfil FROM usuarios WHERE id = ? LIMIT 1');
+$stmt = $pdo->prepare('SELECT id, nome, email, perfil, creditos FROM usuarios WHERE id = ? LIMIT 1');
 $stmt->execute([$id]);
 $usuario = $stmt->fetch();
 

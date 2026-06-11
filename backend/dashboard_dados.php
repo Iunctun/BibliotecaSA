@@ -10,7 +10,7 @@ require_once __DIR__ . '/conexao.php';
 
 try {
     $total_livros       = (int)$pdo->query('SELECT COUNT(*) FROM livros')->fetchColumn();
-    $total_usuarios     = (int)$pdo->query('SELECT COUNT(*) FROM usuarios WHERE perfil = "usuario"')->fetchColumn();
+    $total_usuarios     = (int)$pdo->query('SELECT COUNT(*) FROM usuarios')->fetchColumn();
     $livros_emprestados = (int)$pdo->query('SELECT COUNT(*) FROM emprestimos WHERE status = "ativo"')->fetchColumn();
     $livros_atrasados   = (int)$pdo->query('SELECT COUNT(*) FROM emprestimos WHERE status = "ativo" AND data_devolucao < CURDATE()')->fetchColumn();
     $livros_disponiveis = (int)$pdo->query('SELECT COUNT(*) FROM livros WHERE quantidade > 0')->fetchColumn();

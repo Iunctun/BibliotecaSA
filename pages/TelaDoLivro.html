@@ -78,6 +78,25 @@
             transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.2s ease;
         }
         .btn-editar:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.4); color: #fff; transform: translateY(-2px); }
+        .btn-deletar {
+            background: transparent; color: #e24b4a; border: 1px solid rgba(226,75,74,0.4);
+            padding: 14px 36px; border-radius: 3px;
+            font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+            letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
+            transition: background 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+        }
+        .btn-deletar:hover { background: rgba(226,75,74,0.08); border-color: rgba(226,75,74,0.7); transform: translateY(-2px); }
+
+        /* Modal de confirmação de exclusão */
+        .modal-delete { max-width: 420px; }
+        .modal-delete .delete-icon { width: 56px; height: 56px; border-radius: 50%; background: rgba(226,75,74,0.1); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+        .modal-delete .delete-icon i { color: #e24b4a; font-size: 22px; }
+        .modal-delete p { text-align: center; font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.7; }
+        .modal-delete strong { color: #e8e4de; }
+        .btn-modal-danger { flex: 1; background: #c0392b; color: #fff; border: none; padding: 13px 22px; border-radius: 3px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: background 0.25s ease; }
+        .btn-modal-danger:hover { background: #a93226; }
+        .btn-modal-danger:disabled { opacity: 0.5; cursor: not-allowed; }
+
 
         /* Modal de edição */
         .modal-edit { max-width: 640px; max-height: 90vh; overflow-y: auto; }
@@ -197,7 +216,8 @@
             </div>
             <div class="form-group">
                 <label class="form-label">Contato (telefone ou e-mail)</label>
-                <input class="form-input" id="fContato" type="text" placeholder="(11) 99999-9999 ou email@exemplo.com">
+                <input class="form-input" id="fContato" type="text" placeholder="(11) 99999-9999 ou email@exemplo.com" maxlength="60">
+                <span id="fContatoHint" style="font-size:10px;color:rgba(255,255,255,0.25);margin-top:4px;display:block;">Digite um telefone ou e-mail válido</span>
             </div>
 
             <div class="modal-footer">
@@ -284,6 +304,24 @@
                 <button class="btn-modal-confirm" id="btnEditSalvar">
                     <i class="fa-solid fa-floppy-disk" style="margin-right:8px;"></i>
                     Salvar Alterações
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal de Confirmação de Exclusão (admin) -->
+    <div class="modal-overlay" id="modalDeleteOverlay">
+        <div class="modal modal-delete">
+            <p class="modal-title">Deletar Livro</p>
+            <p class="modal-sub">Esta ação não pode ser desfeita</p>
+            <div class="delete-icon"><i class="fa-solid fa-trash-alt"></i></div>
+            <p>Tem certeza que deseja remover <strong id="deleteNomeLivro">este livro</strong> do acervo permanentemente?</p>
+            <div class="modal-footer">
+                <button class="btn-modal-cancel" id="btnDeleteCancelar">Cancelar</button>
+                <button class="btn-modal-danger" id="btnDeleteConfirmar">
+                    <i class="fa-solid fa-trash-alt" style="margin-right:8px;"></i>
+                    Confirmar Exclusão
                 </button>
             </div>
         </div>
@@ -386,6 +424,14 @@
                         <strong style="color:#e8e4de;">${l.quantidade}</strong> exemplar(es) no acervo
                     </div>
 
+                    <div style="font-size:13px;color:rgba(255,255,255,0.45);margin-top:-16px;">
+                        <i class="fa-solid fa-tag" style="margin-right:8px;color:#1d9e75;"></i>
+                        Aluguel:
+                        <strong style="color:#5dcaa5;font-size:15px;">
+                            ${l.preco_aluguel > 0 ? 'R$ ' + parseFloat(l.preco_aluguel).toFixed(2).replace('.',',') : 'Gratuito'}
+                        </strong>
+                    </div>
+
                     <div class="detail-btn-wrap">
                         <button class="btn-reserve" id="btnReservar" ${!l.disponivel ? 'disabled' : ''}>
                             <i class="fa-solid fa-bookmark" style="margin-right:8px;"></i>
@@ -398,6 +444,10 @@
                         <button class="btn-editar" id="btnEditar" style="display:none;">
                             <i class="fa-solid fa-pen-to-square" style="margin-right:8px;"></i>
                             Editar Livro
+                        </button>
+                        <button class="btn-deletar" id="btnDeletar" style="display:none;">
+                            <i class="fa-solid fa-trash-alt" style="margin-right:8px;"></i>
+                            Deletar Livro
                         </button>
                     </div>
                 </div>
@@ -427,7 +477,7 @@
         document.getElementById('btnReservar').addEventListener('click', acaoReservar);
         document.getElementById('btnLocar').addEventListener('click', abrirModal);
 
-        // Mostra botão editar se admin
+        // Mostra botões editar e deletar se admin
         fetch(`${API}/sessao.php`, { credentials: 'same-origin' })
             .then(r => r.json())
             .then(s => {
@@ -437,12 +487,20 @@
                         btnEditar.style.display = '';
                         btnEditar.addEventListener('click', () => abrirModalEdicao(l));
                     }
+                    const btnDeletar = document.getElementById('btnDeletar');
+                    if (btnDeletar) {
+                        btnDeletar.style.display = '';
+                        btnDeletar.addEventListener('click', () => abrirModalDelete(l));
+                    }
                 }
             })
             .catch(() => {});
 
         // Atualiza modal com info do livro
-        modalBookInfo.innerHTML = `<strong>${l.titulo}</strong> — ${l.autor}<br>Prazo: 15 dias`;
+        const precoStr = l.preco_aluguel > 0
+            ? 'R$ ' + parseFloat(l.preco_aluguel).toFixed(2).replace('.',',')
+            : 'Gratuito';
+        modalBookInfo.innerHTML = `<strong>${l.titulo}</strong> — ${l.autor}<br>Prazo: 15 dias &nbsp;|&nbsp; Valor: <strong style="color:#5dcaa5;">${precoStr}</strong>`;
     }
 
     function renderErro(msg) {
@@ -510,6 +568,35 @@
         v = v.replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d{1,2})$/,'$1-$2');
         fCpf.value = v;
     });
+
+    // Máscara e validação do campo contato (telefone ou e-mail)
+    const fContatoHint = document.getElementById('fContatoHint');
+    fContato.addEventListener('input', () => {
+        let v = fContato.value;
+        // Se começa com dígito, trata como telefone e aplica máscara
+        if (/^\d/.test(v)) {
+            v = v.replace(/\D/g,'').slice(0,11);
+            if (v.length <= 10) {
+                v = v.replace(/(\d{2})(\d)/,'($1) $2').replace(/(\d{4})(\d)/,'$1-$2');
+            } else {
+                v = v.replace(/(\d{2})(\d)/,'($1) $2').replace(/(\d{5})(\d)/,'$1-$2');
+            }
+            fContato.value = v;
+            fContatoHint.textContent = v.replace(/\D/g,'').length >= 10 ? '' : 'Telefone incompleto';
+        } else {
+            // E-mail — só valida, sem máscara
+            const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+            fContatoHint.textContent = v.length > 0 && !emailValido ? 'E-mail inválido' : '';
+        }
+    });
+
+    // Valida contato antes de confirmar
+    function contatoValido() {
+        const v = fContato.value.trim();
+        const isTel   = /^\(\d{2}\) \d{4,5}-\d{4}$/.test(v);
+        const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+        return isTel || isEmail;
+    }
     fRetirada.addEventListener('change', calcularDevolucao);
 
     // Confirmar locação via API
@@ -518,8 +605,25 @@
         let valido = true;
         if (!fNome.value.trim())    { fNome.classList.add('error');    valido = false; }
         if (!fCpf.value.trim())     { fCpf.classList.add('error');     valido = false; }
-        if (!fContato.value.trim()) { fContato.classList.add('error'); valido = false; }
+        if (!contatoValido())       { fContato.classList.add('error'); fContatoHint.textContent = 'Informe um telefone ou e-mail válido'; valido = false; }
         if (!valido) return;
+
+        // Verifica saldo antes de enviar
+        if (livroAtual && livroAtual.preco_aluguel > 0) {
+            try {
+                const sessRes  = await fetch(`${API}/sessao.php`, { credentials: 'same-origin' });
+                const sessData = await sessRes.json();
+                if (sessData.logado) {
+                    const perfRes  = await fetch(`${API}/usuario_perfil.php`, { credentials: 'same-origin' });
+                    const perfData = await perfRes.json();
+                    const saldo = parseFloat(perfData.usuario?.creditos ?? 0);
+                    if (saldo < parseFloat(livroAtual.preco_aluguel)) {
+                        mostrarToast('Saldo insuficiente', `Você precisa de R$ ${parseFloat(livroAtual.preco_aluguel).toFixed(2).replace('.',',')} mas tem R$ ${saldo.toFixed(2).replace('.',',')} em créditos.`, true);
+                        return;
+                    }
+                }
+            } catch {}
+        }
 
         btnConfirmar.disabled = true;
         const orig = btnConfirmar.innerHTML;
@@ -684,6 +788,53 @@
                 btn.disabled  = false;
                 btn.innerHTML = orig;
                 mostrarToast('Erro', data.erro || 'Não foi possível salvar as alterações.', true);
+            }
+        } catch {
+            btn.disabled  = false;
+            btn.innerHTML = orig;
+            mostrarToast('Erro', 'Falha ao conectar ao servidor.', true);
+        }
+    });
+
+
+    // ── Modal de exclusão (admin) ──
+    const modalDeleteOverlay = document.getElementById('modalDeleteOverlay');
+
+    function abrirModalDelete(l) {
+        document.getElementById('deleteNomeLivro').textContent = l.titulo;
+        modalDeleteOverlay.classList.add('open');
+    }
+
+    function fecharModalDelete() {
+        modalDeleteOverlay.classList.remove('open');
+    }
+
+    document.getElementById('btnDeleteCancelar').addEventListener('click', fecharModalDelete);
+    modalDeleteOverlay.addEventListener('click', e => { if (e.target === modalDeleteOverlay) fecharModalDelete(); });
+
+    document.getElementById('btnDeleteConfirmar').addEventListener('click', async () => {
+        const btn  = document.getElementById('btnDeleteConfirmar');
+        const orig = btn.innerHTML;
+        btn.disabled  = true;
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin" style="margin-right:8px;"></i> Excluindo...';
+
+        try {
+            const res  = await fetch(`${API}/livros_deletar.php`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'same-origin',
+                body: JSON.stringify({ id: livroId })
+            });
+            const data = await res.json();
+
+            if (data.sucesso) {
+                fecharModalDelete();
+                mostrarToast('Livro removido!', 'O livro foi excluído do acervo com sucesso.', false);
+                setTimeout(() => window.location.href = '/BibliotecaSA/pages/TelaCatalogoLivros.html', 2000);
+            } else {
+                btn.disabled  = false;
+                btn.innerHTML = orig;
+                mostrarToast('Erro', data.erro || 'Não foi possível excluir o livro.', true);
             }
         } catch {
             btn.disabled  = false;
