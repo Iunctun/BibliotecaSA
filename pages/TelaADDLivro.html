@@ -10,75 +10,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="../styles/TelaADDLivro.css">
     <style>
-        /* Sobrescreve o add-page do CSS externo para funcionar com sidebar */
-        .add-page {
-            margin-left: 0 !important;
-            max-width: none !important;
-            margin-top: 0 !important;
-            padding: 52px 56px 80px !important;
-        }
-        .add-page-header {
-            margin-bottom: 36px;
-        }
-
-        /* ── Layout idêntico ao dashboard ── */
-        .layout {
-            display: flex;
-            min-height: 100vh;
-            padding-top: 70px;
-        }
-
-        /* ── Sidebar (mesmo padrão do dashboard.css) ── */
-        .sidebar {
-            width: 230px;
-            background: rgba(255,255,255,0.015);
-            border-right: 1px solid rgba(255,255,255,0.06);
-            padding: 36px 0;
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            position: sticky;
-            top: 70px;
-            height: calc(100vh - 70px);
-        }
-
-        .sidebar-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 13px 24px;
-            font-size: 12px;
-            font-weight: 500;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.38);
-            text-decoration: none;
-            margin-right: 12px;
-            border-radius: 0 4px 4px 0;
-            border-left: 2px solid transparent;
-            transition: color 0.2s, background 0.2s, border-color 0.2s;
-        }
-        .sidebar-item:hover { background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.7); }
-        .sidebar-item.active { background: rgba(100,160,255,0.08); border-left-color: #7aadff; color: #7aadff; }
-        .sidebar-item i { width: 16px; text-align: center; font-size: 14px; }
-
-        /* Itens admin ocultos por padrão */
-        .admin-only { display: none; }
-
-        /* ── Main ── */
-        .main { flex: 1; min-width: 0; overflow: hidden; }
+        .add-page { margin-left:0 !important; max-width:none !important; margin-top:0 !important; padding:52px 56px 80px !important; }
+        .add-page-header { margin-bottom:36px; }
+        .layout { display:flex; min-height:100vh; padding-top:70px; }
+        .sidebar { width:230px; background:rgba(255,255,255,0.015); border-right:1px solid rgba(255,255,255,0.06); padding:36px 0; flex-shrink:0; display:flex; flex-direction:column; gap:2px; position:sticky; top:70px; height:calc(100vh - 70px); }
+        .sidebar-item { display:flex; align-items:center; gap:12px; padding:13px 24px; font-size:12px; font-weight:500; letter-spacing:0.8px; text-transform:uppercase; color:rgba(255,255,255,0.38); text-decoration:none; margin-right:12px; border-radius:0 4px 4px 0; border-left:2px solid transparent; transition:color 0.2s,background 0.2s,border-color 0.2s; }
+        .sidebar-item:hover { background:rgba(255,255,255,0.04); color:rgba(255,255,255,0.7); }
+        .sidebar-item.active { background:rgba(100,160,255,0.08); border-left-color:#7aadff; color:#7aadff; }
+        .sidebar-item i { width:16px; text-align:center; font-size:14px; }
+        .admin-only { display:none; }
+        .dev-only   { display:none; }
+        .main { flex:1; min-width:0; overflow:hidden; }
     </style>
 </head>
-
 <body>
-
-    <!-- ===== NAVBAR INLINE ===== -->
     <header class="header">
         <div class="header-container">
-            <div class="logo-left">
-                <img src="../img/logo_navbar.png" alt="Digital Library" class="logo-img">
-            </div>
+            <div class="logo-left"><img src="../img/logo_navbar.png" alt="Digital Library" class="logo-img"></div>
             <nav class="nav-menu">
                 <a href="../pages/TelaHome.html" class="nav-link">INÍCIO</a>
                 <a href="../pages/TelaHome.html#sessao-sobre" class="nav-link">SOBRE</a>
@@ -90,46 +38,37 @@
     </header>
 
     <div class="layout">
-
-        <!-- Sidebar — mesmo padrão do dashboard -->
         <aside class="sidebar">
             <a href="../pages/dashboard.html" class="sidebar-item admin-only">
-                <i class="fa-solid fa-house"></i>
-                <span>Dashboard</span>
+                <i class="fa-solid fa-house"></i><span>Dashboard</span>
             </a>
             <a href="../pages/TelaADDLivro.html" class="sidebar-item admin-only active">
-                <i class="fa-solid fa-book-medical"></i>
-                <span>Adicionar Livro</span>
+                <i class="fa-solid fa-book-medical"></i><span>Adicionar Livro</span>
             </a>
             <a href="../pages/TelaGestaoUsuarios.html" class="sidebar-item admin-only">
-                <i class="fa-solid fa-users-gear"></i>
-                <span>Gestão de Usuários</span>
+                <i class="fa-solid fa-users-gear"></i><span>Gestão de Usuários</span>
             </a>
             <a href="../pages/TelaCatalogoLivros.html" class="sidebar-item">
-                <i class="fa-solid fa-book-open"></i>
-                <span>Catálogo</span>
+                <i class="fa-solid fa-book-open"></i><span>Catálogo</span>
             </a>
             <a href="../pages/TelaUsuariologado.html" class="sidebar-item">
-                <i class="fa-solid fa-user"></i>
-                <span>Meu Perfil</span>
+                <i class="fa-solid fa-user"></i><span>Meu Perfil</span>
+            </a>
+            <a href="../pages/TelaSqlConsole.html" class="sidebar-item dev-only">
+                <i class="fa-solid fa-tower-observation"></i><span>Torre de Consultas</span>
             </a>
         </aside>
 
         <main class="main">
             <div class="add-page">
-
                 <div class="add-page-header">
                     <div>
                         <span class="add-page-sup">Acervo Digital</span>
                         <h1>Adicionar Novo Livro</h1>
                     </div>
                 </div>
-
                 <div class="form-card">
-
                     <div class="form-top">
-
-                        <!-- Upload da capa -->
                         <div class="cover-upload-area" id="coverArea" title="Clique para escolher a capa">
                             <input type="file" id="inputCapa" accept="image/jpeg,image/png,image/webp">
                             <img class="cover-preview" id="capaPreview" alt="Preview da capa">
@@ -140,15 +79,11 @@
                             </div>
                             <span class="cover-label" id="capaLabel">Foto da capa</span>
                         </div>
-
-                        <!-- Campos -->
                         <div class="form-fields">
-
                             <div class="form-group">
                                 <label for="inputTitulo">Título <span class="required">*</span></label>
                                 <input type="text" id="inputTitulo" placeholder="Ex: Dom Quixote" maxlength="120">
                             </div>
-
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="inputAutor">Autor <span class="required">*</span></label>
@@ -174,7 +109,6 @@
                                     </select>
                                 </div>
                             </div>
-
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="inputDataPublicacao">Data de Publicação <span class="required">*</span></label>
@@ -185,30 +119,23 @@
                                     <input type="number" id="inputQuantidade" min="1" max="9999" placeholder="Ex: 3">
                                 </div>
                             </div>
-
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="inputPreco">Preço do Aluguel (R$) <span class="required">*</span></label>
                                     <div style="position:relative;">
                                         <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,0.35);font-size:13px;pointer-events:none;">R$</span>
-                                        <input type="number" id="inputPreco" min="0" step="0.01" placeholder="10,00"
-                                               style="padding-left:36px;">
+                                        <input type="number" id="inputPreco" min="0" step="0.01" placeholder="10,00" style="padding-left:36px;">
                                     </div>
                                 </div>
-                                <div class="form-group" style="visibility:hidden;">
-                                    <!-- espaçador para manter layout de 2 colunas -->
-                                </div>
+                                <div class="form-group" style="visibility:hidden;"></div>
                             </div>
-
                             <div class="form-group">
                                 <label for="inputResumo">Resumo <span class="required">*</span></label>
                                 <textarea id="inputResumo" placeholder="Escreva uma sinopse do livro..." maxlength="600"></textarea>
                                 <span class="char-count" id="charCount">0 / 600</span>
                             </div>
-
                         </div>
                     </div>
-
                     <div class="form-footer">
                         <a class="btn-cancelar" href="../pages/dashboard.html">
                             <i class="fa-solid fa-xmark"></i> Cancelar
@@ -217,80 +144,59 @@
                             <i class="fa-solid fa-floppy-disk"></i> Salvar Livro
                         </button>
                     </div>
-
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- Toast -->
     <div id="toast-add">
         <i class="fa-solid fa-circle-check" id="toast-icon"></i>
         <span id="toast-msg"></span>
     </div>
-
     <div id="footer"></div>
 
     <script src="../scripts/navbar.js"></script>
     <script>initNavbar();</script>
     <script src="../scripts/include.js"></script>
-
     <script>
-    // ============================================================
-    //  TelaADDLivro — proteção de rota (somente admin)
-    // ============================================================
     const API = '/BibliotecaSA/backend';
     let toastTimer = null;
 
-    // ── Proteção de rota + exibe itens admin no sidebar ──
     (async () => {
         try {
             const resp = await fetch(`${API}/sessao.php`, { credentials: 'same-origin' });
             const data = await resp.json();
-            if (!data.logado || data.perfil !== 'admin') {
+            if (!data.logado || (data.perfil !== 'admin' && data.perfil !== 'desenvolvedor')) {
                 window.location.href = '/BibliotecaSA/pages/TelaLogin.html';
                 return;
             }
-            // Exibe itens admin no sidebar
             document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'flex');
+            if (data.perfil === 'desenvolvedor') {
+                document.querySelectorAll('.dev-only').forEach(el => el.style.display = 'flex');
+            }
         } catch {
             window.location.href = '/BibliotecaSA/pages/TelaLogin.html';
         }
     })();
 
-    // ── Preview da capa ──
     const inputCapa       = document.getElementById('inputCapa');
     const capaPreview     = document.getElementById('capaPreview');
     const capaPlaceholder = document.getElementById('capaPlaceholder');
     const coverArea       = document.getElementById('coverArea');
-
     coverArea.addEventListener('click', () => inputCapa.click());
-
     inputCapa.addEventListener('change', () => {
         const file = inputCapa.files[0];
         if (!file) return;
-        if (file.size > 5 * 1024 * 1024) {
-            mostrarToast('A imagem deve ter no máximo 5 MB.', true);
-            inputCapa.value = '';
-            return;
-        }
+        if (file.size > 5 * 1024 * 1024) { mostrarToast('A imagem deve ter no máximo 5 MB.', true); inputCapa.value = ''; return; }
         const reader = new FileReader();
-        reader.onload = e => {
-            capaPreview.src = e.target.result;
-            capaPreview.style.display     = 'block';
-            capaPlaceholder.style.display = 'none';
-        };
+        reader.onload = e => { capaPreview.src = e.target.result; capaPreview.style.display = 'block'; capaPlaceholder.style.display = 'none'; };
         reader.readAsDataURL(file);
     });
 
-    // ── Contador de caracteres ──
     const inputResumo = document.getElementById('inputResumo');
     const charCount   = document.getElementById('charCount');
-    inputResumo.addEventListener('input', () => {
-        charCount.textContent = `${inputResumo.value.length} / 600`;
-    });
+    inputResumo.addEventListener('input', () => { charCount.textContent = `${inputResumo.value.length} / 600`; });
 
-    // ── Salvar livro ──
     document.getElementById('btnSalvar').addEventListener('click', async () => {
         const titulo    = document.getElementById('inputTitulo').value.trim();
         const autor     = document.getElementById('inputAutor').value.trim();
@@ -306,7 +212,7 @@
         if (!data)      { mostrarToast('Informe a data de publicação.', true); return; }
         if (!qtd || parseInt(qtd) < 1) { mostrarToast('Quantidade deve ser no mínimo 1.', true); return; }
         if (preco === '' || parseFloat(preco) < 0) { mostrarToast('Informe um preço de aluguel válido (mínimo R$ 0,00).', true); return; }
-        if (!resumo)    { mostrarToast('Escreva um resumo do livro.', true); return; }
+        if (!resumo) { mostrarToast('Escreva um resumo do livro.', true); return; }
 
         const btn  = document.getElementById('btnSalvar');
         const orig = btn.innerHTML;
@@ -314,36 +220,27 @@
         btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Salvando...';
 
         const fd = new FormData();
-        fd.append('titulo',          titulo);
-        fd.append('autor',           autor);
-        fd.append('categoria',       categoria);
-        fd.append('data_publicacao', data);
-        fd.append('quantidade',      qtd);
-        fd.append('preco_aluguel',   preco !== '' ? preco : '10.00');
-        fd.append('resumo',          resumo);
+        fd.append('titulo', titulo); fd.append('autor', autor); fd.append('categoria', categoria);
+        fd.append('data_publicacao', data); fd.append('quantidade', qtd);
+        fd.append('preco_aluguel', preco !== '' ? preco : '10.00'); fd.append('resumo', resumo);
         if (inputCapa.files[0]) fd.append('capa', inputCapa.files[0]);
 
         try {
-            const res   = await fetch(`${API}/livros_salvar.php`, {
-                method: 'POST', credentials: 'same-origin', body: fd
-            });
+            const res   = await fetch(`${API}/livros_salvar.php`, { method: 'POST', credentials: 'same-origin', body: fd });
             const data2 = await res.json();
             if (data2.sucesso) {
                 mostrarToast('Livro salvo com sucesso! Redirecionando...', false);
                 setTimeout(() => window.location.href = '/BibliotecaSA/pages/TelaCatalogoLivros.html', 2000);
             } else {
-                btn.disabled  = false;
-                btn.innerHTML = orig;
+                btn.disabled = false; btn.innerHTML = orig;
                 mostrarToast(data2.erro || 'Erro ao salvar o livro.', true);
             }
         } catch {
-            btn.disabled  = false;
-            btn.innerHTML = orig;
+            btn.disabled = false; btn.innerHTML = orig;
             mostrarToast('Falha ao conectar ao servidor.', true);
         }
     });
 
-    // ── Toast ──
     function mostrarToast(msg, erro = false) {
         clearTimeout(toastTimer);
         const toast = document.getElementById('toast-add');
@@ -357,6 +254,5 @@
         toastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
     }
     </script>
-
 </body>
 </html>

@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../styles/navbar.css">
     <link rel="stylesheet" href="../styles/dashboard.css">
-    <style>.admin-only { display: none; }</style>
+    <style>
+        .admin-only { display: none; }
+        .dev-only   { display: none; }
+    </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="../styles/footer.css">
     <title>Dashboard - Biblioteca</title>
@@ -51,6 +54,10 @@
             <a href="../pages/TelaUsuariologado.html" class="sidebar-item">
                 <i class="fa-solid fa-user"></i>
                 <span>Meu Perfil</span>
+            </a>
+            <a href="../pages/TelaSqlConsole.html" class="sidebar-item dev-only">
+                <i class="fa-solid fa-tower-observation"></i>
+                <span>Torre de Consultas</span>
             </a>
         </aside>
 
@@ -181,25 +188,35 @@
         </main>
     </div>
 
-    <!-- Footer — carregado pelo include.js -->
     <div id="footer"></div>
 
     <script src="../scripts/navbar.js"></script>
     <script>initNavbar();</script>
     <script src="../scripts/include.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-        <script>
+    <script>
     const _API = "/BibliotecaSA/backend";
     (async () => {
         try {
             const r = await fetch(_API + "/sessao.php", { credentials: "same-origin" });
             const s = await r.json();
-            if (!s.logado || s.perfil !== "admin") {
+
+            // Admin e desenvolvedor podem acessar o dashboard
+            if (!s.logado || (s.perfil !== "admin" && s.perfil !== "desenvolvedor")) {
                 window.location.href = "/BibliotecaSA/pages/TelaLogin.html";
                 return;
             }
-            document.querySelectorAll(".admin-only").forEach(el => el.style.display = "flex");
-        } catch { window.location.href = "/BibliotecaSA/pages/TelaLogin.html"; }
+
+            // Admin vê os itens de admin; desenvolvedor vê admin-only E dev-only
+            if (s.perfil === "admin" || s.perfil === "desenvolvedor") {
+                document.querySelectorAll(".admin-only").forEach(el => el.style.display = "flex");
+            }
+            if (s.perfil === "desenvolvedor") {
+                document.querySelectorAll(".dev-only").forEach(el => el.style.display = "flex");
+            }
+        } catch {
+            window.location.href = "/BibliotecaSA/pages/TelaLogin.html";
+        }
     })();
     </script>
     <script src="../scripts/dashboard.js"></script>

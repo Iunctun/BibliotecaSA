@@ -283,14 +283,14 @@
         <span>Catálogo</span>
 
       </a>
-<a href="../pages/TelaSqlConsole.html" class="nav-sidebar-item dev-only">
-  <i class="fa-solid fa-tower-observation"></i>
-  <span>Torre de Consultas</span>
-</a>
 
       <a href="../pages/TelaUsuariologado.html" class="nav-sidebar-item active">
         <i class="fa-solid fa-user"></i>
         <span>Meu Perfil</span>
+      </a>
+      <a href="../pages/TelaSqlConsole.html" class="nav-sidebar-item dev-only">
+        <i class="fa-solid fa-tower-observation"></i>
+        <span>Torre de Consultas</span>
       </a>
     </aside>
 
@@ -430,7 +430,7 @@
       atualizarCreditos(data.usuario.creditos ?? 0);
 
       // ── Exibe itens admin no sidebar se for admin ──
-      if (data.usuario.perfil === 'admin') {
+      if (data.usuario.perfil === 'admin' || data.usuario.perfil === 'desenvolvedor') {
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'flex');
       }
 
