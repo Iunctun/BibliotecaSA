@@ -25,13 +25,33 @@ document.addEventListener('DOMContentLoaded', async () => {
 // ── 1. Proteção de rota ──
 async function verificarAcesso() {
     try {
-        const resp  = await fetch(`${API}/sessao.php`, { credentials: 'same-origin' });
+        const resp = await fetch(`${API}/sessao.php`, { credentials: 'same-origin' });
         const dados = await resp.json();
-        if (!dados.logado || dados.perfil !== 'admin') {
+
+        // Bloqueia quem não está logado
+        if (!dados.logado) {
             window.location.href = '/BibliotecaSA/pages/TelaLogin.html';
             return;
         }
-        document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'flex');
+
+        // Permite apenas admin e desenvolvedor
+        if (dados.perfil !== 'admin' && dados.perfil !== 'desenvolvedor') {
+            window.location.href = '/BibliotecaSA/pages/TelaLogin.html';
+            return;
+        }
+
+        // Itens visíveis para admin e desenvolvedor
+        if (dados.perfil === 'admin' || dados.perfil === 'desenvolvedor') {
+            document.querySelectorAll('.admin-only')
+                .forEach(el => el.style.display = 'flex');
+        }
+
+        // Itens exclusivos do desenvolvedor
+        if (dados.perfil === 'desenvolvedor') {
+            document.querySelectorAll('.dev-only')
+                .forEach(el => el.style.display = 'flex');
+        }
+
     } catch {
         window.location.href = '/BibliotecaSA/pages/TelaLogin.html';
     }

@@ -40,6 +40,7 @@ html, body {
 }
 
 .nav-sidebar .admin-only { display: none; }
+.nav-sidebar .dev-only { display: none; }
 
 .nav-sidebar-item {
   display: flex;
