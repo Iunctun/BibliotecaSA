@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../styles/navbar.css">
+  <link rel="stylesheet" href="../styles/footer.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <title>Torre de Consultas - Biblioteca</title>
+  <style>
+    body { background:#15171c; font-family:'DM Sans', sans-serif; margin:0; }
+
+    .page-wrapper { display:flex; min-height:100vh; padding-top:70px; }
+
+    .nav-sidebar {
+      width:230px; flex-shrink:0; background:rgba(255,255,255,0.015);
+      border-right:1px solid rgba(255,255,255,0.06); display:flex;
+      flex-direction:column; gap:2px; padding:36px 0;
+      position:fixed; top:70px; left:0; bottom:0; overflow-y:auto; z-index:100;
+    }
+    .nav-sidebar .admin-only, .nav-sidebar .dev-only { display:none; }
+
+    .nav-sidebar-item {
+      display:flex; align-items:center; gap:12px; padding:13px 24px;
+      font-size:12px; font-weight:500; letter-spacing:0.8px; text-transform:uppercase;
+      color:rgba(255,255,255,0.38); text-decoration:none; margin-right:12px;
+      border-radius:0 4px 4px 0; border-left:2px solid transparent;
+      transition:color 0.2s, background 0.2s, border-color 0.2s;
+    }
+    .nav-sidebar-item:hover { background:rgba(255,255,255,0.04); color:rgba(255,255,255,0.7); }
+    .nav-sidebar-item.active { background:rgba(100,160,255,0.08); border-left-color:#7aadff; color:#7aadff; }
+    .nav-sidebar-item i { width:16px; text-align:center; font-size:14px; }
+
+    .container { margin-left:230px; padding:36px 40px; flex:1; max-width:1100px; }
+
+    .page-header { margin-bottom:28px; }
+    .page-sup { display:block; font-size:10px; font-weight:500; letter-spacing:4px; text-transform:uppercase; color:#7aadff; margin-bottom:8px; }
+    .page-header h1 { font-family:'Playfair Display', serif; font-size:34px; font-weight:400; color:#fff; margin:0 0 6px; }
+    .page-desc { font-size:13px; color:rgba(255,255,255,0.35); font-weight:300; margin:0; }
+
+    .aviso {
+      background:rgba(244,180,0,0.08); border:1px solid rgba(244,180,0,0.25);
+      color:#f4b400; font-size:12.5px; padding:12px 16px; border-radius:6px; margin-bottom:20px;
+    }
+
+    textarea {
+      width:100%; min-height:140px; background:#1a1d27; color:#e6e6e6;
+      border:1px solid #2e3344; border-radius:8px; padding:14px;
+      font-family:'JetBrains Mono', monospace; font-size:13.5px; resize:vertical; box-sizing:border-box;
+    }
+    textarea:focus { outline:none; border-color:#3e5bdb; }
+
+    .btn-executar {
+      margin-top:12px; background:#3b3fd1; color:#fff; border:none;
+      padding:11px 22px; border-radius:6px; cursor:pointer; font-weight:600;
+      font-size:13px; letter-spacing:0.4px; transition:background 0.2s;
+    }
+    .btn-executar:hover { background:#4d51e8; }
+    .btn-executar:disabled { opacity:0.5; cursor:not-allowed; }
+
+    .table-wrap { margin-top:24px; overflow-x:auto; border:1px solid #2e3344; border-radius:8px; }
+    table { width:100%; border-collapse:collapse; font-size:12.5px; }
+    th, td { border-bottom:1px solid #2e3344; padding:8px 12px; text-align:left; white-space:nowrap; }
+    th { background:#1a1d27; color:rgba(255,255,255,0.6); font-weight:600; }
+    tr:hover td { background:rgba(255,255,255,0.02); }
+
+    .erro { color:#ff6b6b; margin-top:16px; white-space:pre-wrap; font-size:13px; }
+    .info { color:#8fd19e; margin-top:14px; font-size:12.5px; }
+
+    .checking { color:rgba(255,255,255,0.3); padding:60px 0; text-align:center; font-size:13px; }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <header class="header">
+    <div class="header-container">
+      <div class="logo-left">
+        <img src="../img/logo_navbar.png" alt="Digital Library" class="logo-img">
+      </div>
+      <nav class="nav-menu">
+        <a href="../pages/TelaHome.html" class="nav-link">INÍCIO</a>
+        <a href="../pages/TelaHome.html#sessao-sobre" class="nav-link">SOBRE</a>
+        <a href="../pages/TelaCatalogoLivros.html" class="nav-link">CATÁLOGO</a>
+        <a href="../pages/TelaHome.html#sessao-contato" class="nav-link">CONTATO</a>
+      </nav>
+      <div class="nav-user-area" id="navUserArea"></div>
+    </div>
+  </header>
+
+  <div class="page-wrapper">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="nav-sidebar" id="navSidebar" style="display:none;">
+      <a href="../pages/dashboard.html" class="nav-sidebar-item admin-only">
+        <i class="fa-solid fa-house"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="../pages/TelaADDLivro.html" class="nav-sidebar-item admin-only">
+        <i class="fa-solid fa-book-medical"></i>
+        <span>Adicionar Livro</span>
+      </a>
+      <a href="../pages/TelaGestaoUsuarios.html" class="nav-sidebar-item admin-only">
+        <i class="fa-solid fa-users-gear"></i>
+        <span>Gestão de Usuários</span>
+      </a>
+      <a href="../pages/TelaCatalogoLivros.html" class="nav-sidebar-item">
+        <i class="fa-solid fa-book-open"></i>
+        <span>Catálogo</span>
+      </a>
+      <a href="../pages/TelaUsuariologado.html" class="nav-sidebar-item">
+        <i class="fa-solid fa-user"></i>
+        <span>Meu Perfil</span>
+      </a>
+      <a href="../pages/TelaSqlConsole.html" class="nav-sidebar-item dev-only active">
+        <i class="fa-solid fa-tower-observation"></i>
+        <span>Torre de Consultas</span>
+      </a>
+    </aside>
+
+    <!-- ===== CONTEÚDO ===== -->
+    <div class="container" id="conteudo" style="display:none;">
+
+      <div class="page-header">
+        <span class="page-sup">Desenvolvedor</span>
+        <h1>Torre de Consultas</h1>
+        <p class="page-desc">Execute queries SQL diretamente no banco de dados</p>
+      </div>
+
+      <div class="aviso">
+        ⚠️ Qualquer comando (SELECT, UPDATE, DELETE...) é executado direto no banco. Use com cuidado.
+      </div>
+
+      <textarea id="queryInput" placeholder="SELECT * FROM livros LIMIT 10;"></textarea>
+      <br>
+      <button class="btn-executar" id="btnExecutar">Executar</button>
+
+      <div id="resultado"></div>
+
+    </div>
+
+    <div class="checking" id="checking">Verificando permissão...</div>
+
+  </div>
+
+  <div id="footer"></div>
+
+  <script src="../scripts/navbar.js"></script>
+  <script>initNavbar();</script>
+  <script src="../scripts/include.js"></script>
+
+  <script>
+    const API = '/BibliotecaSA/backend';
+
+    (async () => {
+      try {
+        const resp = await fetch(`${API}/sessao.php`, { credentials: 'same-origin' });
+        const sessao = await resp.json();
+
+        if (!sessao.logado || sessao.perfil !== 'desenvolvedor') {
+          window.location.href = '../pages/TelaLogin.html';
+          return;
+        }
+
+        document.getElementById('navSidebar').style.display = 'flex';
+        document.querySelectorAll('.dev-only').forEach(el => el.style.display = 'flex');
+        document.getElementById('checking').style.display = 'none';
+        document.getElementById('conteudo').style.display = 'block';
+
+      } catch {
+        window.location.href = '../pages/TelaLogin.html';
+      }
+    })();
+
+    async function executarQuery() {
+      const query = document.getElementById('queryInput').value.trim();
+      const resultadoDiv = document.getElementById('resultado');
+      const btn = document.getElementById('btnExecutar');
+      resultadoDiv.innerHTML = '';
+      if (!query) return;
+
+      btn.disabled = true;
+      btn.textContent = 'Executando...';
+
+      try {
+        const resp = await fetch(`${API}/sql_console.php`, {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query })
+        });
+        const data = await resp.json();
+
+        if (data.erro) {
+          resultadoDiv.innerHTML = `<div class="erro">Erro: ${data.erro}</div>`;
+        } else if (data.tipo === 'comando') {
+          resultadoDiv.innerHTML = `<div class="info">Comando executado. Linhas afetadas: ${data.linhas_afetadas}</div>`;
+        } else if (data.linhas.length === 0) {
+          resultadoDiv.innerHTML = `<div class="info">Consulta executada. Nenhum resultado.</div>`;
+        } else {
+          const colunas = Object.keys(data.linhas[0]);
+          let html = '<div class="table-wrap"><table><thead><tr>' +
+            colunas.map(c => `<th>${c}</th>`).join('') + '</tr></thead><tbody>';
+          data.linhas.forEach(linha => {
+            html += '<tr>' + colunas.map(c => `<td>${linha[c] ?? ''}</td>`).join('') + '</tr>';
+          });
+          html += '</tbody></table></div>';
+          resultadoDiv.innerHTML = html + `<div class="info">${data.total} linha(s) retornada(s).</div>`;
+        }
+      } catch (err) {
+        resultadoDiv.innerHTML = `<div class="erro">Erro de rede: ${err.message}</div>`;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Executar';
+      }
+    }
+
+    document.getElementById('btnExecutar').addEventListener('click', executarQuery);
+  </script>
+
+</body>
+</html>
