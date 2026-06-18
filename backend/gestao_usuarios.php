@@ -21,7 +21,7 @@ session_start();
 require_once __DIR__ . '/conexao.php';
 
 // ── Somente admin ──
-if (empty($_SESSION['usuario_id']) || ($_SESSION['usuario_perfil'] ?? '') !== 'admin') {
+if (empty($_SESSION['usuario_id']) || (($_SESSION['usuario_perfil'] ?? '') !== 'admin' && ($_SESSION['usuario_perfil'] ?? '') !== 'desenvolvedor')) {
     http_response_code(403);
     echo json_encode(['erro' => 'Acesso restrito a administradores.']);
     exit;
@@ -64,7 +64,7 @@ if ($metodo === 'PUT') {
         exit;
     }
 
-    if (!in_array($perfil, ['admin', 'usuario'])) {
+    if (!in_array($perfil, ['admin', 'usuario', 'desenvolvedor'])) {
         echo json_encode(['erro' => 'Perfil inválido.']);
         exit;
     }
