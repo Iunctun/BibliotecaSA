@@ -14,7 +14,6 @@
 
     .page-wrapper { display: flex; min-height: 100vh; padding-top: 70px; }
 
-    /* ── Sidebar ── */
     .nav-sidebar {
       width: 230px; flex-shrink: 0; background: rgba(255,255,255,0.015);
       border-right: 1px solid rgba(255,255,255,0.06); display: flex;
@@ -35,30 +34,24 @@
     .nav-sidebar-item.active { background: rgba(100,160,255,0.08); border-left-color: #7aadff; color: #7aadff; }
     .nav-sidebar-item i { width: 16px; text-align: center; font-size: 14px; }
 
-    /* ── Container principal ── */
-    .container { margin-left: 230px; padding: 36px 40px; flex: 1; max-width: 1200px; }
+    /* Fix: sem max-width, ocupa tudo */
+    .container { margin-left: 230px; padding: 36px 40px; flex: 1; }
 
-    /* ── Header ── */
     .page-header { margin-bottom: 24px; }
     .page-sup { display: block; font-size: 10px; font-weight: 500; letter-spacing: 4px; text-transform: uppercase; color: #7aadff; margin-bottom: 8px; }
     .page-header h1 { font-family: 'Playfair Display', serif; font-size: 34px; font-weight: 400; color: #fff; margin: 0 0 6px; }
     .page-desc { font-size: 13px; color: rgba(255,255,255,0.35); font-weight: 300; margin: 0; }
 
-    /* ── Aviso ── */
     .aviso {
       background: rgba(244,180,0,0.07); border: 1px solid rgba(244,180,0,0.22);
       color: #f4b400; font-size: 12.5px; padding: 11px 16px; border-radius: 6px;
       margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
     }
 
-    /* ── Layout editor + histórico ── */
     .editor-layout { display: grid; grid-template-columns: 1fr 280px; gap: 20px; align-items: start; }
     @media (max-width: 900px) { .editor-layout { grid-template-columns: 1fr; } }
 
-    /* ── Editor SQL ── */
-    .editor-card {
-      background: #1a1d27; border: 1px solid #2e3344; border-radius: 8px; overflow: hidden;
-    }
+    .editor-card { background: #1a1d27; border: 1px solid #2e3344; border-radius: 8px; overflow: hidden; }
     .editor-toolbar {
       display: flex; align-items: center; justify-content: space-between;
       padding: 10px 14px; border-bottom: 1px solid #2e3344; background: #191c26;
@@ -71,7 +64,6 @@
       border-radius: 3px; padding: 1px 5px; font-family: monospace; font-size: 10px;
     }
 
-    /* Wrapper do textarea com highlight overlay */
     .editor-wrap { position: relative; }
 
     #queryInput {
@@ -90,16 +82,14 @@
       color: #c5d0e8; z-index: 1; word-break: break-all;
     }
 
-    /* SQL highlight tokens */
-    .sql-kw    { color: #7aadff; font-weight: 600; }  /* SELECT FROM WHERE etc */
-    .sql-fn    { color: #c3a6ff; }                     /* COUNT() MAX() etc     */
-    .sql-str   { color: #98c379; }                     /* 'strings'             */
-    .sql-num   { color: #e5c07b; }                     /* numbers               */
-    .sql-op    { color: #56b6c2; }                     /* = > < AND OR NOT      */
-    .sql-cmt   { color: rgba(255,255,255,0.28); font-style: italic; } /* -- comment */
-    .sql-punct { color: rgba(255,255,255,0.4); }       /* , ; ( )               */
+    .sql-kw    { color: #7aadff; font-weight: 600; }
+    .sql-fn    { color: #c3a6ff; }
+    .sql-str   { color: #98c379; }
+    .sql-num   { color: #e5c07b; }
+    .sql-op    { color: #56b6c2; }
+    .sql-cmt   { color: rgba(255,255,255,0.28); font-style: italic; }
+    .sql-punct { color: rgba(255,255,255,0.4); }
 
-    /* ── Botão executar ── */
     .btn-run-row { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-top: 1px solid #2e3344; background: #191c26; }
     .btn-executar {
       background: #3b3fd1; color: #fff; border: none;
@@ -112,14 +102,12 @@
 
     .btn-limpar {
       background: transparent; border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.4);
-      padding: 9px 16px; border-radius: 5px; cursor: pointer; font-size: 12px;
-      transition: all 0.2s;
+      padding: 9px 16px; border-radius: 5px; cursor: pointer; font-size: 12px; transition: all 0.2s;
     }
     .btn-limpar:hover { border-color: rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); }
 
     .btn-run-timer { margin-left: auto; font-size: 11px; color: rgba(255,255,255,0.25); }
 
-    /* ── Painel histórico ── */
     .hist-panel { background: #1a1d27; border: 1px solid #2e3344; border-radius: 8px; overflow: hidden; }
     .hist-header {
       display: flex; align-items: center; justify-content: space-between;
@@ -150,10 +138,8 @@
     .hist-item-meta { display: flex; align-items: center; gap: 8px; font-size: 10px; color: rgba(255,255,255,0.2); }
     .hist-badge-ok  { color: #5dcaa5; }
     .hist-badge-err { color: #e24b4a; }
-
     .hist-empty { padding: 32px 14px; text-align: center; font-size: 12px; color: rgba(255,255,255,0.2); }
 
-    /* ── Resultado ── */
     .resultado-wrap { margin-top: 20px; }
 
     .table-wrap { overflow-x: auto; border: 1px solid #2e3344; border-radius: 8px; }
@@ -175,13 +161,11 @@
     .msg-erro { background: rgba(226,75,74,0.07); border: 1px solid rgba(226,75,74,0.2); color: #ff8080; font-size: 12.5px; padding: 14px 16px; border-radius: 6px; margin-top: 16px; font-family: monospace; white-space: pre-wrap; }
     .msg-ok   { background: rgba(29,158,117,0.07); border: 1px solid rgba(29,158,117,0.2); color: #5dcaa5; font-size: 12.5px; padding: 14px 16px; border-radius: 6px; margin-top: 16px; }
 
-    /* ── Checking ── */
     .checking { color: rgba(255,255,255,0.3); padding: 80px 0; text-align: center; font-size: 13px; flex: 1; display: flex; align-items: center; justify-content: center; }
   </style>
 </head>
 <body>
 
-  <!-- ===== NAVBAR ===== -->
   <header class="header">
     <div class="header-container">
       <div class="logo-left">
@@ -199,7 +183,6 @@
 
   <div class="page-wrapper">
 
-    <!-- ===== SIDEBAR ===== -->
     <aside class="nav-sidebar" id="navSidebar" style="display:none;">
       <a href="../pages/dashboard.html" class="nav-sidebar-item admin-only">
         <i class="fa-solid fa-house"></i><span>Dashboard</span>
@@ -221,7 +204,6 @@
       </a>
     </aside>
 
-    <!-- ===== CONTEÚDO ===== -->
     <div class="container" id="conteudo" style="display:none;">
 
       <div class="page-header">
@@ -237,7 +219,6 @@
 
       <div class="editor-layout">
 
-        <!-- ── Editor ── -->
         <div>
           <div class="editor-card">
             <div class="editor-toolbar">
@@ -268,11 +249,9 @@
             </div>
           </div>
 
-          <!-- Resultado -->
           <div class="resultado-wrap" id="resultado"></div>
         </div>
 
-        <!-- ── Histórico ── -->
         <div class="hist-panel">
           <div class="hist-header">
             <span class="hist-title"><i class="fa-solid fa-clock-rotate-left" style="margin-right:6px;"></i>Histórico</span>
@@ -303,7 +282,6 @@
   <script>
     const API = '/BibliotecaSA/backend';
 
-    // ── Verificação de acesso ──
     (async () => {
       try {
         const resp   = await fetch(`${API}/sessao.php`, { credentials: 'same-origin' });
@@ -314,7 +292,6 @@
           return;
         }
 
-        // Exibe sidebar e itens
         const sidebar = document.getElementById('navSidebar');
         sidebar.style.display = 'flex';
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'flex');
@@ -330,9 +307,6 @@
       }
     })();
 
-    // ───────────────────────────────────────────────
-    //  HIGHLIGHT DE SINTAXE SQL
-    // ───────────────────────────────────────────────
     const KEYWORDS = [
       'SELECT','FROM','WHERE','INSERT','INTO','VALUES','UPDATE','SET',
       'DELETE','CREATE','DROP','ALTER','TABLE','INDEX','DATABASE',
@@ -345,38 +319,26 @@
       'DEFAULT','SHOW','TABLES','DESCRIBE','DESC','USE','EXPLAIN',
       'BEGIN','COMMIT','ROLLBACK','TRANSACTION','TRUNCATE','REPLACE'
     ];
-    const KW_RE  = new RegExp(`\\b(${KEYWORDS.join('|')})\\b`, 'gi');
-    const FN_RE  = /\b([A-Z_][A-Z0-9_]*)\s*(?=\()/gi;
-    const STR_RE = /(\'[^\']*\'|\"[^\"]*\")/g;
-    const NUM_RE = /\b(\d+(\.\d+)?)\b/g;
-    const CMT_RE = /(--[^\n]*)/g;
-    const OP_RE  = /(\s)(=|!=|<>|<=|>=|<|>)(\s)/g;
-    const PUN_RE = /([,;()])/g;
 
     function escHtml(s) {
-      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     }
 
     function highlightSQL(raw) {
-      // Processamos token a token para evitar conflitos entre regexes
       const parts = [];
       let i = 0;
       const text = raw;
 
       while (i < text.length) {
         let matched = false;
+        let m;
 
-        // Comentário --
-        let m = text.slice(i).match(/^(--[^\n]*)/);
+        m = text.slice(i).match(/^(--[^\n]*)/);
         if (m) { parts.push(`<span class="sql-cmt">${escHtml(m[1])}</span>`); i += m[1].length; matched = true; }
 
-        // String 'value'
         if (!matched) { m = text.slice(i).match(/^('[^']*'|"[^"]*")/); if (m) { parts.push(`<span class="sql-str">${escHtml(m[1])}</span>`); i += m[1].length; matched = true; } }
-
-        // Número
         if (!matched) { m = text.slice(i).match(/^(\d+(\.\d+)?)\b/); if (m) { parts.push(`<span class="sql-num">${escHtml(m[1])}</span>`); i += m[1].length; matched = true; } }
 
-        // Palavra-chave ou identificador
         if (!matched) {
           m = text.slice(i).match(/^([A-Za-z_][A-Za-z0-9_]*)/);
           if (m) {
@@ -393,26 +355,19 @@
           }
         }
 
-        // Operadores de comparação
         if (!matched) { m = text.slice(i).match(/^(!=|<>|<=|>=|<|>|=)/); if (m) { parts.push(`<span class="sql-op">${escHtml(m[1])}</span>`); i += m[1].length; matched = true; } }
-
-        // Pontuação
         if (!matched) { m = text.slice(i).match(/^([,;()])/); if (m) { parts.push(`<span class="sql-punct">${escHtml(m[1])}</span>`); i += m[1].length; matched = true; } }
-
-        // Qualquer outro char
         if (!matched) { parts.push(escHtml(text[i])); i++; }
       }
 
       return parts.join('');
     }
 
-    // Sincroniza highlight com o textarea
-    const queryInput    = document.getElementById('queryInput');
-    const highlightDiv  = document.getElementById('highlight-layer');
+    const queryInput   = document.getElementById('queryInput');
+    const highlightDiv = document.getElementById('highlight-layer');
 
     function syncHighlight() {
-      const raw = queryInput.value;
-      highlightDiv.innerHTML = highlightSQL(raw) + '\n'; // '\n' mantém altura mínima
+      highlightDiv.innerHTML = highlightSQL(queryInput.value) + '\n';
     }
 
     function syncScroll() {
@@ -424,7 +379,6 @@
     queryInput.addEventListener('scroll', syncScroll);
     syncHighlight();
 
-    // ── Tab → 2 espaços ──
     queryInput.addEventListener('keydown', e => {
       if (e.key === 'Tab') {
         e.preventDefault();
@@ -434,14 +388,12 @@
         queryInput.selectionStart = queryInput.selectionEnd = s + 2;
         syncHighlight();
       }
-      // Ctrl+Enter executa
       if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
         e.preventDefault();
         executarQuery();
       }
     });
 
-    // ── Limpar editor ──
     document.getElementById('btnLimpar').addEventListener('click', () => {
       queryInput.value = '';
       syncHighlight();
@@ -449,35 +401,27 @@
       document.getElementById('timerLabel').textContent = '';
     });
 
-    // ───────────────────────────────────────────────
-    //  HISTÓRICO  (localStorage)
-    // ───────────────────────────────────────────────
-    const HIST_KEY  = 'sql_console_hist';
-    const HIST_MAX  = 40;
+    const HIST_KEY = 'sql_console_hist';
+    const HIST_MAX = 40;
 
-    function getHist()       { try { return JSON.parse(localStorage.getItem(HIST_KEY) || '[]'); } catch { return []; } }
-    function saveHist(h)     { localStorage.setItem(HIST_KEY, JSON.stringify(h)); }
+    function getHist()   { try { return JSON.parse(localStorage.getItem(HIST_KEY) || '[]'); } catch { return []; } }
+    function saveHist(h) { localStorage.setItem(HIST_KEY, JSON.stringify(h)); }
     function addToHist(q, ok, rows) {
-      const h   = getHist();
-      const item = { q, ok, rows, ts: Date.now() };
-      h.unshift(item);
+      const h = getHist();
+      h.unshift({ q, ok, rows, ts: Date.now() });
       if (h.length > HIST_MAX) h.splice(HIST_MAX);
       saveHist(h);
       renderHist();
     }
 
     function formatTs(ts) {
-      const d = new Date(ts);
-      return d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      return new Date(ts).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     }
 
     function renderHist() {
       const h    = getHist();
       const list = document.getElementById('histList');
-      if (!h.length) {
-        list.innerHTML = '<div class="hist-empty">Nenhuma query executada ainda</div>';
-        return;
-      }
+      if (!h.length) { list.innerHTML = '<div class="hist-empty">Nenhuma query executada ainda</div>'; return; }
       list.innerHTML = h.map((item, idx) => `
         <div class="hist-item" data-idx="${idx}" title="${escHtml(item.q)}">
           <div class="hist-item-query">${escHtml(item.q.replace(/\s+/g,' ').trim())}</div>
@@ -492,13 +436,8 @@
 
       list.querySelectorAll('.hist-item').forEach(el => {
         el.addEventListener('click', () => {
-          const idx  = parseInt(el.dataset.idx);
-          const item = getHist()[idx];
-          if (item) {
-            queryInput.value = item.q;
-            syncHighlight();
-            queryInput.focus();
-          }
+          const item = getHist()[parseInt(el.dataset.idx)];
+          if (item) { queryInput.value = item.q; syncHighlight(); queryInput.focus(); }
         });
       });
     }
@@ -506,15 +445,9 @@
     function carregarHistorico() { renderHist(); }
 
     document.getElementById('btnClearHist').addEventListener('click', () => {
-      if (confirm('Limpar todo o histórico de queries?')) {
-        localStorage.removeItem(HIST_KEY);
-        renderHist();
-      }
+      if (confirm('Limpar todo o histórico de queries?')) { localStorage.removeItem(HIST_KEY); renderHist(); }
     });
 
-    // ───────────────────────────────────────────────
-    //  EXECUTAR QUERY
-    // ───────────────────────────────────────────────
     async function executarQuery() {
       const query       = queryInput.value.trim();
       const resultadoEl = document.getElementById('resultado');
@@ -525,9 +458,9 @@
       timerEl.textContent   = '';
       if (!query) return;
 
-      btn.disabled     = true;
-      btn.innerHTML    = '<i class="fa-solid fa-circle-notch fa-spin"></i> Executando...';
-      const t0         = performance.now();
+      btn.disabled  = true;
+      btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Executando...';
+      const t0      = performance.now();
 
       try {
         const resp = await fetch(`${API}/sql_console.php`, {
@@ -557,21 +490,17 @@
           let html   = '<div class="table-wrap"><table><thead><tr>';
           cols.forEach(c => { html += `<th>${escHtml(c)}</th>`; });
           html += '</tr></thead><tbody>';
-
           data.linhas.forEach(row => {
             html += '<tr>';
             cols.forEach(c => {
               const val = row[c];
-              if (val === null || val === undefined) {
-                html += `<td class="null-val">NULL</td>`;
-              } else {
-                html += `<td>${escHtml(String(val))}</td>`;
-              }
+              html += val === null || val === undefined
+                ? `<td class="null-val">NULL</td>`
+                : `<td>${escHtml(String(val))}</td>`;
             });
             html += '</tr>';
           });
           html += '</tbody></table></div>';
-
           html += `<div class="resultado-info"><span class="dot"></span><span><strong>${data.total}</strong> linha(s) retornada(s) &nbsp;·&nbsp; ${ms} ms</span></div>`;
           resultadoEl.innerHTML = html;
           addToHist(query, true, `${data.total} linhas`);
@@ -589,10 +518,6 @@
     }
 
     document.getElementById('btnExecutar').addEventListener('click', executarQuery);
-
-    function escHtml(s) {
-      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-    }
   </script>
 </body>
 </html>

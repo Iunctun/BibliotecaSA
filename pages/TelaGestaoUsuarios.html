@@ -10,7 +10,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <title>Gestão de Usuários - Biblioteca</title>
   <style>
-    /* ── Modal Histórico ── */
     .modal-historico { max-width: 680px; max-height: 85vh; display: flex; flex-direction: column; }
     .modal-historico .modal-body { overflow-y: auto; padding-top: 8px; flex: 1; }
     .modal-historico .modal-body::-webkit-scrollbar { width: 4px; }
@@ -23,19 +22,14 @@
     .hist-vazio   { text-align: center; padding: 40px; color: rgba(255,255,255,0.25); font-size: 13px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
     .hist-vazio i { font-size: 28px; }
 
-    .hist-item {
-      display: flex; align-items: flex-start; gap: 16px;
-      padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
+    .hist-item { display: flex; align-items: flex-start; gap: 16px; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
     .hist-item:last-child { border-bottom: none; }
-
     .hist-capa { width: 44px; height: 60px; object-fit: cover; border-radius: 3px; flex-shrink: 0; background: rgba(255,255,255,0.04); }
     .hist-info { flex: 1; min-width: 0; }
     .hist-titulo { font-size: 14px; font-weight: 500; color: #e8e4de; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .hist-autor  { font-size: 11px; color: rgba(255,255,255,0.35); margin: 3px 0 8px; }
     .hist-datas  { display: flex; flex-wrap: wrap; gap: 12px; font-size: 11px; color: rgba(255,255,255,0.4); }
     .hist-datas i { margin-right: 4px; color: rgba(255,255,255,0.2); }
-
     .hist-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
 
     .badge-status { font-size: 9px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 8px; border-radius: 2px; }
@@ -52,14 +46,15 @@
     .btn-cancelar-emp:hover { background: rgba(226,75,74,0.1); border-color: rgba(226,75,74,0.6); }
     .btn-cancelar-emp:disabled { opacity: 0.4; cursor: not-allowed; }
 
-    /* Botão histórico na tabela */
     .btn-historico { color: #7aadff !important; border-color: rgba(122,173,255,0.3) !important; }
     .btn-historico:hover { background: rgba(122,173,255,0.08) !important; }
+
+    /* Fix largura do container */
+    .container { max-width: none !important; }
   </style>
 </head>
 <body>
 
-  <!-- ===== NAVBAR ===== -->
   <header class="header">
     <div class="header-container">
       <div class="logo-left">
@@ -77,35 +72,27 @@
 
   <div class="page-wrapper">
 
-    <!-- ===== SIDEBAR ===== -->
     <aside class="nav-sidebar" id="navSidebar">
       <a href="../pages/dashboard.html" class="nav-sidebar-item admin-only">
-        <i class="fa-solid fa-house"></i>
-        <span>Dashboard</span>
+        <i class="fa-solid fa-house"></i><span>Dashboard</span>
       </a>
       <a href="../pages/TelaADDLivro.html" class="nav-sidebar-item admin-only">
-        <i class="fa-solid fa-book-medical"></i>
-        <span>Adicionar Livro</span>
+        <i class="fa-solid fa-book-medical"></i><span>Adicionar Livro</span>
       </a>
       <a href="../pages/TelaGestaoUsuarios.html" class="nav-sidebar-item admin-only active">
-        <i class="fa-solid fa-users-gear"></i>
-        <span>Gestão de Usuários</span>
+        <i class="fa-solid fa-users-gear"></i><span>Gestão de Usuários</span>
       </a>
       <a href="../pages/TelaCatalogoLivros.html" class="nav-sidebar-item">
-        <i class="fa-solid fa-book-open"></i>
-        <span>Catálogo</span>
+        <i class="fa-solid fa-book-open"></i><span>Catálogo</span>
       </a>
       <a href="../pages/TelaSqlConsole.html" class="nav-sidebar-item dev-only">
-  <i class="fa-solid fa-tower-observation"></i>
-  <span>Torre de Consultas</span>
-</a>
+        <i class="fa-solid fa-tower-observation"></i><span>Torre de Consultas</span>
+      </a>
       <a href="../pages/TelaUsuariologado.html" class="nav-sidebar-item">
-        <i class="fa-solid fa-user"></i>
-        <span>Meu Perfil</span>
+        <i class="fa-solid fa-user"></i><span>Meu Perfil</span>
       </a>
     </aside>
 
-    <!-- ===== CONTEÚDO ===== -->
     <div class="container">
 
       <div class="page-header">
@@ -114,7 +101,6 @@
         <p class="page-desc">Visualize, edite e gerencie todos os membros cadastrados no sistema</p>
       </div>
 
-      <!-- Toolbar -->
       <div class="toolbar">
         <div class="toolbar-left">
           <div class="search-wrapper">
@@ -125,12 +111,12 @@
             <option value="">Todos os perfis</option>
             <option value="admin">Admin</option>
             <option value="usuario">Usuário</option>
+            <option value="desenvolvedor">Desenvolvedor</option>
           </select>
         </div>
         <span class="total-badge" id="totalUsuarios">— usuários</span>
       </div>
 
-      <!-- Tabela -->
       <div class="card table-card">
         <div class="table-wrapper">
           <table class="user-table">
@@ -159,7 +145,7 @@
     </div>
   </div>
 
-  <!-- ===== MODAL HISTÓRICO DE EMPRÉSTIMOS ===== -->
+  <!-- MODAL HISTÓRICO -->
   <div class="modal-overlay" id="modalHistoricoOverlay">
     <div class="modal modal-historico" id="modalHistorico">
       <div class="modal-header">
@@ -175,7 +161,7 @@
     </div>
   </div>
 
-  <!-- ===== MODAL EDITAR ===== -->
+  <!-- MODAL EDITAR -->
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal" id="modalEditar">
       <div class="modal-header">
@@ -246,7 +232,7 @@
     </div>
   </div>
 
-  <!-- ===== MODAL CONFIRMAR EXCLUSÃO ===== -->
+  <!-- MODAL CONFIRMAR EXCLUSÃO -->
   <div class="modal-overlay" id="modalConfirmOverlay">
     <div class="modal modal-sm" id="modalConfirm">
       <div class="modal-header">
@@ -269,7 +255,6 @@
     </div>
   </div>
 
-  <!-- ===== TOAST ===== -->
   <div class="toast-perfil" id="toastGestao">
     <div class="tp-icon"><i class="fa-solid fa-check" id="toastIconEl"></i></div>
     <span class="tp-msg" id="toastMsg">—</span>
