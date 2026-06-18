@@ -78,11 +78,10 @@ document.addEventListener('DOMContentLoaded', () => {
             showToast('Bem-vindo, ' + data.nome + '!', 'ok');
 
             setTimeout(() => {
-                // Admin vai para o dashboard, usuário vai para o perfil
-                if (data.perfil === 'admin') {
+                if (data.perfil === 'admin' || data.perfil === 'desenvolvedor') {
                     window.location.href = '../pages/dashboard.html';
                 } else {
-                    window.location.href = '../pages/TelaUsuarioLogado.html';
+                    window.location.href = '../pages/TelaUsuariologado.html';
                 }
             }, 1000);
 
