@@ -10,95 +10,125 @@
     <link rel="stylesheet" href="../styles/home.css">
     <link rel="stylesheet" href="../styles/sobre.css">
     <link rel="stylesheet" href="../styles/contato.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <title>Home - Biblioteca</title>
-    <style>
-        /* Tags clicáveis de categoria — azul bebê em vez de verde */
-        .tag { cursor: pointer; transition: background 0.2s, color 0.2s; }
-        .tag:hover { background: rgba(70,130,220,0.2); color: #90bfff; }
 
-        /* Seção de livros dinâmica */
+    <style>
+        /* ── Overrides inline da home ── */
+
+        /* Tags clicáveis — herda do home.css */
+        .tag { cursor: pointer; }
+        .tag:hover { background: rgba(70, 130, 220, 0.15); color: #90bfff; }
+
+        /* ── Grid de livros ── */
         .livros-home-section {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 80px 80px 40px;
+            padding: 80px 80px 60px;
         }
         .livros-home-header {
             display: flex;
-            align-items: center;
+            align-items: baseline;
             justify-content: space-between;
-            margin-bottom: 40px;
+            margin-bottom: 48px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(112, 163, 240, 0.1);
         }
         .livros-home-header h2 {
             font-family: 'Playfair Display', serif;
             font-size: 28px;
             font-weight: 400;
-            color: #fff;
+            color: #e8ecf4;
+            margin: 0;
         }
-        /* azul clarinho em vez de verde */
         .livros-home-header a {
-            font-size: 11px;
-            letter-spacing: 2px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 10px;
+            letter-spacing: 2.5px;
             text-transform: uppercase;
             color: #7aadff;
             text-decoration: none;
-            transition: color 0.2s;
+            font-weight: 500;
+            opacity: 0.8;
+            transition: color 0.2s, opacity 0.2s;
         }
-        .livros-home-header a:hover { color: #a8c8ff; }
+        .livros-home-header a:hover { color: #a8c8ff; opacity: 1; }
 
         .livros-home-grid {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
-            gap: 20px;
+            gap: 24px;
         }
 
+        /* Card */
         .lh-card {
             display: flex;
             flex-direction: column;
             cursor: pointer;
-            transition: transform 0.2s ease;
+            transition: transform 0.25s ease;
         }
-        .lh-card:hover { transform: translateY(-4px); }
+        .lh-card:hover { transform: translateY(-6px); }
+        .lh-card:hover img {
+            box-shadow: 0 20px 48px rgba(0,0,0,0.65), 0 0 0 1px rgba(112,163,240,0.15);
+        }
         .lh-card img {
             width: 100%;
             aspect-ratio: 2/3;
             object-fit: cover;
-            border-radius: 3px;
+            border-radius: 6px;
             box-shadow: 0 12px 32px rgba(0,0,0,0.5);
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            transition: box-shadow 0.25s ease;
         }
         .lh-card h4 {
             font-family: 'Playfair Display', serif;
             font-size: 13px;
-            color: #fff;
-            line-height: 1.3;
-            margin-bottom: 4px;
-            height: 34px;
+            font-weight: 400;
+            color: rgba(232,236,244,0.9);
+            line-height: 1.35;
+            margin: 0 0 5px;
+            height: 36px;
             overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
         }
-        .lh-card p { font-size: 11px; color: rgba(255,255,255,0.35); }
+        .lh-card p { font-size: 10px; color: rgba(136,146,180,0.6); margin: 0; }
 
         /* Skeleton */
-        .sk-card { display: flex; flex-direction: column; gap: 8px; }
-        .sk-img { width: 100%; aspect-ratio: 2/3; border-radius: 3px; background: linear-gradient(90deg,rgba(255,255,255,0.04) 25%,rgba(255,255,255,0.08) 50%,rgba(255,255,255,0.04) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
-        .sk-line { height: 10px; border-radius: 2px; background: linear-gradient(90deg,rgba(255,255,255,0.04) 25%,rgba(255,255,255,0.08) 50%,rgba(255,255,255,0.04) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+        .sk-card { display: flex; flex-direction: column; gap: 10px; }
+        .sk-img  {
+            width: 100%; aspect-ratio: 2/3; border-radius: 6px;
+            background: linear-gradient(90deg,rgba(255,255,255,0.03) 25%,rgba(255,255,255,0.07) 50%,rgba(255,255,255,0.03) 75%);
+            background-size: 200% 100%; animation: shimmer 1.6s infinite;
+        }
+        .sk-line {
+            height: 10px; border-radius: 3px;
+            background: linear-gradient(90deg,rgba(255,255,255,0.03) 25%,rgba(255,255,255,0.07) 50%,rgba(255,255,255,0.03) 75%);
+            background-size: 200% 100%; animation: shimmer 1.6s infinite;
+        }
         .sk-line.short { width: 65%; }
         @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+        /* ── Responsivo livros ── */
+        @media (max-width: 1200px) { .livros-home-grid { grid-template-columns: repeat(4, 1fr); } }
+        @media (max-width: 900px)  { .livros-home-grid { grid-template-columns: repeat(3, 1fr); gap: 18px; } .livros-home-section { padding: 60px 40px 40px; } }
+        @media (max-width: 640px)  { .livros-home-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; } .livros-home-section { padding: 48px 24px 32px; } .livros-home-header { flex-direction: column; align-items: flex-start; gap: 12px; } }
     </style>
 </head>
 
 <body>
 
-    <!-- ===== NAVBAR INLINE ===== -->
+    <!-- ===== NAVBAR ===== -->
     <header class="header">
         <div class="header-container">
             <div class="logo-left">
                 <img src="../img/logo_navbar.png" alt="Digital Library" class="logo-img">
             </div>
             <nav class="nav-menu">
-                <a href="#inicio" class="nav-link">INÍCIO</a>
-                <a href="#sessao-sobre" class="nav-link">SOBRE</a>
+                <a href="#inicio"         class="nav-link">INÍCIO</a>
+                <a href="#sessao-sobre"   class="nav-link">SOBRE</a>
                 <a href="/BibliotecaSA/pages/TelaCatalogoLivros.html" class="nav-link">CATÁLOGO</a>
                 <a href="#sessao-contato" class="nav-link">CONTATO</a>
             </nav>
@@ -106,35 +136,58 @@
         </div>
     </header>
 
-    <!-- Hero -->
+    <!-- ═══════════════════════════════════════════
+         HERO
+    ═══════════════════════════════════════════ -->
     <section class="sessao-input" id="inicio">
         <div class="card-input">
+
+            <!-- Canvas de partículas -->
             <canvas id="particles-canvas"
-                style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0;"></canvas>
-            <div class="wrapper" style="position:relative; z-index:1;">
-                <svg>
+                style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;"></canvas>
+
+            <!-- SVG animado -->
+            <div class="wrapper" style="position:relative;z-index:1;">
+                <svg viewBox="0 0 900 140" xmlns="http://www.w3.org/2000/svg">
                     <text x="50%" y="50%" dy=".35em" text-anchor="middle">
-                        Bem-vindo a Digital Library 
+                        Bem-vindo a Digital Library
                     </text>
                 </svg>
             </div>
-            <h3 style="position:relative; z-index:1;">Explore milhares de títulos em um só lugar</h3>
-            <div class="input-search" style="position:relative; z-index:1;">
-                <input class="custom-input" id="heroSearch" type="text" placeholder="Pesquisar por título, autor ou gênero..." />
+
+            <!-- Subtítulo -->
+            <h3 style="position:relative;z-index:1;">
+                Explore milhares de títulos em um só lugar
+            </h3>
+
+            <!-- Barra de pesquisa -->
+            <div class="input-search" style="position:relative;z-index:1;">
+                <input
+                    class="custom-input"
+                    id="heroSearch"
+                    type="text"
+                    placeholder="Pesquisar por título, autor ou gênero..."
+                />
             </div>
-            <div style="position:relative; z-index:1;">
+
+            <!-- Tags de categoria -->
+            <div class="tags-wrap" style="position:relative;z-index:1;">
                 <span class="tag" data-cat="Terror">Terror</span>
                 <span class="tag" data-cat="Romance">Romance</span>
                 <span class="tag" data-cat="Drama">Drama</span>
                 <span class="tag" data-cat="Suspense">Suspense</span>
                 <span class="tag" data-cat="Comédia">Comédia</span>
             </div>
+
         </div>
     </section>
 
-    <!-- Sobre -->
+    <!-- ═══════════════════════════════════════════
+         SOBRE A BIBLIOTECA
+    ═══════════════════════════════════════════ -->
     <section class="sobre-section" id="sessao-sobre">
         <div class="sobre-container">
+
             <div class="lib-header">
                 <span class="lib-sup">Nossa História</span>
                 <h2 class="lib-title">Sobre a Biblioteca</h2>
@@ -144,6 +197,7 @@
                     <div class="lib-rule-line lib-rule-line--right"></div>
                 </div>
             </div>
+
             <div class="sobre-body">
                 <div class="sobre-text-col">
                     <p class="sobre-lead">Uma biblioteca digital pensada para quem leva a leitura a sério.</p>
@@ -155,6 +209,7 @@
                     </div>
                     <p class="sobre-body-text">Acreditamos que o acesso ao conhecimento deve ser simples, bonito e intuitivo. Por isso cada detalhe da plataforma foi pensado para que o livro certo chegue até a pessoa certa.</p>
                 </div>
+
                 <div class="sobre-stats-col">
                     <div class="sobre-stat">
                         <div class="sobre-stat-number" id="statLivros">—</div>
@@ -168,17 +223,19 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </section>
 
-    <!-- Livros recentes -->
+    <!-- ═══════════════════════════════════════════
+         LIVROS RECENTES
+    ═══════════════════════════════════════════ -->
     <section class="livros-home-section" id="sessaolivros">
         <div class="livros-home-header">
             <h2>Adições Recentes</h2>
             <a href="/BibliotecaSA/pages/TelaCatalogoLivros.html">Ver catálogo completo →</a>
         </div>
         <div class="livros-home-grid" id="livrosHomeGrid">
-            <!-- skeletons enquanto carrega -->
             <div class="sk-card"><div class="sk-img"></div><div class="sk-line"></div><div class="sk-line short"></div></div>
             <div class="sk-card"><div class="sk-img"></div><div class="sk-line"></div><div class="sk-line short"></div></div>
             <div class="sk-card"><div class="sk-img"></div><div class="sk-line"></div><div class="sk-line short"></div></div>
@@ -188,14 +245,20 @@
         </div>
     </section>
 
-    <!-- Contato -->
+    <!-- ═══════════════════════════════════════════
+         CONTATO
+    ═══════════════════════════════════════════ -->
     <section class="contato-section" id="sessao-contato">
         <div class="contato-container">
+
             <div class="contato-header">
                 <span class="contato-sup">Fale Conosco</span>
                 <h2 class="contato-title">Entre em Contato</h2>
             </div>
+
             <div class="contato-body">
+
+                <!-- Info -->
                 <div class="contato-info-col">
                     <div class="contato-item">
                         <i class="fa-solid fa-envelope contato-item-icon"></i>
@@ -225,11 +288,13 @@
                             <span class="contato-item-value">Seg – Sex, 09h às 18h</span>
                         </div>
                     </div>
+
                     <div class="contato-rule">
                         <div class="contato-rule-line"></div>
                         <span class="contato-rule-label">redes sociais</span>
                         <div class="contato-rule-line"></div>
                     </div>
+
                     <div class="contato-socials">
                         <a href="#" class="contato-social-btn" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
                         <a href="#" class="contato-social-btn" title="Twitter / X"><i class="fa-brands fa-x-twitter"></i></a>
@@ -237,6 +302,8 @@
                         <a href="#" class="contato-social-btn" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
                     </div>
                 </div>
+
+                <!-- Formulário -->
                 <div class="contato-form-col">
                     <div class="contato-form-row">
                         <div class="contato-form-group">
@@ -270,23 +337,60 @@
                         </button>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
 
-    <div id="footer"></div>
+    <!-- ═══════════════════════════════════════════
+         FOOTER
+    ═══════════════════════════════════════════ -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-bolt"></i> Digital Library</h3>
+                    <p>Siga-nos em nossas redes sociais.</p>
+                    <div style="margin-top: 1.2rem; display:flex; gap: 16px; align-items:center;">
+                        <a href="https://www.facebook.com/profile.php?id=100083450020050" title="Facebook"><i class="fab fa-facebook" style="font-size:16px; color: rgba(136,146,180,0.6);"></i></a>
+                        <a href="https://www.instagram.com/proverainstalacoes" title="Instagram"><i class="fab fa-instagram" style="font-size:16px; color: rgba(136,146,180,0.6);"></i></a>
+                        <a href="#" title="LinkedIn"><i class="fab fa-linkedin" style="font-size:16px; color: rgba(136,146,180,0.6);"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3><i class="fas fa-cogs"></i> Serviços</h3>
+                    <p><a href="#services">Aluguel de Livros</a></p>
+                    <p><a href="#services">Venda de Livros</a></p>
+                    <p><a href="#services">Design gráfico</a></p>
+                    <p><a href="#services">Identidade Visual</a></p>
+                </div>
+                <div class="footer-section">
+                    <h3><i class="fas fa-shield-alt"></i> Garantias</h3>
+                    <p>2 anos nos serviços</p>
+                    <p>Suporte técnico vitalício</p>
+                    <p>Funcionamento 24 horas</p>
+                    <p>Satisfação garantida</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Biblioteca Online. Todos os direitos reservados.</p>
+                <p>CNPJ: 12.345.678/0001-90</p>
+            </div>
+        </div>
+    </footer>
 
+    <!-- ═══════════════════════════════════════════
+         SCRIPTS
+    ═══════════════════════════════════════════ -->
     <script src="../scripts/navbar.js"></script>
     <script>initNavbar();</script>
     <script src="../scripts/include.js"></script>
     <script src="../scripts/particulas.js"></script>
 
     <script>
-    
-    //  TelaHome — carrega livros recentes do banco
-    
     const API = '/BibliotecaSA/backend';
 
+    /* ── Carrega livros recentes ── */
     async function carregarLivrosHome() {
         try {
             const res    = await fetch(`${API}/livros_listar.php`);
@@ -322,7 +426,7 @@
         }
     }
 
-    // ── Busca no hero ──
+    /* ── Busca no hero ── */
     const heroSearch = document.getElementById('heroSearch');
     heroSearch.addEventListener('keydown', e => {
         if (e.key === 'Enter') {
@@ -331,7 +435,7 @@
         }
     });
 
-    // ── Tags de categoria ──
+    /* ── Tags de categoria ── */
     document.querySelectorAll('.tag[data-cat]').forEach(tag => {
         tag.addEventListener('click', () => {
             const cat = tag.dataset.cat;
@@ -339,7 +443,7 @@
         });
     });
 
-    // ── Botão de contato — exige login ──
+    /* ── Botão de contato ── */
     document.getElementById('btnContato').addEventListener('click', () => {
         const sessao = JSON.parse(sessionStorage.getItem('usuario') || localStorage.getItem('usuario') || 'null');
         if (!sessao) {
@@ -347,11 +451,10 @@
             window.location.href = '/BibliotecaSA/pages/TelaLogin.html';
             return;
         }
-        // lógica de envio aqui
         alert('Mensagem enviada com sucesso!');
     });
 
-    // ── Scroll suave navbar ──
+    /* ── Scroll suave navbar ── */
     const scrollMap = {
         '#inicio':         'inicio',
         '#sessao-sobre':   'sessao-sobre',
@@ -370,7 +473,7 @@
         });
     });
 
-    // ── Init ──
+    /* ── Init ── */
     carregarLivrosHome();
     </script>
 

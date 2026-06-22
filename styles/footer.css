@@ -1,37 +1,131 @@
+/* ═══════════════════════════════════════════════════
+   footer.css — BibliotecaSA · Upgrade Visual Premium
+   ═══════════════════════════════════════════════════ */
+
 .footer {
-  background: #141636;
-  color: #e7e7e7; 
-  text-align: center;
-  padding: 2rem 0;
+  background: linear-gradient(
+    180deg,
+    rgba(9, 14, 63, 1)   0%,
+    #0a1040              40%,
+    #090e3f             100%
+  );
+  border-top: 1px solid rgba(112, 163, 240, 0.1);
+  color: #e7e7e7;
+  padding: 72px 0 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Glow sutil no topo do footer */
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(112, 163, 240, 0.35) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 60px;
 }
 
 .footer-content {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  margin-bottom: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 48px;
+  margin-bottom: 56px;
 }
 
 .footer-section h3 {
-  color: #e7e7e7;
-  margin-bottom: 1rem;
-  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(232, 236, 244, 0.9);
+  margin: 0 0 20px;
+}
+
+.footer-section h3 i {
+  color: rgba(112, 163, 240, 0.6);
+  margin-right: 6px;
+  font-size: 10px;
+}
+
+.footer-section p {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(136, 146, 180, 0.8);
+  line-height: 1.9;
+  margin: 0 0 4px;
 }
 
 .footer-section a {
-  color: #e7e7e7; 
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(136, 146, 180, 0.75);
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: color 0.2s ease;
+  line-height: 1.9;
+  display: inline-block;
 }
 
 .footer-section a:hover {
-  color: #1d2cff; 
-  opacity: 0.8;
+  color: rgba(122, 173, 255, 0.9);
 }
 
+/* Ícones de redes sociais */
+.footer-section [style*="font-size: 1.5rem"],
+.footer-section a[style*="font-size: 1.5rem"] {
+  color: rgba(136, 146, 180, 0.6) !important;
+  font-size: 16px !important;
+  transition: color 0.2s ease, transform 0.2s ease;
+  display: inline-block;
+}
+
+.footer-section a:hover i {
+  color: rgba(122, 173, 255, 0.85);
+}
+
+/* Linha divisória */
 .footer-bottom {
-  border-top: 1px solid rgba(58, 47, 32, 0.2);
-  padding-top: 1rem;
-  opacity: 0.8;
-  color: #fff;
+  border-top: 1px solid rgba(112, 163, 240, 0.08);
+  padding-top: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.footer-bottom p {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  color: rgba(136, 146, 180, 0.4);
+  margin: 0;
+  letter-spacing: 0.3px;
+}
+
+@media (max-width: 768px) {
+  .container { padding: 0 32px; }
+  .footer { padding: 56px 0 28px; }
+  .footer-content { gap: 36px; }
+}
+
+@media (max-width: 480px) {
+  .container { padding: 0 24px; }
+  .footer-content { grid-template-columns: 1fr; gap: 32px; }
 }
