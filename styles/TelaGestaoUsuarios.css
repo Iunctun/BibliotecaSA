@@ -232,7 +232,7 @@ html, body {
   border-radius: 2px;
 }
 .badge-admin   { background: rgba(122,173,255,0.12); color: #7aadff; }
-.badge-usuario { background: rgba(29,158,117,0.10);  color: #5dcaa5; }
+.badge-usuario { background: rgba(112,163,240,0.10); color: #70a3f0; }
 
 /* Botões de ação na tabela */
 .btn-acao {
@@ -512,7 +512,7 @@ html, body {
   align-items: center;
   gap: 14px;
   background: #111316;
-  border: 1px solid rgba(29,158,117,0.4);
+  border: 1px solid rgba(92,146,255,0.4);
   border-radius: 4px;
   padding: 18px 24px;
   box-shadow: 0 12px 40px rgba(0,0,0,0.4);
@@ -529,11 +529,11 @@ html, body {
 .tp-icon {
   width: 34px; height: 34px;
   border-radius: 50%;
-  background: rgba(29,158,117,0.12);
+  background: rgba(92,146,255,0.12);
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
 .toast-perfil.erro .tp-icon { background: rgba(226,75,74,0.12); }
-.tp-icon i { color: #1d9e75; font-size: 14px; }
+.tp-icon i { color: #5c92ff; font-size: 14px; }
 .toast-perfil.erro .tp-icon i { color: #e24b4a; }
 .tp-msg { font-size: 13px; color: #e8e4de; }

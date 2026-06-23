@@ -216,9 +216,9 @@
 }
 
 .book-card-status.disponivel {
-    background: rgba(29,158,117,0.15);
-    color: #5dcaa5;
-    border: 1px solid rgba(29,158,117,0.25);
+    background: rgba(92,146,255,0.15);
+    color: #7aadff;
+    border: 1px solid rgba(92,146,255,0.25);
 }
 
 .book-card-status.indisponivel {
@@ -271,7 +271,7 @@
 .book-card-sep {
     width: 20px;
     height: 1px;
-    background: #1d9e75;
+    background: #5c92ff;
     opacity: 0.5;
     margin: 10px 0;
     transition: width 0.3s ease, opacity 0.3s ease;

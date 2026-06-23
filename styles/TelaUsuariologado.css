@@ -35,7 +35,7 @@ body {
 }
 
 .card:hover {
-  border-color: rgba(29, 158, 117, 0.2);
+  border-color: rgba(92,146,255, 0.2);
 }
 
 /* ── Títulos dos cards ── */
@@ -51,7 +51,7 @@ h3 {
 }
 
 h3 i {
-  color: #1d9e75;
+  color: #5c92ff;
   font-size: 16px;
 }
 
@@ -88,8 +88,8 @@ h3 i {
 
 .input-field:focus {
   outline: none;
-  border-color: rgba(29, 158, 117, 0.5);
-  background: rgba(29, 158, 117, 0.04);
+  border-color: rgba(92,146,255, 0.5);
+  background: rgba(92,146,255, 0.04);
 }
 
 .input-field[readonly] {
@@ -99,7 +99,7 @@ h3 i {
 
 /* ── Botão primário ── */
 .btn-primary {
-  background: #1d9e75;
+  background: #5c92ff;
   color: #ffffff;
   border: none;
   padding: 12px 28px;
@@ -117,7 +117,7 @@ h3 i {
 }
 
 .btn-primary:hover {
-  background: #17865f;
+  background: #3e6fd9;
   transform: translateY(-2px);
 }
 
@@ -142,8 +142,8 @@ h3 i {
 }
 
 .btn-gerenciamento:hover {
-  border-color: #1d9e75;
-  color: #1d9e75;
+  border-color: #5c92ff;
+  color: #5c92ff;
   transform: translateY(-2px);
 }
 
@@ -206,7 +206,7 @@ h3 i {
 }
 
 .section i {
-  color: rgba(29, 158, 117, 0.8);
+  color: rgba(92,146,255, 0.8);
   margin-right: 4px;
 }
 

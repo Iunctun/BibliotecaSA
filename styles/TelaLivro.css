@@ -107,9 +107,9 @@
 }
 
 .disponivel {
-    background: #edf7f1;
-    color: #2c6e49;
-    border: 1px solid #b7dfc9;
+    background: #eaf0fc;
+    color: #1d4ed8;
+    border: 1px solid #b9cdf2;
 }
 
 .indisponivel {
@@ -121,7 +121,7 @@
         .btn-reserve {
   width: auto;
   height: 40px;
-  background: #1f0288;
+  background: #1b2688;
   color: #ffffff;
   font-family: Verdana, sans-serif;
   font-size: 18px;
@@ -130,7 +130,7 @@
   text-transform: uppercase;
   border-radius: 6px;
   border-width: 1px;
-  border-color: #2205b3;
+  border-color: #3e5bdb;
   border-style: solid;
   padding: 14px 28px;
   box-shadow: 5px 5px 0px 0px rgba(0,0,0,1);
@@ -148,7 +148,7 @@
 
 .btn-reserve:hover {
   transform: scale(1.06);
-  background: #21bb02;
+  background: #5c92ff;
   color: #ffffff;
 }
 

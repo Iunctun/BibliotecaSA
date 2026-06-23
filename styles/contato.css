@@ -38,7 +38,7 @@
     color: #ffffff;
     line-height: 1.6;
     margin: 0;
-    border-left: 3px solid #1d9e75;
+    border-left: 3px solid #5c92ff;
     padding-left: 24px;
 }
 
@@ -70,13 +70,13 @@
 }
 
 .contato-item:hover {
-    border-color: rgba(29,158,117,0.35);
-    background: rgba(29,158,117,0.05);
+    border-color: rgba(92,146,255,0.35);
+    background: rgba(92,146,255,0.05);
 }
 
 .contato-item-icon {
     font-size: 18px;
-    color: #1d9e75;
+    color: #5c92ff;
     opacity: 0.85;
     width: 20px;
     text-align: center;
@@ -113,14 +113,14 @@
 .contato-rule-line {
     flex: 1;
     height: 1px;
-    background: linear-gradient(90deg, rgba(29,158,117,0.6), transparent);
+    background: linear-gradient(90deg, rgba(92,146,255,0.6), transparent);
 }
 
 .contato-rule-label {
     font-size: 9px;
     letter-spacing: 3px;
     text-transform: uppercase;
-    color: rgba(29,158,117,1);
+    color: rgba(92,146,255,1);
 }
 
 /* ── Redes sociais ── */
@@ -145,9 +145,9 @@
 }
 
 .contato-social-btn:hover {
-    border-color: rgba(29,158,117,0.45);
-    background: rgba(29,158,117,0.07);
-    color: #1d9e75;
+    border-color: rgba(92,146,255,0.45);
+    background: rgba(92,146,255,0.07);
+    color: #5c92ff;
 }
 
 /* ── Formulário ── */
@@ -200,9 +200,9 @@
 .contato-form-group input:focus,
 .contato-form-group textarea:focus,
 .contato-form-group select:focus {
-    border-color: rgba(29,158,117,0.6);
-    background: rgba(29,158,117,0.05);
-    box-shadow: 0 0 0 3px rgba(29,158,117,0.08);
+    border-color: rgba(92,146,255,0.6);
+    background: rgba(92,146,255,0.05);
+    box-shadow: 0 0 0 3px rgba(92,146,255,0.08);
 }
 
 .contato-form-group textarea {
@@ -232,7 +232,7 @@
 }
 
 .contato-btn {
-    background: #1d9e75;
+    background: #5c92ff;
     color: #ffffff;
     border: none;
     padding: 13px 40px;
@@ -250,7 +250,7 @@
 }
 
 .contato-btn:hover {
-    background: #17865f;
+    background: #3e6fd9;
     transform: translateY(-2px);
 }
 
