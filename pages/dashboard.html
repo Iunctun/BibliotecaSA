@@ -5,12 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../styles/navbar.css">
     <link rel="stylesheet" href="../styles/dashboard.css">
+    <link rel="stylesheet" href="../styles/footer.css">
     <style>
         .admin-only { display: none; }
         .dev-only   { display: none; }
+
+        /* ══ Sidebar azul — identidade da Home ══ */
+        .sidebar {
+            background: linear-gradient(
+                180deg,
+                rgba(27, 38, 136, 0.55) 0%,
+                rgba(6,  11,  48, 0.70) 100%
+            ) !important;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-right: 1px solid rgba(112, 163, 240, 0.18) !important;
+        }
+
+        /* Itens do sidebar */
+        .sidebar-item {
+            color: rgba(232, 236, 244, 0.5) !important;
+            border-radius: 0 6px 6px 0;
+        }
+        .sidebar-item:hover {
+            background: rgba(112, 163, 240, 0.12) !important;
+            color: rgba(232, 236, 244, 0.9) !important;
+            border-left-color: rgba(112, 163, 240, 0.3) !important;
+        }
+        .sidebar-item.active {
+            background: rgba(112, 163, 240, 0.15) !important;
+            border-left-color: #70a3f0 !important;
+            color: #e8ecf4 !important;
+        }
+        .sidebar-item i {
+            color: #70a3f0 !important;
+            opacity: 0.75;
+            transition: opacity 0.2s;
+        }
+        .sidebar-item:hover i,
+        .sidebar-item.active i { opacity: 1; }
+
+        /* Layout corrigido para o footer */
+        .layout {
+            display: flex;
+            min-height: calc(100vh - 70px);
+            padding-top: 70px;
+        }
+
+        /* Wrapper que engloba layout + footer */
+        .page-root {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Footer deslocado para não ficar sob a sidebar */
+        .footer-wrapper {
+            margin-left: 230px;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="../styles/footer.css">
     <title>Dashboard - Biblioteca</title>
 </head>
 <body>
@@ -31,164 +85,171 @@
         </div>
     </header>
 
-    <div class="layout">
+    <div class="page-root">
 
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <a href="../pages/dashboard.html" class="sidebar-item admin-only active">
-                <i class="fa-solid fa-house"></i>
-                <span>Dashboard</span>
-            </a>
-            <a href="../pages/TelaADDLivro.html" class="sidebar-item admin-only">
-                <i class="fa-solid fa-book-medical"></i>
-                <span>Adicionar Livro</span>
-            </a>
-            <a href="../pages/TelaGestaoUsuarios.html" class="sidebar-item admin-only">
-                <i class="fa-solid fa-users-gear"></i>
-                <span>Gestão de Usuários</span>
-            </a>
-            <a href="../pages/TelaCatalogoLivros.html" class="sidebar-item">
-                <i class="fa-solid fa-book-open"></i>
-                <span>Catálogo</span>
-            </a>
-            <a href="../pages/TelaUsuariologado.html" class="sidebar-item">
-                <i class="fa-solid fa-user"></i>
-                <span>Meu Perfil</span>
-            </a>
-            <a href="../pages/TelaSqlConsole.html" class="sidebar-item dev-only">
-                <i class="fa-solid fa-tower-observation"></i>
-                <span>Torre de Consultas</span>
-            </a>
-        </aside>
+        <div class="layout">
 
-        <!-- Main -->
-        <main class="main">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <a href="../pages/dashboard.html" class="sidebar-item admin-only active">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="../pages/TelaADDLivro.html" class="sidebar-item admin-only">
+                    <i class="fa-solid fa-book-medical"></i>
+                    <span>Adicionar Livro</span>
+                </a>
+                <a href="../pages/TelaGestaoUsuarios.html" class="sidebar-item admin-only">
+                    <i class="fa-solid fa-users-gear"></i>
+                    <span>Gestão de Usuários</span>
+                </a>
+                <a href="../pages/TelaCatalogoLivros.html" class="sidebar-item">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span>Catálogo</span>
+                </a>
+                <a href="../pages/TelaUsuariologado.html" class="sidebar-item">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Meu Perfil</span>
+                </a>
+                <a href="../pages/TelaSqlConsole.html" class="sidebar-item dev-only">
+                    <i class="fa-solid fa-tower-observation"></i>
+                    <span>Torre de Consultas</span>
+                </a>
+            </aside>
 
-            <div class="main-header">
-                <span class="main-sup">Painel Administrativo</span>
-                <h1>Dashboard</h1>
-                <p class="main-desc">Visão geral do acervo e atividade da biblioteca</p>
-            </div>
+            <!-- Main -->
+            <main class="main">
 
-            <!-- Cards métricas principais -->
-            <div class="cards-grid">
-                <div class="metric-card accent-green">
-                    <div class="card-icon-wrap green"><i class="fa-solid fa-book-open"></i></div>
-                    <div class="card-body">
-                        <p class="card-label">Total de Livros</p>
-                        <p class="card-value" id="val-livros">—</p>
-                        <p class="card-sub" id="sub-livros">no acervo</p>
-                    </div>
+                <div class="main-header">
+                    <span class="main-sup">Painel Administrativo</span>
+                    <h1>Dashboard</h1>
+                    <p class="main-desc">Visão geral do acervo e atividade da biblioteca</p>
                 </div>
-                <div class="metric-card accent-blue">
-                    <div class="card-icon-wrap blue"><i class="fa-solid fa-users"></i></div>
-                    <div class="card-body">
-                        <p class="card-label">Total de Usuários</p>
-                        <p class="card-value" id="val-usuarios">—</p>
-                        <p class="card-sub">cadastrados</p>
-                    </div>
-                </div>
-                <div class="metric-card accent-amber">
-                    <div class="card-icon-wrap amber"><i class="fa-solid fa-book-bookmark"></i></div>
-                    <div class="card-body">
-                        <p class="card-label">Livros Emprestados</p>
-                        <p class="card-value" id="val-emprestados">—</p>
-                        <p class="card-sub">em circulação</p>
-                    </div>
-                </div>
-                <div class="metric-card accent-red">
-                    <div class="card-icon-wrap red"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                    <div class="card-body">
-                        <p class="card-label">Livros Atrasados</p>
-                        <p class="card-value" id="val-atrasados">—</p>
-                        <p class="card-sub">com devolução vencida</p>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Cards secundários -->
-            <div class="secondary-grid">
-                <div class="secondary-card">
-                    <div class="sec-icon"><i class="fa-solid fa-layer-group"></i></div>
-                    <div>
-                        <p class="sec-label">Disponíveis</p>
-                        <p class="sec-value" id="val-disponiveis">—</p>
+                <!-- Cards métricas principais -->
+                <div class="cards-grid">
+                    <div class="metric-card accent-green">
+                        <div class="card-icon-wrap green"><i class="fa-solid fa-book-open"></i></div>
+                        <div class="card-body">
+                            <p class="card-label">Total de Livros</p>
+                            <p class="card-value" id="val-livros">—</p>
+                            <p class="card-sub" id="sub-livros">no acervo</p>
+                        </div>
+                    </div>
+                    <div class="metric-card accent-blue">
+                        <div class="card-icon-wrap blue"><i class="fa-solid fa-users"></i></div>
+                        <div class="card-body">
+                            <p class="card-label">Total de Usuários</p>
+                            <p class="card-value" id="val-usuarios">—</p>
+                            <p class="card-sub">cadastrados</p>
+                        </div>
+                    </div>
+                    <div class="metric-card accent-amber">
+                        <div class="card-icon-wrap amber"><i class="fa-solid fa-book-bookmark"></i></div>
+                        <div class="card-body">
+                            <p class="card-label">Livros Emprestados</p>
+                            <p class="card-value" id="val-emprestados">—</p>
+                            <p class="card-sub">em circulação</p>
+                        </div>
+                    </div>
+                    <div class="metric-card accent-red">
+                        <div class="card-icon-wrap red"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                        <div class="card-body">
+                            <p class="card-label">Livros Atrasados</p>
+                            <p class="card-value" id="val-atrasados">—</p>
+                            <p class="card-sub">com devolução vencida</p>
+                        </div>
                     </div>
                 </div>
-                <div class="secondary-card">
-                    <div class="sec-icon orange"><i class="fa-solid fa-clock-rotate-left"></i></div>
-                    <div>
-                        <p class="sec-label">Reservas Ativas</p>
-                        <p class="sec-value" id="val-reservas">—</p>
-                    </div>
-                </div>
-                <div class="secondary-card">
-                    <div class="sec-icon purple"><i class="fa-solid fa-tags"></i></div>
-                    <div>
-                        <p class="sec-label">Categorias</p>
-                        <p class="sec-value" id="val-categorias">—</p>
-                    </div>
-                </div>
-                <div class="secondary-card">
-                    <div class="sec-icon teal"><i class="fa-solid fa-percent"></i></div>
-                    <div>
-                        <p class="sec-label">Taxa de Ocupação</p>
-                        <p class="sec-value" id="val-taxa">—</p>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Gráfico + Empréstimos recentes -->
-            <div class="bottom-grid">
-
-                <div class="chart-card">
-                    <div class="chart-card-header">
+                <!-- Cards secundários -->
+                <div class="secondary-grid">
+                    <div class="secondary-card">
+                        <div class="sec-icon"><i class="fa-solid fa-layer-group"></i></div>
                         <div>
-                            <h2>Empréstimos por Mês</h2>
-                            <p class="chart-sub">Últimos 7 meses — dados reais do banco</p>
-                        </div>
-                        <div class="chart-legend">
-                            <span class="leg-dot green"></span><span>Empréstimos</span>
-                            <span class="leg-dot red" style="margin-left:16px;"></span><span>Atrasos</span>
+                            <p class="sec-label">Disponíveis</p>
+                            <p class="sec-value" id="val-disponiveis">—</p>
                         </div>
                     </div>
-                    <div class="chart-wrap">
-                        <canvas id="emprestimosChart"></canvas>
+                    <div class="secondary-card">
+                        <div class="sec-icon orange"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                        <div>
+                            <p class="sec-label">Reservas Ativas</p>
+                            <p class="sec-value" id="val-reservas">—</p>
+                        </div>
                     </div>
-                </div>
-
-                <div class="recent-card">
-                    <div class="recent-header">
-                        <h2>Empréstimos Recentes</h2>
-                        <span class="recent-badge" id="badge-recentes">—</span>
+                    <div class="secondary-card">
+                        <div class="sec-icon purple"><i class="fa-solid fa-tags"></i></div>
+                        <div>
+                            <p class="sec-label">Categorias</p>
+                            <p class="sec-value" id="val-categorias">—</p>
+                        </div>
                     </div>
-                    <div class="recent-list" id="lista-recentes">
-                        <div class="recent-loading">
-                            <i class="fa-solid fa-circle-notch fa-spin"></i>
+                    <div class="secondary-card">
+                        <div class="sec-icon teal"><i class="fa-solid fa-percent"></i></div>
+                        <div>
+                            <p class="sec-label">Taxa de Ocupação</p>
+                            <p class="sec-value" id="val-taxa">—</p>
                         </div>
                     </div>
                 </div>
 
-            </div>
+                <!-- Gráfico + Empréstimos recentes -->
+                <div class="bottom-grid">
 
-            <!-- Categorias do acervo -->
-            <div class="categories-card">
-                <div class="categories-header">
-                    <h2>Acervo por Categoria</h2>
-                    <p class="chart-sub">Distribuição de livros no acervo</p>
-                </div>
-                <div class="categories-body">
-                    <div class="cat-chart-wrap">
-                        <canvas id="categoriasChart"></canvas>
+                    <div class="chart-card">
+                        <div class="chart-card-header">
+                            <div>
+                                <h2>Empréstimos por Mês</h2>
+                                <p class="chart-sub">Últimos 7 meses — dados reais do banco</p>
+                            </div>
+                            <div class="chart-legend">
+                                <span class="leg-dot green"></span><span>Empréstimos</span>
+                                <span class="leg-dot red" style="margin-left:16px;"></span><span>Atrasos</span>
+                            </div>
+                        </div>
+                        <div class="chart-wrap">
+                            <canvas id="emprestimosChart"></canvas>
+                        </div>
                     </div>
-                    <div class="cat-list" id="cat-list"></div>
+
+                    <div class="recent-card">
+                        <div class="recent-header">
+                            <h2>Empréstimos Recentes</h2>
+                            <span class="recent-badge" id="badge-recentes">—</span>
+                        </div>
+                        <div class="recent-list" id="lista-recentes">
+                            <div class="recent-loading">
+                                <i class="fa-solid fa-circle-notch fa-spin"></i>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-            </div>
 
-        </main>
-    </div>
+                <!-- Categorias do acervo -->
+                <div class="categories-card">
+                    <div class="categories-header">
+                        <h2>Acervo por Categoria</h2>
+                        <p class="chart-sub">Distribuição de livros no acervo</p>
+                    </div>
+                    <div class="categories-body">
+                        <div class="cat-chart-wrap">
+                            <canvas id="categoriasChart"></canvas>
+                        </div>
+                        <div class="cat-list" id="cat-list"></div>
+                    </div>
+                </div>
 
-    <div id="footer"></div>
+            </main>
+        </div><!-- /.layout -->
+
+        <!-- Footer deslocado para não sobrepor a sidebar -->
+        <div class="footer-wrapper">
+            <div id="footer"></div>
+        </div>
+
+    </div><!-- /.page-root -->
 
     <script src="../scripts/navbar.js"></script>
     <script>initNavbar();</script>
@@ -201,13 +262,11 @@
             const r = await fetch(_API + "/sessao.php", { credentials: "same-origin" });
             const s = await r.json();
 
-            // Admin e desenvolvedor podem acessar o dashboard
             if (!s.logado || (s.perfil !== "admin" && s.perfil !== "desenvolvedor")) {
                 window.location.href = "/BibliotecaSA/pages/TelaLogin.html";
                 return;
             }
 
-            // Admin vê os itens de admin; desenvolvedor vê admin-only E dev-only
             if (s.perfil === "admin" || s.perfil === "desenvolvedor") {
                 document.querySelectorAll(".admin-only").forEach(el => el.style.display = "flex");
             }
