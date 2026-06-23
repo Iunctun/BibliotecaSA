@@ -435,19 +435,6 @@
       ══════════════════════════════════════════ -->
       <aside class="nav-sidebar" id="navSidebar">
 
-        <!-- Itens visíveis para TODOS (não logados) -->
-        <a href="../pages/TelaCatalogoLivros.html" class="nav-sidebar-item active" id="itemCatalogo">
-          <i class="fa-solid fa-book-open"></i>
-          <span>Catálogo</span>
-        </a>
-        <a href="../pages/TelaLogin.html" class="nav-sidebar-item" id="itemLogin">
-          <i class="fa-solid fa-right-to-bracket"></i>
-          <span>Login</span>
-        </a>
-
-        <!-- Separador — visível somente quando logado -->
-        <div class="sidebar-sep" id="sidebarSep" style="display:none;"></div>
-
         <!-- Itens visíveis somente quando LOGADO -->
         <a href="../pages/dashboard.html" class="nav-sidebar-item admin-only" id="sidebarDashboard">
           <i class="fa-solid fa-house"></i>
@@ -461,6 +448,13 @@
           <i class="fa-solid fa-users-gear"></i>
           <span>Gestão de Usuários</span>
         </a>
+
+        <!-- Itens visíveis para TODOS (não logados) -->
+        <a href="../pages/TelaCatalogoLivros.html" class="nav-sidebar-item active" id="itemCatalogo">
+          <i class="fa-solid fa-book-open"></i>
+          <span>Catálogo</span>
+        </a>
+
         <a href="../pages/TelaUsuariologado.html" class="nav-sidebar-item" id="itemPerfil" style="display:none;">
           <i class="fa-solid fa-user"></i>
           <span>Meu Perfil</span>
@@ -468,6 +462,14 @@
         <a href="../pages/TelaSqlConsole.html" class="nav-sidebar-item dev-only">
           <i class="fa-solid fa-tower-observation"></i>
           <span>Torre de Consultas</span>
+        </a>
+
+        <!-- Separador — visível somente quando NÃO logado -->
+        <div class="sidebar-sep" id="sidebarSep"></div>
+
+        <a href="../pages/TelaLogin.html" class="nav-sidebar-item" id="itemLogin">
+          <i class="fa-solid fa-right-to-bracket"></i>
+          <span>Login</span>
         </a>
 
       </aside>
@@ -574,10 +576,10 @@
       const sessao = await resp.json();
 
       if (sessao.logado) {
-        // Usuário LOGADO: oculta ícone de Login, revela ícone de Perfil e separador
+        // Usuário LOGADO: oculta Login + separador, revela Perfil
         document.getElementById('itemLogin').style.display  = 'none';
+        document.getElementById('sidebarSep').style.display = 'none';
         document.getElementById('itemPerfil').style.display = 'flex';
-        document.getElementById('sidebarSep').style.display = 'block';
 
         // Revela itens de admin/dev conforme perfil
         if (sessao.perfil === 'admin' || sessao.perfil === 'desenvolvedor') {
