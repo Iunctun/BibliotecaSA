@@ -7,7 +7,7 @@
 
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'digital_library');
-define('DB_USER', 'Biblioteca');       // altere para seu usuário MySQL
+define('DB_USER', 'biblioteca');       // altere para seu usuário MySQL
 define('DB_PASS', '123');           // altere para sua senha MySQL
 define('DB_CHARSET', 'utf8mb4');
 
