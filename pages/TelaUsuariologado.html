@@ -1,485 +1,782 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../styles/TelaUsuariologado.css">
-  <link rel="stylesheet" href="../styles/navbar.css">
-  <link rel="stylesheet" href="../styles/footer.css">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <title>Meu Perfil - Biblioteca</title>
-  <style>
-    /* ── Layout com sidebar ── */
-    .page-wrapper {
-      display: flex;
-      min-height: 100vh;
-      padding-top: 70px;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../styles/TelaUsuariologado.css" />
+    <link rel="stylesheet" href="../styles/navbar.css" />
+    <link rel="stylesheet" href="../styles/footer.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <title>Meu Perfil - Biblioteca</title>
+    <style>
+      /* ── Layout com sidebar ── */
+      .page-wrapper {
+        display: flex;
+        min-height: 100vh;
+        padding-top: 70px;
+      }
 
-    .nav-sidebar {
-      width: 230px;
-      flex-shrink: 0;
-      background: linear-gradient(
+      .nav-sidebar {
+        width: 230px;
+        flex-shrink: 0;
+        background: linear-gradient(
           180deg,
           rgba(27, 38, 136, 0.55) 0%,
-          rgba(6,  11,  48, 0.70) 100%
-      ) !important;
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-right: 1px solid rgba(112, 163, 240, 0.18) !important;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      padding: 36px 0;
-      position: fixed;
-      top: 70px;
-      left: 0;
-      bottom: 0;
-      overflow-y: auto;
-      z-index: 100;
-    }
+          rgba(6, 11, 48, 0.7) 100%
+        ) !important;
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border-right: 1px solid rgba(112, 163, 240, 0.18) !important;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        padding: 36px 0;
+        position: fixed;
+        top: 70px;
+        left: 0;
+        bottom: 0;
+        overflow-y: auto;
+        z-index: 100;
+      }
 
-    /* Itens exclusivos de admin — ocultos por padrão, exibidos pelo JS */
-    .nav-sidebar .admin-only { display: none; }
-    .nav-sidebar .dev-only { display: none; }
+      /* Itens exclusivos de admin — ocultos por padrão, exibidos pelo JS */
+      .nav-sidebar .admin-only {
+        display: none;
+      }
+      .nav-sidebar .dev-only {
+        display: none;
+      }
 
+      .nav-sidebar-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 13px 24px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: rgba(232, 236, 244, 0.5) !important;
+        text-decoration: none;
+        margin-right: 12px;
+        border-radius: 0 6px 6px 0;
+        border-left: 2px solid transparent;
+        transition:
+          color 0.2s,
+          background 0.2s,
+          border-color 0.2s;
+      }
+      .nav-sidebar-item:hover {
+        background: rgba(112, 163, 240, 0.12) !important;
+        color: rgba(232, 236, 244, 0.9) !important;
+        border-left-color: rgba(112, 163, 240, 0.3) !important;
+      }
+      .nav-sidebar-item.active {
+        background: rgba(112, 163, 240, 0.15) !important;
+        border-left-color: #70a3f0 !important;
+        color: #e8ecf4 !important;
+      }
+      .nav-sidebar-item i {
+        width: 16px;
+        text-align: center;
+        font-size: 14px;
+        color: #70a3f0 !important;
+        opacity: 0.75;
+        transition: opacity 0.2s;
+      }
+      .nav-sidebar-item:hover i,
+      .nav-sidebar-item.active i {
+        opacity: 1;
+      }
 
-    .nav-sidebar-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 13px 24px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      color: rgba(232, 236, 244, 0.5) !important;
-      text-decoration: none;
-      margin-right: 12px;
-      border-radius: 0 6px 6px 0;
-      border-left: 2px solid transparent;
-      transition: color 0.2s, background 0.2s, border-color 0.2s;
-    }
-    .nav-sidebar-item:hover {
-      background: rgba(112, 163, 240, 0.12) !important;
-      color: rgba(232, 236, 244, 0.9) !important;
-      border-left-color: rgba(112, 163, 240, 0.3) !important;
-    }
-    .nav-sidebar-item.active {
-      background: rgba(112, 163, 240, 0.15) !important;
-      border-left-color: #70a3f0 !important;
-      color: #e8ecf4 !important;
-    }
-    .nav-sidebar-item i { width: 16px; text-align: center; font-size: 14px; color: #70a3f0 !important; opacity: 0.75; transition: opacity 0.2s; }
-    .nav-sidebar-item:hover i,
-    .nav-sidebar-item.active i { opacity: 1; }
+      /* Empurra o conteúdo para dar espaço ao sidebar fixo */
+      .container {
+        margin-left: 230px;
+      }
 
-    /* Empurra o conteúdo para dar espaço ao sidebar fixo */
-    .container {
-      margin-left: 230px;
-    }
+      /* ── Estilos originais dos livros e cards ── */
+      .livro-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 16px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .livro-item:last-child {
+        border-bottom: none;
+      }
 
-    /* ── Estilos originais dos livros e cards ── */
-    .livro-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-      padding: 16px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-    .livro-item:last-child { border-bottom: none; }
+      .livro-capa {
+        width: 48px;
+        height: 68px;
+        object-fit: cover;
+        border-radius: 3px;
+        background: rgba(255, 255, 255, 0.05);
+        flex-shrink: 0;
+      }
 
-    .livro-capa {
-      width: 48px;
-      height: 68px;
-      object-fit: cover;
-      border-radius: 3px;
-      background: rgba(255,255,255,0.05);
-      flex-shrink: 0;
-    }
+      .livro-info {
+        flex: 1;
+      }
+      .livro-titulo {
+        font-family: "Playfair Display", serif;
+        font-size: 14px;
+        color: #fff;
+        margin-bottom: 4px;
+      }
+      .livro-autor {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.4);
+        margin-bottom: 8px;
+      }
 
-    .livro-info { flex: 1; }
-    .livro-titulo { font-family: 'Playfair Display', serif; font-size: 14px; color: #fff; margin-bottom: 4px; }
-    .livro-autor  { font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 8px; }
+      .livro-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        padding: 3px 10px;
+        border-radius: 2px;
+      }
+      .badge-ativo {
+        background: rgba(29, 158, 117, 0.12);
+        color: #5dcaa5;
+      }
+      .badge-pendente {
+        background: rgba(62, 91, 219, 0.12);
+        color: #7a92f5;
+      }
+      .badge-atrasado {
+        background: rgba(226, 75, 74, 0.12);
+        color: #e24b4a;
+      }
 
-    .livro-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      padding: 3px 10px;
-      border-radius: 2px;
-    }
-    .badge-ativo    { background: rgba(29,158,117,0.12); color: #5dcaa5; }
-    .badge-pendente { background: rgba(62,91,219,0.12); color: #7a92f5; }
-    .badge-atrasado { background: rgba(226,75,74,0.12); color: #e24b4a; }
+      .livro-datas {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.3);
+        margin-top: 6px;
+      }
+      .livro-datas strong {
+        color: rgba(255, 255, 255, 0.6);
+      }
 
-    .livro-datas { font-size: 11px; color: rgba(255,255,255,0.3); margin-top: 6px; }
-    .livro-datas strong { color: rgba(255,255,255,0.6); }
+      .btn-cancelar-reserva {
+        background: transparent;
+        border: 1px solid rgba(226, 75, 74, 0.25);
+        color: rgba(226, 75, 74, 0.7);
+        padding: 5px 12px;
+        border-radius: 3px;
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        cursor: pointer;
+        margin-top: 8px;
+        transition:
+          border-color 0.2s,
+          color 0.2s,
+          background 0.2s;
+      }
+      .btn-cancelar-reserva:hover {
+        border-color: #e24b4a;
+        color: #e24b4a;
+        background: rgba(226, 75, 74, 0.05);
+      }
 
-    .btn-cancelar-reserva {
-      background: transparent;
-      border: 1px solid rgba(226,75,74,0.25);
-      color: rgba(226,75,74,0.7);
-      padding: 5px 12px;
-      border-radius: 3px;
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      cursor: pointer;
-      margin-top: 8px;
-      transition: border-color 0.2s, color 0.2s, background 0.2s;
-    }
-    .btn-cancelar-reserva:hover {
-      border-color: #e24b4a;
-      color: #e24b4a;
-      background: rgba(226,75,74,0.05);
-    }
+      .lista-vazia {
+        color: rgba(255, 255, 255, 0.2);
+        font-size: 13px;
+        text-align: center;
+        padding: 32px 0;
+      }
 
-    .lista-vazia {
-      color: rgba(255,255,255,0.2);
-      font-size: 13px;
-      text-align: center;
-      padding: 32px 0;
-    }
+      .skeleton-linha {
+        height: 12px;
+        border-radius: 2px;
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.04) 25%,
+          rgba(255, 255, 255, 0.08) 50%,
+          rgba(255, 255, 255, 0.04) 75%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+        margin-bottom: 10px;
+      }
+      .skeleton-linha.short {
+        width: 60%;
+      }
+      @keyframes shimmer {
+        0% {
+          background-position: 200% 0;
+        }
+        100% {
+          background-position: -200% 0;
+        }
+      }
 
-    .skeleton-linha {
-      height: 12px;
-      border-radius: 2px;
-      background: linear-gradient(90deg,rgba(255,255,255,0.04) 25%,rgba(255,255,255,0.08) 50%,rgba(255,255,255,0.04) 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.5s infinite;
-      margin-bottom: 10px;
-    }
-    .skeleton-linha.short { width: 60%; }
-    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+      /* Saldo de créditos */
+      .creditos-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(29, 158, 117, 0.07);
+        border: 1px solid rgba(29, 158, 117, 0.18);
+        border-radius: 6px;
+        padding: 16px 22px;
+        margin-bottom: 28px;
+      }
+      .creditos-left {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .creditos-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: rgba(29, 158, 117, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .creditos-icon i {
+        color: #5dcaa5;
+        font-size: 15px;
+      }
+      .creditos-label {
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.3);
+        margin-bottom: 2px;
+      }
+      .creditos-valor {
+        font-family: "Playfair Display", serif;
+        font-size: 22px;
+        color: #5dcaa5;
+      }
+      .btn-add-creditos {
+        background: rgba(29, 158, 117, 0.12);
+        border: 1px solid rgba(29, 158, 117, 0.3);
+        color: #5dcaa5;
+        border-radius: 4px;
+        padding: 10px 20px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          border-color 0.2s;
+      }
+      .btn-add-creditos:hover {
+        background: rgba(29, 158, 117, 0.2);
+        border-color: rgba(29, 158, 117, 0.5);
+      }
 
-    /* Saldo de créditos */
-    .creditos-bar {
-      display: flex; align-items: center; justify-content: space-between;
-      background: rgba(29,158,117,0.07); border: 1px solid rgba(29,158,117,0.18);
-      border-radius: 6px; padding: 16px 22px; margin-bottom: 28px;
-    }
-    .creditos-left { display: flex; align-items: center; gap: 14px; }
-    .creditos-icon { width: 38px; height: 38px; border-radius: 50%; background: rgba(29,158,117,0.15); display: flex; align-items: center; justify-content: center; }
-    .creditos-icon i { color: #5dcaa5; font-size: 15px; }
-    .creditos-label { font-size: 10px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 2px; }
-    .creditos-valor { font-family: 'Playfair Display', serif; font-size: 22px; color: #5dcaa5; }
-    .btn-add-creditos {
-      background: rgba(29,158,117,0.12); border: 1px solid rgba(29,158,117,0.3);
-      color: #5dcaa5; border-radius: 4px; padding: 10px 20px;
-      font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
-      letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
-      transition: background 0.2s, border-color 0.2s;
-    }
-    .btn-add-creditos:hover { background: rgba(29,158,117,0.2); border-color: rgba(29,158,117,0.5); }
+      /* Modal créditos */
+      .modal-creditos-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9000;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s;
+      }
+      .modal-creditos-overlay.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .modal-creditos {
+        background: #1e2128;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        padding: 36px;
+        width: 100%;
+        max-width: 400px;
+        transform: translateY(16px);
+        transition: transform 0.25s;
+      }
+      .modal-creditos-overlay.open .modal-creditos {
+        transform: translateY(0);
+      }
+      .modal-creditos h2 {
+        font-family: "Playfair Display", serif;
+        font-size: 24px;
+        font-weight: 400;
+        color: #fff;
+        margin-bottom: 6px;
+      }
+      .modal-creditos p {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.35);
+        margin-bottom: 24px;
+      }
+      .modal-creditos label {
+        display: block;
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.3);
+        margin-bottom: 8px;
+      }
+      .modal-creditos input {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        color: #e8e4de;
+        font-family: "DM Sans", sans-serif;
+        font-size: 18px;
+        padding: 12px 16px;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .modal-creditos input:focus {
+        border-color: rgba(29, 158, 117, 0.5);
+      }
+      .modal-creditos-footer {
+        display: flex;
+        gap: 10px;
+        margin-top: 24px;
+      }
+      .btn-creditos-cancelar {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.4);
+        border-radius: 4px;
+        padding: 12px 20px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 12px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .btn-creditos-cancelar:hover {
+        border-color: rgba(255, 255, 255, 0.25);
+        color: rgba(255, 255, 255, 0.7);
+      }
+      .btn-creditos-confirmar {
+        flex: 1;
+        background: #1d9e75;
+        border: none;
+        color: #fff;
+        border-radius: 4px;
+        padding: 12px 20px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .btn-creditos-confirmar:hover {
+        background: #17865f;
+      }
+      .btn-creditos-confirmar:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
 
-    /* Modal créditos */
-    .modal-creditos-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.7);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 9000; opacity: 0; pointer-events: none;
-      transition: opacity 0.25s;
-    }
-    .modal-creditos-overlay.open { opacity: 1; pointer-events: auto; }
-    .modal-creditos {
-      background: #1e2128; border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 8px; padding: 36px; width: 100%; max-width: 400px;
-      transform: translateY(16px); transition: transform 0.25s;
-    }
-    .modal-creditos-overlay.open .modal-creditos { transform: translateY(0); }
-    .modal-creditos h2 { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 400; color: #fff; margin-bottom: 6px; }
-    .modal-creditos p  { font-size: 13px; color: rgba(255,255,255,0.35); margin-bottom: 24px; }
-    .modal-creditos label { display: block; font-size: 10px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 8px; }
-    .modal-creditos input {
-      width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 4px; color: #e8e4de; font-family: 'DM Sans', sans-serif;
-      font-size: 18px; padding: 12px 16px; outline: none;
-      transition: border-color 0.2s;
-    }
-    .modal-creditos input:focus { border-color: rgba(29,158,117,0.5); }
-    .modal-creditos-footer { display: flex; gap: 10px; margin-top: 24px; }
-    .btn-creditos-cancelar {
-      background: transparent; border: 1px solid rgba(255,255,255,0.1);
-      color: rgba(255,255,255,0.4); border-radius: 4px; padding: 12px 20px;
-      font-family: 'DM Sans', sans-serif; font-size: 12px; letter-spacing: 1px;
-      text-transform: uppercase; cursor: pointer; transition: all 0.2s;
-    }
-    .btn-creditos-cancelar:hover { border-color: rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); }
-    .btn-creditos-confirmar {
-      flex: 1; background: #1d9e75; border: none; color: #fff;
-      border-radius: 4px; padding: 12px 20px;
-      font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
-      letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
-      transition: background 0.2s;
-    }
-    .btn-creditos-confirmar:hover { background: #17865f; }
-    .btn-creditos-confirmar:disabled { opacity: 0.5; cursor: not-allowed; }
-
-    /* Toast */
-    .toast-perfil {
-      position: fixed; bottom: 32px; right: 32px;
-      display: flex; align-items: center; gap: 14px;
-      background: #111316; border: 1px solid rgba(29,158,117,0.4);
-      border-radius: 4px; padding: 18px 24px;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.4);
-      z-index: 9999; opacity: 0; transform: translateY(12px);
-      transition: opacity 0.3s ease, transform 0.3s ease;
-      pointer-events: none; min-width: 280px;
-    }
-    .toast-perfil.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
-    .toast-perfil.erro { border-color: rgba(226,75,74,0.4); }
-    .tp-icon { width: 34px; height: 34px; border-radius: 50%; background: rgba(29,158,117,0.12); display: flex; align-items: center; justify-content: center; }
-    .toast-perfil.erro .tp-icon { background: rgba(226,75,74,0.12); }
-    .tp-icon i { color: #1d9e75; font-size: 14px; }
-    .toast-perfil.erro .tp-icon i { color: #e24b4a; }
-    .tp-msg { font-size: 13px; color: #e8e4de; }
-    /* ── Cabeçalho da página ── */
-    .page-header { margin-bottom: 32px; }
-    .page-sup {
-        display: block; font-size: 10px; font-weight: 500;
-        letter-spacing: 4px; text-transform: uppercase; color: #7aadff; margin-bottom: 8px;
-    }
-    .page-header h1 {
-        font-family: 'Playfair Display', serif;
-        font-size: 38px; font-weight: 400; color: #fff; margin-bottom: 6px;
-    }
-    .page-desc { font-size: 13px; color: rgba(255,255,255,0.35); font-weight: 300; }
-  </style>
-</head>
-<body>
-
-  <!-- ===== NAVBAR INLINE ===== -->
-  <header class="header">
-    <div class="header-container">
-      <div class="logo-left">
-        <img src="../img/logo_removebg.png" alt="Digital Library" class="logo-img">
+      /* Toast */
+      .toast-perfil {
+        position: fixed;
+        bottom: 32px;
+        right: 32px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        background: #111316;
+        border: 1px solid rgba(29, 158, 117, 0.4);
+        border-radius: 4px;
+        padding: 18px 24px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        z-index: 9999;
+        opacity: 0;
+        transform: translateY(12px);
+        transition:
+          opacity 0.3s ease,
+          transform 0.3s ease;
+        pointer-events: none;
+        min-width: 280px;
+      }
+      .toast-perfil.show {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+      .toast-perfil.erro {
+        border-color: rgba(226, 75, 74, 0.4);
+      }
+      .tp-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: rgba(29, 158, 117, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .toast-perfil.erro .tp-icon {
+        background: rgba(226, 75, 74, 0.12);
+      }
+      .tp-icon i {
+        color: #1d9e75;
+        font-size: 14px;
+      }
+      .toast-perfil.erro .tp-icon i {
+        color: #e24b4a;
+      }
+      .tp-msg {
+        font-size: 13px;
+        color: #e8e4de;
+      }
+      /* ── Cabeçalho da página ── */
+      .page-header {
+        margin-bottom: 32px;
+      }
+      .page-sup {
+        display: block;
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: #7aadff;
+        margin-bottom: 8px;
+      }
+      .page-header h1 {
+        font-family: "Playfair Display", serif;
+        font-size: 38px;
+        font-weight: 400;
+        color: #fff;
+        margin-bottom: 6px;
+      }
+      .page-desc {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.35);
+        font-weight: 300;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ===== NAVBAR INLINE ===== -->
+    <header class="header">
+      <div class="header-container">
+        <div class="logo-left">
+          <img
+            src="../img/logo_removebg.png"
+            alt="Digital Library"
+            class="logo-img"
+          />
+        </div>
+        <nav class="nav-menu">
+          <a href="../pages/TelaHome.html" class="nav-link">INÍCIO</a>
+          <a href="../pages/TelaHome.html#sessao-sobre" class="nav-link"
+            >SOBRE</a
+          >
+          <a href="../pages/TelaCatalogoLivros.html" class="nav-link"
+            >CATÁLOGO</a
+          >
+          <a href="../pages/TelaHome.html#sessao-contato" class="nav-link"
+            >CONTATO</a
+          >
+        </nav>
+        <div class="nav-user-area" id="navUserArea"></div>
       </div>
-      <nav class="nav-menu">
-        <a href="../pages/TelaHome.html" class="nav-link">INÍCIO</a>
-        <a href="../pages/TelaHome.html#sessao-sobre" class="nav-link">SOBRE</a>
-        <a href="../pages/TelaCatalogoLivros.html" class="nav-link">CATÁLOGO</a>
-        <a href="../pages/TelaHome.html#sessao-contato" class="nav-link">CONTATO</a>
-      </nav>
-      <div class="nav-user-area" id="navUserArea"></div>
-    </div>
-  </header>
+    </header>
 
-  <div class="page-wrapper">
+    <div class="page-wrapper">
+      <!-- Nav sidebar -->
+      <aside class="nav-sidebar" id="navSidebar">
+        <a
+          href="../pages/dashboard.html"
+          class="nav-sidebar-item admin-only"
+          id="sidebarDashboard"
+        >
+          <i class="fa-solid fa-house"></i>
+          <span>Dashboard</span>
+        </a>
+        <a
+          href="../pages/TelaADDLivro.html"
+          class="nav-sidebar-item admin-only"
+          id="sidebarAddLivro"
+        >
+          <i class="fa-solid fa-book-medical"></i>
+          <span>Adicionar Livro</span>
+        </a>
+        <a
+          href="../pages/TelaGestaoUsuarios.html"
+          class="nav-sidebar-item admin-only"
+        >
+          <i class="fa-solid fa-users-gear"></i>
+          <span>Gestão de Usuários</span>
+        </a>
+        <a href="../pages/TelaCatalogoLivros.html" class="nav-sidebar-item">
+          <i class="fa-solid fa-book-open"></i>
+          <span>Catálogo</span>
+        </a>
 
-    <!-- Nav sidebar -->
-    <aside class="nav-sidebar" id="navSidebar">
-      <a href="../pages/dashboard.html" class="nav-sidebar-item admin-only" id="sidebarDashboard">
-        <i class="fa-solid fa-house"></i>
-        <span>Dashboard</span>
-      </a>
-      <a href="../pages/TelaADDLivro.html" class="nav-sidebar-item admin-only" id="sidebarAddLivro">
-        <i class="fa-solid fa-book-medical"></i>
-        <span>Adicionar Livro</span>
-      </a>
-      <a href="../pages/TelaGestaoUsuarios.html" class="nav-sidebar-item admin-only">
-        <i class="fa-solid fa-users-gear"></i>
-        <span>Gestão de Usuários</span>
-      </a>
-      <a href="../pages/TelaCatalogoLivros.html" class="nav-sidebar-item">
-        <i class="fa-solid fa-book-open"></i>
-        <span>Catálogo</span>
+        <a
+          href="../pages/TelaUsuariologado.html"
+          class="nav-sidebar-item active"
+        >
+          <i class="fa-solid fa-user"></i>
+          <span>Meu Perfil</span>
+        </a>
+        <a
+          href="../pages/TelaSqlConsole.html"
+          class="nav-sidebar-item dev-only"
+        >
+          <i class="fa-solid fa-tower-observation"></i>
+          <span>Torre de Consultas</span>
+        </a>
+      </aside>
 
-      </a>
+      <div class="container">
+        <!-- Cabeçalho da página -->
 
-      <a href="../pages/TelaUsuariologado.html" class="nav-sidebar-item active">
-        <i class="fa-solid fa-user"></i>
-        <span>Meu Perfil</span>
-      </a>
-      <a href="../pages/TelaSqlConsole.html" class="nav-sidebar-item dev-only">
-        <i class="fa-solid fa-tower-observation"></i>
-        <span>Torre de Consultas</span>
-      </a>
-    </aside>
+        <div class="page-header">
+          <span class="page-sup">Área do Membro</span>
+          <h1>Meu Perfil</h1>
+          <p class="page-desc">Gerencie seus dados, empréstimos e reservas</p>
+        </div>
 
-    <div class="container">
+        <!-- Barra de créditos -->
+        <div class="creditos-bar" id="creditosBar">
+          <div class="creditos-left">
+            <div class="creditos-icon"><i class="fa-solid fa-coins"></i></div>
+            <div>
+              <div class="creditos-label">Meus Créditos</div>
+              <div class="creditos-valor" id="creditosValor">R$ 0,00</div>
+            </div>
+          </div>
+          <button class="btn-add-creditos" id="btnAddCreditos">
+            <i class="fa-solid fa-plus" style="margin-right: 6px"></i> Adicionar
+            Créditos
+          </button>
+        </div>
 
-      <!-- Cabeçalho da página -->
-      <!-- Barra de créditos -->
-      <div class="creditos-bar" id="creditosBar">
-        <div class="creditos-left">
-          <div class="creditos-icon"><i class="fa-solid fa-coins"></i></div>
-          <div>
-            <div class="creditos-label">Meus Créditos</div>
-            <div class="creditos-valor" id="creditosValor">R$ 0,00</div>
+        <!-- Dados Pessoais -->
+        <div class="card">
+          <h3><i class="fas fa-id-card"></i> Dados Pessoais</h3>
+          <div class="flex">
+            <div class="field-group">
+              <label>Nome</label>
+              <input
+                id="nome"
+                class="input-field"
+                type="text"
+                readonly
+                placeholder="Carregando..."
+              />
+            </div>
+            <div class="field-group">
+              <label>Email</label>
+              <input
+                id="email"
+                class="input-field"
+                type="email"
+                readonly
+                placeholder="Carregando..."
+              />
+            </div>
+            <div class="field-group">
+              <label>ID de Membro</label>
+              <input
+                id="membroId"
+                class="input-field"
+                type="text"
+                readonly
+                placeholder="—"
+              />
+            </div>
           </div>
         </div>
-        <button class="btn-add-creditos" id="btnAddCreditos">
-          <i class="fa-solid fa-plus" style="margin-right:6px;"></i> Adicionar Créditos
-        </button>
-      </div>
 
-      <div class="page-header">
-        <span class="page-sup">Área do Membro</span>
-        <h1>Meu Perfil</h1>
-        <p class="page-desc">Gerencie seus dados, empréstimos e reservas</p>
-      </div>
-
-      <!-- Dados Pessoais -->
-      <div class="card">
-        <h3><i class="fas fa-id-card"></i> Dados Pessoais</h3>
+        <!-- Livros + Reservas -->
         <div class="flex">
-          <div class="field-group">
-            <label>Nome</label>
-            <input id="nome" class="input-field" type="text" readonly placeholder="Carregando...">
+          <!-- Empréstimos ativos -->
+          <div class="card" style="flex: 1">
+            <h3><i class="fas fa-book"></i> Livros Emprestados</h3>
+            <div id="listaEmprestimos">
+              <div class="skeleton-linha"></div>
+              <div class="skeleton-linha short"></div>
+              <div class="skeleton-linha"></div>
+              <div class="skeleton-linha short"></div>
+            </div>
           </div>
-          <div class="field-group">
-            <label>Email</label>
-            <input id="email" class="input-field" type="email" readonly placeholder="Carregando...">
-          </div>
-          <div class="field-group">
-            <label>ID de Membro</label>
-            <input id="membroId" class="input-field" type="text" readonly placeholder="—">
+
+          <!-- Reservas -->
+          <div class="card" style="flex: 1">
+            <h3><i class="fas fa-bookmark"></i> Reservas Pendentes</h3>
+            <div id="listaReservas">
+              <div class="skeleton-linha"></div>
+              <div class="skeleton-linha short"></div>
+            </div>
+
+            <br />
+            <div class="section">
+              <i class="fas fa-trash-alt"></i> Multas
+              <i class="fas fa-exclamation-triangle multa-icon"></i>
+            </div>
+            <div class="section">
+              <strong>Valor Total:</strong>
+              <span id="valor" class="total">R$0.00</span>
+              <br /><br />
+              <button class="btn-primary" id="btnPagamento">
+                <i class="fas fa-credit-card"></i> Pagamento
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-
-      <!-- Livros + Reservas -->
-      <div class="flex">
-
-        <!-- Empréstimos ativos -->
-        <div class="card" style="flex:1">
-          <h3><i class="fas fa-book"></i> Livros Emprestados</h3>
-          <div id="listaEmprestimos">
-            <div class="skeleton-linha"></div>
-            <div class="skeleton-linha short"></div>
-            <div class="skeleton-linha"></div>
-            <div class="skeleton-linha short"></div>
-          </div>
-        </div>
-
-        <!-- Reservas -->
-        <div class="card" style="flex:1">
-          <h3><i class="fas fa-bookmark"></i> Reservas Pendentes</h3>
-          <div id="listaReservas">
-            <div class="skeleton-linha"></div>
-            <div class="skeleton-linha short"></div>
-          </div>
-
-          <br>
-          <div class="section">
-            <i class="fas fa-trash-alt"></i> Multas
-            <i class="fas fa-exclamation-triangle multa-icon"></i>
-          </div>
-          <div class="section">
-            <strong>Valor Total:</strong>
-            <span id="valor" class="total">R$0.00</span>
-            <br><br>
-            <button class="btn-primary" id="btnPagamento">
-              <i class="fas fa-credit-card"></i> Pagamento
-            </button>
-          </div>
-        </div>
-
       </div>
     </div>
 
-  </div>
+    <!-- Toast -->
+    <div class="toast-perfil" id="toastPerfil">
+      <div class="tp-icon"><i class="fa-solid fa-check" id="tpIconEl"></i></div>
+      <span class="tp-msg" id="tpMsg">—</span>
+    </div>
 
-  <!-- Toast -->
-  <div class="toast-perfil" id="toastPerfil">
-    <div class="tp-icon"><i class="fa-solid fa-check" id="tpIconEl"></i></div>
-    <span class="tp-msg" id="tpMsg">—</span>
-  </div>
-
-  <!-- Modal Adicionar Créditos -->
-  <div class="modal-creditos-overlay" id="modalCreditosOverlay">
-    <div class="modal-creditos">
-      <h2>Adicionar Créditos</h2>
-      <p>Informe o valor que deseja adicionar à sua conta</p>
-      <label>Valor (R$)</label>
-      <input type="number" id="inputCreditos" min="1" max="10000" step="0.01" placeholder="0,00">
-      <div class="modal-creditos-footer">
-        <button class="btn-creditos-cancelar" id="btnCreditosCancelar">Cancelar</button>
-        <button class="btn-creditos-confirmar" id="btnCreditosConfirmar">
-          <i class="fa-solid fa-check" style="margin-right:6px;"></i> Confirmar
-        </button>
+    <!-- Modal Adicionar Créditos -->
+    <div class="modal-creditos-overlay" id="modalCreditosOverlay">
+      <div class="modal-creditos">
+        <h2>Adicionar Créditos</h2>
+        <p>Informe o valor que deseja adicionar à sua conta</p>
+        <label>Valor (R$)</label>
+        <input
+          type="number"
+          id="inputCreditos"
+          min="1"
+          max="10000"
+          step="0.01"
+          placeholder="0,00"
+        />
+        <div class="modal-creditos-footer">
+          <button class="btn-creditos-cancelar" id="btnCreditosCancelar">
+            Cancelar
+          </button>
+          <button class="btn-creditos-confirmar" id="btnCreditosConfirmar">
+            <i class="fa-solid fa-check" style="margin-right: 6px"></i>
+            Confirmar
+          </button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div id="footer"></div>
+    <div id="footer"></div>
 
-  <script src="../scripts/navbar.js"></script>
-  <script>initNavbar();</script>
-  <script src="../scripts/include.js"></script>
+    <script src="../scripts/navbar.js"></script>
+    <script>
+      initNavbar();
+    </script>
+    <script src="../scripts/include.js"></script>
 
-  <script>
-  // ============================================================
-  //  TelaUsuariologado — dados reais do banco via usuario_perfil.php
-  // ============================================================
-  const API = '/BibliotecaSA/backend';
-  let toastTimer = null;
+    <script>
+      // ============================================================
+      //  TelaUsuariologado — dados reais do banco via usuario_perfil.php
+      // ============================================================
+      const API = "/BibliotecaSA/backend";
+      let toastTimer = null;
 
-  async function carregarPerfil() {
-    try {
-      const res  = await fetch(`${API}/usuario_perfil.php`, { credentials: 'same-origin' });
-      const data = await res.json();
+      async function carregarPerfil() {
+        try {
+          const res = await fetch(`${API}/usuario_perfil.php`, {
+            credentials: "same-origin",
+          });
+          const data = await res.json();
 
-      if (data.erro) {
-        window.location.href = '/BibliotecaSA/pages/TelaLogin.html';
-        return;
+          if (data.erro) {
+            window.location.href = "/BibliotecaSA/pages/TelaLogin.html";
+            return;
+          }
+
+          // ── Dados pessoais ──
+          document.getElementById("nome").value = data.usuario.nome || "—";
+          document.getElementById("email").value = data.usuario.email || "—";
+          document.getElementById("membroId").value =
+            "#" + String(data.usuario.id).padStart(5, "0");
+          atualizarCreditos(data.usuario.creditos ?? 0);
+
+          // ── Exibe itens admin no sidebar se for admin ──
+          if (
+            data.usuario.perfil === "admin" ||
+            data.usuario.perfil === "desenvolvedor"
+          ) {
+            document
+              .querySelectorAll(".admin-only")
+              .forEach((el) => (el.style.display = "flex"));
+          }
+
+          if (data.usuario.perfil === "desenvolvedor") {
+            document
+              .querySelectorAll(".dev-only")
+              .forEach((el) => (el.style.display = "flex"));
+          }
+
+          // ── Empréstimos ──
+          renderEmprestimos(data.emprestimos);
+
+          // ── Reservas ──
+          renderReservas(data.reservas);
+
+          // ── Multas (empréstimos atrasados) ──
+          calcularMultas(data.emprestimos);
+        } catch (e) {
+          mostrarToast("Erro ao carregar perfil.", true);
+        }
       }
 
-      // ── Dados pessoais ──
-      document.getElementById('nome').value     = data.usuario.nome    || '—';
-      document.getElementById('email').value    = data.usuario.email   || '—';
-      document.getElementById('membroId').value = '#' + String(data.usuario.id).padStart(5, '0');
-      atualizarCreditos(data.usuario.creditos ?? 0);
+      function renderEmprestimos(lista) {
+        const el = document.getElementById("listaEmprestimos");
+        if (!lista || lista.length === 0) {
+          el.innerHTML =
+            '<p class="lista-vazia"><i class="fas fa-book-open" style="margin-right:8px;"></i>Nenhum empréstimo ativo.</p>';
+          return;
+        }
 
-      // ── Exibe itens admin no sidebar se for admin ──
-      if (data.usuario.perfil === 'admin' || data.usuario.perfil === 'desenvolvedor') {
-        document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'flex');
-      }
+        const hoje = new Date();
+        hoje.setHours(0, 0, 0, 0);
 
-      if (data.usuario.perfil === 'desenvolvedor') {
-        document.querySelectorAll('.dev-only').forEach(el => el.style.display = 'flex');
-      }
+        el.innerHTML = lista
+          .map((e) => {
+            const devolucao = new Date(e.data_devolucao + "T00:00:00");
+            const atrasado = devolucao < hoje;
+            const badgeClass = atrasado ? "badge-atrasado" : "badge-ativo";
+            const badgeText = atrasado ? "Atrasado" : "Ativo";
+            const capa = e.capa_path
+              ? `/BibliotecaSA/${e.capa_path}`
+              : "../img/livro-placeholder.webp";
+            const dtDev = e.data_devolucao
+              ? e.data_devolucao.split("-").reverse().join("/")
+              : "—";
+            const dtRet = e.data_retirada
+              ? e.data_retirada.split("-").reverse().join("/")
+              : "—";
 
-      // ── Empréstimos ──
-      renderEmprestimos(data.emprestimos);
-
-      // ── Reservas ──
-      renderReservas(data.reservas);
-
-      // ── Multas (empréstimos atrasados) ──
-      calcularMultas(data.emprestimos);
-
-    } catch (e) {
-      mostrarToast('Erro ao carregar perfil.', true);
-    }
-  }
-
-  function renderEmprestimos(lista) {
-    const el = document.getElementById('listaEmprestimos');
-    if (!lista || lista.length === 0) {
-      el.innerHTML = '<p class="lista-vazia"><i class="fas fa-book-open" style="margin-right:8px;"></i>Nenhum empréstimo ativo.</p>';
-      return;
-    }
-
-    const hoje = new Date(); hoje.setHours(0,0,0,0);
-
-    el.innerHTML = lista.map(e => {
-      const devolucao  = new Date(e.data_devolucao + 'T00:00:00');
-      const atrasado   = devolucao < hoje;
-      const badgeClass = atrasado ? 'badge-atrasado' : 'badge-ativo';
-      const badgeText  = atrasado ? 'Atrasado' : 'Ativo';
-      const capa       = e.capa_path ? `/BibliotecaSA/${e.capa_path}` : '../img/livro-placeholder.webp';
-      const dtDev      = e.data_devolucao ? e.data_devolucao.split('-').reverse().join('/') : '—';
-      const dtRet      = e.data_retirada  ? e.data_retirada.split('-').reverse().join('/')  : '—';
-
-      return `
+            return `
         <div class="livro-item">
           <img class="livro-capa" src="${capa}" alt="${e.titulo}" onerror="this.src='../img/livro-placeholder.webp'">
           <div class="livro-info">
@@ -493,21 +790,28 @@
             </div>
           </div>
         </div>`;
-    }).join('');
-  }
+          })
+          .join("");
+      }
 
-  function renderReservas(lista) {
-    const el = document.getElementById('listaReservas');
-    if (!lista || lista.length === 0) {
-      el.innerHTML = '<p class="lista-vazia"><i class="fas fa-bookmark" style="margin-right:8px;"></i>Nenhuma reserva pendente.</p>';
-      return;
-    }
+      function renderReservas(lista) {
+        const el = document.getElementById("listaReservas");
+        if (!lista || lista.length === 0) {
+          el.innerHTML =
+            '<p class="lista-vazia"><i class="fas fa-bookmark" style="margin-right:8px;"></i>Nenhuma reserva pendente.</p>';
+          return;
+        }
 
-    el.innerHTML = lista.map(r => {
-      const capa   = r.capa_path ? `/BibliotecaSA/${r.capa_path}` : '../img/livro-placeholder.webp';
-      const criado = r.criado_em ? r.criado_em.split(' ')[0].split('-').reverse().join('/') : '—';
+        el.innerHTML = lista
+          .map((r) => {
+            const capa = r.capa_path
+              ? `/BibliotecaSA/${r.capa_path}`
+              : "../img/livro-placeholder.webp";
+            const criado = r.criado_em
+              ? r.criado_em.split(" ")[0].split("-").reverse().join("/")
+              : "—";
 
-      return `
+            return `
         <div class="livro-item" id="reserva-${r.id}">
           <img class="livro-capa" src="${capa}" alt="${r.titulo}" onerror="this.src='../img/livro-placeholder.webp'">
           <div class="livro-info">
@@ -522,131 +826,153 @@
             </button>
           </div>
         </div>`;
-    }).join('');
+          })
+          .join("");
 
-    // Eventos de cancelar
-    el.querySelectorAll('.btn-cancelar-reserva').forEach(btn => {
-      btn.addEventListener('click', () => cancelarReserva(parseInt(btn.dataset.id)));
-    });
-  }
+        // Eventos de cancelar
+        el.querySelectorAll(".btn-cancelar-reserva").forEach((btn) => {
+          btn.addEventListener("click", () =>
+            cancelarReserva(parseInt(btn.dataset.id)),
+          );
+        });
+      }
 
-  async function cancelarReserva(reservaId) {
-    try {
-      const res  = await fetch(`${API}/reserva_cancelar.php`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'same-origin',
-        body: JSON.stringify({ reserva_id: reservaId })
-      });
-      const data = await res.json();
+      async function cancelarReserva(reservaId) {
+        try {
+          const res = await fetch(`${API}/reserva_cancelar.php`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "same-origin",
+            body: JSON.stringify({ reserva_id: reservaId }),
+          });
+          const data = await res.json();
 
-      if (data.sucesso) {
-        const el = document.getElementById(`reserva-${reservaId}`);
-        if (el) el.remove();
-        mostrarToast('Reserva cancelada com sucesso.', false);
-        const lista = document.getElementById('listaReservas');
-        if (!lista.querySelector('.livro-item')) {
-          lista.innerHTML = '<p class="lista-vazia"><i class="fas fa-bookmark" style="margin-right:8px;"></i>Nenhuma reserva pendente.</p>';
+          if (data.sucesso) {
+            const el = document.getElementById(`reserva-${reservaId}`);
+            if (el) el.remove();
+            mostrarToast("Reserva cancelada com sucesso.", false);
+            const lista = document.getElementById("listaReservas");
+            if (!lista.querySelector(".livro-item")) {
+              lista.innerHTML =
+                '<p class="lista-vazia"><i class="fas fa-bookmark" style="margin-right:8px;"></i>Nenhuma reserva pendente.</p>';
+            }
+          } else {
+            mostrarToast(data.erro || "Erro ao cancelar reserva.", true);
+          }
+        } catch {
+          mostrarToast("Falha ao conectar ao servidor.", true);
         }
-      } else {
-        mostrarToast(data.erro || 'Erro ao cancelar reserva.', true);
       }
-    } catch {
-      mostrarToast('Falha ao conectar ao servidor.', true);
-    }
-  }
 
-  function calcularMultas(emprestimos) {
-    if (!emprestimos || emprestimos.length === 0) return;
-    const hoje   = new Date(); hoje.setHours(0,0,0,0);
-    const DIARIA = 2.00;
-    let total    = 0;
+      function calcularMultas(emprestimos) {
+        if (!emprestimos || emprestimos.length === 0) return;
+        const hoje = new Date();
+        hoje.setHours(0, 0, 0, 0);
+        const DIARIA = 2.0;
+        let total = 0;
 
-    emprestimos.forEach(e => {
-      const dev = new Date(e.data_devolucao + 'T00:00:00');
-      if (dev < hoje) {
-        const dias = Math.floor((hoje - dev) / (1000 * 60 * 60 * 24));
-        total += dias * DIARIA;
+        emprestimos.forEach((e) => {
+          const dev = new Date(e.data_devolucao + "T00:00:00");
+          if (dev < hoje) {
+            const dias = Math.floor((hoje - dev) / (1000 * 60 * 60 * 24));
+            total += dias * DIARIA;
+          }
+        });
+
+        document.getElementById("valor").textContent =
+          `R$ ${total.toFixed(2).replace(".", ",")}`;
       }
-    });
 
-    document.getElementById('valor').textContent = `R$ ${total.toFixed(2).replace('.',',')}`;
-  }
+      function mostrarToast(msg, erro = false) {
+        clearTimeout(toastTimer);
+        const toast = document.getElementById("toastPerfil");
+        document.getElementById("tpMsg").textContent = msg;
+        document.getElementById("tpIconEl").className = erro
+          ? "fa-solid fa-xmark"
+          : "fa-solid fa-check";
+        toast.classList.toggle("erro", erro);
+        toast.classList.add("show");
+        toastTimer = setTimeout(() => toast.classList.remove("show"), 3000);
+      }
 
-  function mostrarToast(msg, erro = false) {
-    clearTimeout(toastTimer);
-    const toast = document.getElementById('toastPerfil');
-    document.getElementById('tpMsg').textContent  = msg;
-    document.getElementById('tpIconEl').className = erro ? 'fa-solid fa-xmark' : 'fa-solid fa-check';
-    toast.classList.toggle('erro', erro);
-    toast.classList.add('show');
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 3000);
-  }
-
-  document.getElementById('btnPagamento').addEventListener('click', () => {
-    mostrarToast('Módulo de pagamento em breve.', false);
-  });
-
-  // ── Créditos ──
-  function atualizarCreditos(valor) {
-    const v = parseFloat(valor) || 0;
-    document.getElementById('creditosValor').textContent =
-      'R$ ' + v.toFixed(2).replace('.', ',');
-  }
-
-  const modalCreditosOverlay = document.getElementById('modalCreditosOverlay');
-
-  document.getElementById('btnAddCreditos').addEventListener('click', () => {
-    document.getElementById('inputCreditos').value = '';
-    modalCreditosOverlay.classList.add('open');
-  });
-
-  document.getElementById('btnCreditosCancelar').addEventListener('click', () => {
-    modalCreditosOverlay.classList.remove('open');
-  });
-
-  modalCreditosOverlay.addEventListener('click', e => {
-    if (e.target === modalCreditosOverlay) modalCreditosOverlay.classList.remove('open');
-  });
-
-  document.getElementById('btnCreditosConfirmar').addEventListener('click', async () => {
-    const valor = parseFloat(document.getElementById('inputCreditos').value);
-    if (!valor || valor <= 0) {
-      mostrarToast('Informe um valor válido.', true); return;
-    }
-
-    const btn  = document.getElementById('btnCreditosConfirmar');
-    const orig = btn.innerHTML;
-    btn.disabled  = true;
-    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
-
-    try {
-      const res  = await fetch(`${API}/creditos_adicionar.php`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'same-origin',
-        body: JSON.stringify({ valor })
+      document.getElementById("btnPagamento").addEventListener("click", () => {
+        mostrarToast("Módulo de pagamento em breve.", false);
       });
-      const data = await res.json();
 
-      if (data.sucesso) {
-        atualizarCreditos(data.novo_saldo);
-        modalCreditosOverlay.classList.remove('open');
-        mostrarToast(`R$ ${valor.toFixed(2).replace('.',',')} adicionados com sucesso!`, false);
-      } else {
-        mostrarToast(data.erro || 'Erro ao adicionar créditos.', true);
+      // ── Créditos ──
+      function atualizarCreditos(valor) {
+        const v = parseFloat(valor) || 0;
+        document.getElementById("creditosValor").textContent =
+          "R$ " + v.toFixed(2).replace(".", ",");
       }
-    } catch {
-      mostrarToast('Falha ao conectar ao servidor.', true);
-    } finally {
-      btn.disabled  = false;
-      btn.innerHTML = orig;
-    }
-  });
 
-  // ── Init ──
-  carregarPerfil();
-  </script>
+      const modalCreditosOverlay = document.getElementById(
+        "modalCreditosOverlay",
+      );
 
-</body>
+      document
+        .getElementById("btnAddCreditos")
+        .addEventListener("click", () => {
+          document.getElementById("inputCreditos").value = "";
+          modalCreditosOverlay.classList.add("open");
+        });
+
+      document
+        .getElementById("btnCreditosCancelar")
+        .addEventListener("click", () => {
+          modalCreditosOverlay.classList.remove("open");
+        });
+
+      modalCreditosOverlay.addEventListener("click", (e) => {
+        if (e.target === modalCreditosOverlay)
+          modalCreditosOverlay.classList.remove("open");
+      });
+
+      document
+        .getElementById("btnCreditosConfirmar")
+        .addEventListener("click", async () => {
+          const valor = parseFloat(
+            document.getElementById("inputCreditos").value,
+          );
+          if (!valor || valor <= 0) {
+            mostrarToast("Informe um valor válido.", true);
+            return;
+          }
+
+          const btn = document.getElementById("btnCreditosConfirmar");
+          const orig = btn.innerHTML;
+          btn.disabled = true;
+          btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+
+          try {
+            const res = await fetch(`${API}/creditos_adicionar.php`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              credentials: "same-origin",
+              body: JSON.stringify({ valor }),
+            });
+            const data = await res.json();
+
+            if (data.sucesso) {
+              atualizarCreditos(data.novo_saldo);
+              modalCreditosOverlay.classList.remove("open");
+              mostrarToast(
+                `R$ ${valor.toFixed(2).replace(".", ",")} adicionados com sucesso!`,
+                false,
+              );
+            } else {
+              mostrarToast(data.erro || "Erro ao adicionar créditos.", true);
+            }
+          } catch {
+            mostrarToast("Falha ao conectar ao servidor.", true);
+          } finally {
+            btn.disabled = false;
+            btn.innerHTML = orig;
+          }
+        });
+
+      // ── Init ──
+      carregarPerfil();
+    </script>
+  </body>
 </html>
