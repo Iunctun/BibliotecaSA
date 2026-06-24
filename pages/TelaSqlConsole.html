@@ -1,532 +1,1035 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../styles/navbar.css">
-  <link rel="stylesheet" href="../styles/footer.css">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <title>Torre de Consultas - Biblioteca</title>
-  <style>
-    * { box-sizing: border-box; }
-    body { background: #15171c; font-family: 'DM Sans', sans-serif; margin: 0; color: #e6e6e6; }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../styles/navbar.css" />
+    <link rel="stylesheet" href="../styles/footer.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <title>Torre de Consultas - Biblioteca</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        background: #15171c;
+        font-family: "DM Sans", sans-serif;
+        margin: 0;
+        color: #e6e6e6;
+      }
 
-    .page-wrapper { display: flex; min-height: 100vh; padding-top: 70px; }
+      .page-wrapper {
+        display: flex;
+        min-height: 100vh;
+        padding-top: 70px;
+      }
 
-    .nav-sidebar {
-      width: 230px; flex-shrink: 0;
-      background: linear-gradient(
+      .nav-sidebar {
+        width: 230px;
+        flex-shrink: 0;
+        background: linear-gradient(
           180deg,
           rgba(27, 38, 136, 0.55) 0%,
-          rgba(6,  11,  48, 0.70) 100%
-      ) !important;
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-right: 1px solid rgba(112, 163, 240, 0.18) !important; display: flex;
-      flex-direction: column; gap: 2px; padding: 36px 0;
-      position: fixed; top: 70px; left: 0; bottom: 0; overflow-y: auto; z-index: 100;
-    }
-    .nav-sidebar .admin-only { display: none; }
-    .nav-sidebar .dev-only   { display: none; }
+          rgba(6, 11, 48, 0.7) 100%
+        ) !important;
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border-right: 1px solid rgba(112, 163, 240, 0.18) !important;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        padding: 36px 0;
+        position: fixed;
+        top: 70px;
+        left: 0;
+        bottom: 0;
+        overflow-y: auto;
+        z-index: 100;
+      }
+      .nav-sidebar .admin-only {
+        display: none;
+      }
+      .nav-sidebar .dev-only {
+        display: none;
+      }
 
-    .nav-sidebar-item {
-      display: flex; align-items: center; gap: 12px; padding: 13px 24px;
-      font-size: 12px; font-weight: 500; letter-spacing: 0.8px; text-transform: uppercase;
-      color: rgba(232, 236, 244, 0.5) !important; text-decoration: none; margin-right: 12px;
-      border-radius: 0 6px 6px 0; border-left: 2px solid transparent;
-      transition: color 0.2s, background 0.2s, border-color 0.2s;
-    }
-    .nav-sidebar-item:hover  { background: rgba(112, 163, 240, 0.12) !important; color: rgba(232, 236, 244, 0.9) !important; border-left-color: rgba(112, 163, 240, 0.3) !important; }
-    .nav-sidebar-item.active { background: rgba(112, 163, 240, 0.15) !important; border-left-color: #70a3f0 !important; color: #e8ecf4 !important; }
-    .nav-sidebar-item i { width: 16px; text-align: center; font-size: 14px; color: #70a3f0 !important; opacity: 0.75; transition: opacity 0.2s; }
-    .nav-sidebar-item:hover i,
-    .nav-sidebar-item.active i { opacity: 1; }
+      .nav-sidebar-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 13px 24px;
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: rgba(232, 236, 244, 0.5) !important;
+        text-decoration: none;
+        margin-right: 12px;
+        border-radius: 0 6px 6px 0;
+        border-left: 2px solid transparent;
+        transition:
+          color 0.2s,
+          background 0.2s,
+          border-color 0.2s;
+      }
+      .nav-sidebar-item:hover {
+        background: rgba(112, 163, 240, 0.12) !important;
+        color: rgba(232, 236, 244, 0.9) !important;
+        border-left-color: rgba(112, 163, 240, 0.3) !important;
+      }
+      .nav-sidebar-item.active {
+        background: rgba(112, 163, 240, 0.15) !important;
+        border-left-color: #70a3f0 !important;
+        color: #e8ecf4 !important;
+      }
+      .nav-sidebar-item i {
+        width: 16px;
+        text-align: center;
+        font-size: 14px;
+        color: #70a3f0 !important;
+        opacity: 0.75;
+        transition: opacity 0.2s;
+      }
+      .nav-sidebar-item:hover i,
+      .nav-sidebar-item.active i {
+        opacity: 1;
+      }
 
-    /* Fix: sem max-width, ocupa tudo */
-    .container { margin-left: 230px; padding: 36px 40px; flex: 1; }
+      /* Fix: sem max-width, ocupa tudo */
+      .container {
+        margin-left: 230px;
+        padding: 36px 40px;
+        flex: 1;
+        max-width: 741px;
+      }
 
-    .page-header { margin-bottom: 24px; }
-    .page-sup { display: block; font-size: 10px; font-weight: 500; letter-spacing: 4px; text-transform: uppercase; color: #7aadff; margin-bottom: 8px; }
-    .page-header h1 { font-family: 'Playfair Display', serif; font-size: 34px; font-weight: 400; color: #fff; margin: 0 0 6px; }
-    .page-desc { font-size: 13px; color: rgba(255,255,255,0.35); font-weight: 300; margin: 0; }
+      .page-header {
+        margin-bottom: 24px;
+      }
+      .page-sup {
+        display: block;
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: #7aadff;
+        margin-bottom: 8px;
+      }
+      .page-header h1 {
+        font-family: "Playfair Display", serif;
+        font-size: 34px;
+        font-weight: 400;
+        color: #fff;
+        margin: 0 0 6px;
+      }
+      .page-desc {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.35);
+        font-weight: 300;
+        margin: 0;
+      }
 
-    .aviso {
-      background: rgba(244,180,0,0.07); border: 1px solid rgba(244,180,0,0.22);
-      color: #f4b400; font-size: 12.5px; padding: 11px 16px; border-radius: 6px;
-      margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
-    }
+      .aviso {
+        background: rgba(244, 180, 0, 0.07);
+        border: 1px solid rgba(244, 180, 0, 0.22);
+        color: #f4b400;
+        font-size: 12.5px;
+        padding: 11px 16px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
 
-    .editor-layout { display: grid; grid-template-columns: 1fr 280px; gap: 20px; align-items: start; }
-    @media (max-width: 900px) { .editor-layout { grid-template-columns: 1fr; } }
+      .editor-layout {
+        display: grid;
+        grid-template-columns: 1fr 280px;
+        gap: 20px;
+        align-items: start;
+      }
+      @media (max-width: 900px) {
+        .editor-layout {
+          grid-template-columns: 1fr;
+        }
+      }
 
-    .editor-card { background: #1a1d27; border: 1px solid #2e3344; border-radius: 8px; overflow: hidden; }
-    .editor-toolbar {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 10px 14px; border-bottom: 1px solid #2e3344; background: #191c26;
-    }
-    .editor-toolbar-left { display: flex; align-items: center; gap: 10px; }
-    .editor-lang { font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.25); }
-    .kbd-hint { font-size: 10px; color: rgba(255,255,255,0.2); }
-    .kbd-hint kbd {
-      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 3px; padding: 1px 5px; font-family: monospace; font-size: 10px;
-    }
+      .editor-card {
+        background: #1a1d27;
+        border: 1px solid #2e3344;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .editor-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 14px;
+        border-bottom: 1px solid #2e3344;
+        background: #191c26;
+      }
+      .editor-toolbar-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .editor-lang {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.25);
+      }
+      .kbd-hint {
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0.2);
+      }
+      .kbd-hint kbd {
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 3px;
+        padding: 1px 5px;
+        font-family: monospace;
+        font-size: 10px;
+      }
 
-    .editor-wrap { position: relative; }
+      .editor-wrap {
+        position: relative;
+      }
 
-    #queryInput {
-      width: 100%; min-height: 160px; background: transparent; color: transparent;
-      caret-color: #e6e6e6; border: none; padding: 16px;
-      font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-      font-size: 13.5px; line-height: 1.6; resize: vertical; outline: none;
-      position: relative; z-index: 2; white-space: pre;
-    }
-    #queryInput::selection { background: rgba(122,173,255,0.25); }
+      #queryInput {
+        width: 100%;
+        min-height: 160px;
+        background: transparent;
+        color: transparent;
+        caret-color: #e6e6e6;
+        border: none;
+        padding: 16px;
+        font-family: "JetBrains Mono", "Fira Code", "Courier New", monospace;
+        font-size: 13.5px;
+        line-height: 1.6;
+        resize: vertical;
+        outline: none;
+        position: relative;
+        z-index: 2;
+        white-space: pre;
+      }
+      #queryInput::selection {
+        background: rgba(122, 173, 255, 0.25);
+      }
 
-    #highlight-layer {
-      position: absolute; inset: 0; padding: 16px; pointer-events: none;
-      font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-      font-size: 13.5px; line-height: 1.6; white-space: pre; overflow: hidden;
-      color: #c5d0e8; z-index: 1; word-break: break-all;
-    }
+      #highlight-layer {
+        position: absolute;
+        inset: 0;
+        padding: 16px;
+        pointer-events: none;
+        font-family: "JetBrains Mono", "Fira Code", "Courier New", monospace;
+        font-size: 13.5px;
+        line-height: 1.6;
+        white-space: pre;
+        overflow: hidden;
+        color: #c5d0e8;
+        z-index: 1;
+        word-break: break-all;
+      }
 
-    .sql-kw    { color: #7aadff; font-weight: 600; }
-    .sql-fn    { color: #c3a6ff; }
-    .sql-str   { color: #98c379; }
-    .sql-num   { color: #e5c07b; }
-    .sql-op    { color: #56b6c2; }
-    .sql-cmt   { color: rgba(255,255,255,0.28); font-style: italic; }
-    .sql-punct { color: rgba(255,255,255,0.4); }
+      .sql-kw {
+        color: #7aadff;
+        font-weight: 600;
+      }
+      .sql-fn {
+        color: #c3a6ff;
+      }
+      .sql-str {
+        color: #98c379;
+      }
+      .sql-num {
+        color: #e5c07b;
+      }
+      .sql-op {
+        color: #56b6c2;
+      }
+      .sql-cmt {
+        color: rgba(255, 255, 255, 0.28);
+        font-style: italic;
+      }
+      .sql-punct {
+        color: rgba(255, 255, 255, 0.4);
+      }
 
-    .btn-run-row { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-top: 1px solid #2e3344; background: #191c26; }
-    .btn-executar {
-      background: #3b3fd1; color: #fff; border: none;
-      padding: 9px 20px; border-radius: 5px; cursor: pointer; font-weight: 600;
-      font-size: 13px; letter-spacing: 0.4px; transition: background 0.2s;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .btn-executar:hover    { background: #4d51e8; }
-    .btn-executar:disabled { opacity: 0.5; cursor: not-allowed; }
+      .btn-run-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 14px;
+        border-top: 1px solid #2e3344;
+        background: #191c26;
+      }
+      .btn-executar {
+        background: #3b3fd1;
+        color: #fff;
+        border: none;
+        padding: 9px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 13px;
+        letter-spacing: 0.4px;
+        transition: background 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .btn-executar:hover {
+        background: #4d51e8;
+      }
+      .btn-executar:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
 
-    .btn-limpar {
-      background: transparent; border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.4);
-      padding: 9px 16px; border-radius: 5px; cursor: pointer; font-size: 12px; transition: all 0.2s;
-    }
-    .btn-limpar:hover { border-color: rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); }
+      .btn-limpar {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.4);
+        padding: 9px 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 12px;
+        transition: all 0.2s;
+      }
+      .btn-limpar:hover {
+        border-color: rgba(255, 255, 255, 0.25);
+        color: rgba(255, 255, 255, 0.7);
+      }
 
-    .btn-run-timer { margin-left: auto; font-size: 11px; color: rgba(255,255,255,0.25); }
+      .btn-run-timer {
+        margin-left: auto;
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.25);
+      }
 
-    .hist-panel { background: #1a1d27; border: 1px solid #2e3344; border-radius: 8px; overflow: hidden; }
-    .hist-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 12px 14px; border-bottom: 1px solid #2e3344; background: #191c26;
-    }
-    .hist-title { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.4); }
-    .btn-clear-hist {
-      background: none; border: none; color: rgba(255,255,255,0.2); font-size: 11px;
-      cursor: pointer; padding: 2px 6px; border-radius: 3px; transition: color 0.2s;
-    }
-    .btn-clear-hist:hover { color: rgba(226,75,74,0.8); }
+      .hist-panel {
+        background: #1a1d27;
+        border: 1px solid #2e3344;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .hist-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 14px;
+        border-bottom: 1px solid #2e3344;
+        background: #191c26;
+      }
+      .hist-title {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.4);
+      }
+      .btn-clear-hist {
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.2);
+        font-size: 11px;
+        cursor: pointer;
+        padding: 2px 6px;
+        border-radius: 3px;
+        transition: color 0.2s;
+      }
+      .btn-clear-hist:hover {
+        color: rgba(226, 75, 74, 0.8);
+      }
 
-    .hist-list { max-height: 400px; overflow-y: auto; }
-    .hist-list::-webkit-scrollbar { width: 3px; }
-    .hist-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 2px; }
+      .hist-list {
+        max-height: 400px;
+        overflow-y: auto;
+      }
+      .hist-list::-webkit-scrollbar {
+        width: 3px;
+      }
+      .hist-list::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 2px;
+      }
 
-    .hist-item {
-      padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.04);
-      cursor: pointer; transition: background 0.15s;
-    }
-    .hist-item:hover { background: rgba(255,255,255,0.03); }
-    .hist-item:last-child { border-bottom: none; }
-    .hist-item-query {
-      font-family: 'JetBrains Mono', monospace; font-size: 11px;
-      color: rgba(255,255,255,0.55); white-space: nowrap; overflow: hidden;
-      text-overflow: ellipsis; margin-bottom: 4px;
-    }
-    .hist-item-meta { display: flex; align-items: center; gap: 8px; font-size: 10px; color: rgba(255,255,255,0.2); }
-    .hist-badge-ok  { color: #5dcaa5; }
-    .hist-badge-err { color: #e24b4a; }
-    .hist-empty { padding: 32px 14px; text-align: center; font-size: 12px; color: rgba(255,255,255,0.2); }
+      .hist-item {
+        padding: 10px 14px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+      .hist-item:hover {
+        background: rgba(255, 255, 255, 0.03);
+      }
+      .hist-item:last-child {
+        border-bottom: none;
+      }
+      .hist-item-query {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.55);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 4px;
+      }
+      .hist-item-meta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0.2);
+      }
+      .hist-badge-ok {
+        color: #5dcaa5;
+      }
+      .hist-badge-err {
+        color: #e24b4a;
+      }
+      .hist-empty {
+        padding: 32px 14px;
+        text-align: center;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.2);
+      }
 
-    .resultado-wrap { margin-top: 20px; }
+      .resultado-wrap {
+        margin-top: 20px;
+        max-width: 1246px;
+      }
 
-    .table-wrap { overflow-x: auto; border: 1px solid #2e3344; border-radius: 8px; }
-    table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
-    th, td { border-bottom: 1px solid #2e3344; padding: 8px 14px; text-align: left; white-space: nowrap; }
-    th { background: #1a1d27; color: rgba(255,255,255,0.5); font-weight: 600; font-size: 11px; letter-spacing: 0.5px; }
-    td { color: rgba(255,255,255,0.75); }
-    tr:last-child td { border-bottom: none; }
-    tr:hover td { background: rgba(255,255,255,0.02); }
-    td.null-val { color: rgba(255,255,255,0.2); font-style: italic; }
+      .table-wrap {
+        overflow-x: auto;
+        border: 1px solid #2e3344;
+        border-radius: 8px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12.5px;
+      }
+      th,
+      td {
+        border-bottom: 1px solid #2e3344;
+        padding: 8px 14px;
+        text-align: left;
+        white-space: nowrap;
+      }
+      th {
+        background: #1a1d27;
+        color: rgba(255, 255, 255, 0.5);
+        font-weight: 600;
+        font-size: 11px;
+        letter-spacing: 0.5px;
+      }
+      td {
+        color: rgba(255, 255, 255, 0.75);
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+      tr:hover td {
+        background: rgba(255, 255, 255, 0.02);
+      }
+      td.null-val {
+        color: rgba(255, 255, 255, 0.2);
+        font-style: italic;
+      }
 
-    .resultado-info {
-      display: flex; align-items: center; gap: 14px; margin-top: 12px;
-      font-size: 12px; color: rgba(255,255,255,0.35);
-    }
-    .resultado-info .dot { width: 6px; height: 6px; border-radius: 50%; background: #5dcaa5; }
-    .resultado-info .dot.err { background: #e24b4a; }
+      .resultado-info {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-top: 12px;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.35);
+      }
+      .resultado-info .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #5dcaa5;
+      }
+      .resultado-info .dot.err {
+        background: #e24b4a;
+      }
 
-    .msg-erro { background: rgba(226,75,74,0.07); border: 1px solid rgba(226,75,74,0.2); color: #ff8080; font-size: 12.5px; padding: 14px 16px; border-radius: 6px; margin-top: 16px; font-family: monospace; white-space: pre-wrap; }
-    .msg-ok   { background: rgba(29,158,117,0.07); border: 1px solid rgba(29,158,117,0.2); color: #5dcaa5; font-size: 12.5px; padding: 14px 16px; border-radius: 6px; margin-top: 16px; }
+      .msg-erro {
+        background: rgba(226, 75, 74, 0.07);
+        border: 1px solid rgba(226, 75, 74, 0.2);
+        color: #ff8080;
+        font-size: 12.5px;
+        padding: 14px 16px;
+        border-radius: 6px;
+        margin-top: 16px;
+        font-family: monospace;
+        white-space: pre-wrap;
+      }
+      .msg-ok {
+        background: rgba(29, 158, 117, 0.07);
+        border: 1px solid rgba(29, 158, 117, 0.2);
+        color: #5dcaa5;
+        font-size: 12.5px;
+        padding: 14px 16px;
+        border-radius: 6px;
+        margin-top: 16px;
+      }
 
-    .checking { color: rgba(255,255,255,0.3); padding: 80px 0; text-align: center; font-size: 13px; flex: 1; display: flex; align-items: center; justify-content: center; }
-  </style>
-</head>
-<body>
-
-  <header class="header">
-    <div class="header-container">
-      <div class="logo-left">
-        <img src="../img/logo_removebg.png" alt="Digital Library" class="logo-img">
+      .checking {
+        color: rgba(255, 255, 255, 0.3);
+        padding: 80px 0;
+        text-align: center;
+        font-size: 13px;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header-container">
+        <div class="logo-left">
+          <img
+            src="../img/logo_removebg.png"
+            alt="Digital Library"
+            class="logo-img"
+          />
+        </div>
+        <nav class="nav-menu">
+          <a href="../pages/TelaHome.html" class="nav-link">INÍCIO</a>
+          <a href="../pages/TelaHome.html#sessao-sobre" class="nav-link"
+            >SOBRE</a
+          >
+          <a href="../pages/TelaCatalogoLivros.html" class="nav-link"
+            >CATÁLOGO</a
+          >
+          <a href="../pages/TelaHome.html#sessao-contato" class="nav-link"
+            >CONTATO</a
+          >
+        </nav>
+        <div class="nav-user-area" id="navUserArea"></div>
       </div>
-      <nav class="nav-menu">
-        <a href="../pages/TelaHome.html" class="nav-link">INÍCIO</a>
-        <a href="../pages/TelaHome.html#sessao-sobre" class="nav-link">SOBRE</a>
-        <a href="../pages/TelaCatalogoLivros.html" class="nav-link">CATÁLOGO</a>
-        <a href="../pages/TelaHome.html#sessao-contato" class="nav-link">CONTATO</a>
-      </nav>
-      <div class="nav-user-area" id="navUserArea"></div>
-    </div>
-  </header>
+    </header>
 
-  <div class="page-wrapper">
+    <div class="page-wrapper">
+      <aside class="nav-sidebar" id="navSidebar" style="display: none">
+        <a href="../pages/dashboard.html" class="nav-sidebar-item admin-only">
+          <i class="fa-solid fa-house"></i><span>Dashboard</span>
+        </a>
+        <a
+          href="../pages/TelaADDLivro.html"
+          class="nav-sidebar-item admin-only"
+        >
+          <i class="fa-solid fa-book-medical"></i><span>Adicionar Livro</span>
+        </a>
+        <a
+          href="../pages/TelaGestaoUsuarios.html"
+          class="nav-sidebar-item admin-only"
+        >
+          <i class="fa-solid fa-users-gear"></i><span>Gestão de Usuários</span>
+        </a>
+        <a href="../pages/TelaCatalogoLivros.html" class="nav-sidebar-item">
+          <i class="fa-solid fa-book-open"></i><span>Catálogo</span>
+        </a>
+        <a href="../pages/TelaUsuariologado.html" class="nav-sidebar-item">
+          <i class="fa-solid fa-user"></i><span>Meu Perfil</span>
+        </a>
+        <a
+          href="../pages/TelaSqlConsole.html"
+          class="nav-sidebar-item dev-only active"
+        >
+          <i class="fa-solid fa-tower-observation"></i
+          ><span>Torre de Consultas</span>
+        </a>
+      </aside>
 
-    <aside class="nav-sidebar" id="navSidebar" style="display:none;">
-      <a href="../pages/dashboard.html" class="nav-sidebar-item admin-only">
-        <i class="fa-solid fa-house"></i><span>Dashboard</span>
-      </a>
-      <a href="../pages/TelaADDLivro.html" class="nav-sidebar-item admin-only">
-        <i class="fa-solid fa-book-medical"></i><span>Adicionar Livro</span>
-      </a>
-      <a href="../pages/TelaGestaoUsuarios.html" class="nav-sidebar-item admin-only">
-        <i class="fa-solid fa-users-gear"></i><span>Gestão de Usuários</span>
-      </a>
-      <a href="../pages/TelaCatalogoLivros.html" class="nav-sidebar-item">
-        <i class="fa-solid fa-book-open"></i><span>Catálogo</span>
-      </a>
-      <a href="../pages/TelaUsuariologado.html" class="nav-sidebar-item">
-        <i class="fa-solid fa-user"></i><span>Meu Perfil</span>
-      </a>
-      <a href="../pages/TelaSqlConsole.html" class="nav-sidebar-item dev-only active">
-        <i class="fa-solid fa-tower-observation"></i><span>Torre de Consultas</span>
-      </a>
-    </aside>
+      <div class="container" id="conteudo" style="display: none">
+        <div class="page-header">
+          <span class="page-sup">Desenvolvedor</span>
+          <h1>Torre de Consultas</h1>
+          <p class="page-desc">
+            Execute queries SQL diretamente no banco de dados
+          </p>
+        </div>
 
-    <div class="container" id="conteudo" style="display:none;">
+        <div class="aviso">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          Qualquer comando (SELECT, UPDATE, DELETE, DROP...) é executado direto
+          no banco. Use com cuidado.
+        </div>
 
-      <div class="page-header">
-        <span class="page-sup">Desenvolvedor</span>
-        <h1>Torre de Consultas</h1>
-        <p class="page-desc">Execute queries SQL diretamente no banco de dados</p>
-      </div>
-
-      <div class="aviso">
-        <i class="fa-solid fa-triangle-exclamation"></i>
-        Qualquer comando (SELECT, UPDATE, DELETE, DROP...) é executado direto no banco. Use com cuidado.
-      </div>
-
-      <div class="editor-layout">
-
-        <div>
-          <div class="editor-card">
-            <div class="editor-toolbar">
-              <div class="editor-toolbar-left">
-                <span class="editor-lang">SQL</span>
-                <span class="kbd-hint"><kbd>Ctrl</kbd>+<kbd>Enter</kbd> para executar</span>
+        <div class="editor-layout">
+          <div>
+            <div class="editor-card">
+              <div class="editor-toolbar">
+                <div class="editor-toolbar-left">
+                  <span class="editor-lang">SQL</span>
+                  <span class="kbd-hint"
+                    ><kbd>Ctrl</kbd>+<kbd>Enter</kbd> para executar</span
+                  >
+                </div>
+              </div>
+              <div class="editor-wrap">
+                <div id="highlight-layer" aria-hidden="true"></div>
+                <textarea
+                  id="queryInput"
+                  spellcheck="false"
+                  autocomplete="off"
+                  autocorrect="off"
+                  autocapitalize="off"
+                  placeholder="SELECT * FROM livros LIMIT 10;"
+                ></textarea>
+              </div>
+              <div class="btn-run-row">
+                <button class="btn-executar" id="btnExecutar">
+                  <i class="fa-solid fa-play"></i> Executar
+                </button>
+                <button class="btn-limpar" id="btnLimpar">
+                  <i class="fa-solid fa-eraser"></i> Limpar
+                </button>
+                <span class="btn-run-timer" id="timerLabel"></span>
               </div>
             </div>
-            <div class="editor-wrap">
-              <div id="highlight-layer" aria-hidden="true"></div>
-              <textarea
-                id="queryInput"
-                spellcheck="false"
-                autocomplete="off"
-                autocorrect="off"
-                autocapitalize="off"
-                placeholder="SELECT * FROM livros LIMIT 10;"
-              ></textarea>
-            </div>
-            <div class="btn-run-row">
-              <button class="btn-executar" id="btnExecutar">
-                <i class="fa-solid fa-play"></i> Executar
-              </button>
-              <button class="btn-limpar" id="btnLimpar">
-                <i class="fa-solid fa-eraser"></i> Limpar
-              </button>
-              <span class="btn-run-timer" id="timerLabel"></span>
-            </div>
+
+            <div class="resultado-wrap" id="resultado"></div>
           </div>
 
-          <div class="resultado-wrap" id="resultado"></div>
-        </div>
-
-        <div class="hist-panel">
-          <div class="hist-header">
-            <span class="hist-title"><i class="fa-solid fa-clock-rotate-left" style="margin-right:6px;"></i>Histórico</span>
-            <button class="btn-clear-hist" id="btnClearHist" title="Limpar histórico">
-              <i class="fa-solid fa-trash-can"></i>
-            </button>
-          </div>
-          <div class="hist-list" id="histList">
-            <div class="hist-empty">Nenhuma query executada ainda</div>
+          <div class="hist-panel">
+            <div class="hist-header">
+              <span class="hist-title"
+                ><i
+                  class="fa-solid fa-clock-rotate-left"
+                  style="margin-right: 6px"
+                ></i
+                >Histórico</span
+              >
+              <button
+                class="btn-clear-hist"
+                id="btnClearHist"
+                title="Limpar histórico"
+              >
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+            <div class="hist-list" id="histList">
+              <div class="hist-empty">Nenhuma query executada ainda</div>
+            </div>
           </div>
         </div>
+      </div>
 
+      <div class="checking" id="checking">
+        <span
+          ><i
+            class="fa-solid fa-circle-notch fa-spin"
+            style="margin-right: 10px"
+          ></i
+          >Verificando permissão...</span
+        >
       </div>
     </div>
 
-    <div class="checking" id="checking">
-      <span><i class="fa-solid fa-circle-notch fa-spin" style="margin-right:10px;"></i>Verificando permissão...</span>
-    </div>
+    <div id="footer"></div>
 
-  </div>
+    <script src="../scripts/navbar.js"></script>
+    <script>
+      initNavbar();
+    </script>
+    <script src="../scripts/include.js"></script>
 
-  <div id="footer"></div>
+    <script>
+      const API = "/BibliotecaSA/backend";
 
-  <script src="../scripts/navbar.js"></script>
-  <script>initNavbar();</script>
-  <script src="../scripts/include.js"></script>
+      (async () => {
+        try {
+          const resp = await fetch(`${API}/sessao.php`, {
+            credentials: "same-origin",
+          });
+          const sessao = await resp.json();
 
-  <script>
-    const API = '/BibliotecaSA/backend';
+          if (!sessao.logado || sessao.perfil !== "desenvolvedor") {
+            window.location.href = "../pages/TelaLogin.html";
+            return;
+          }
 
-    (async () => {
-      try {
-        const resp   = await fetch(`${API}/sessao.php`, { credentials: 'same-origin' });
-        const sessao = await resp.json();
+          const sidebar = document.getElementById("navSidebar");
+          sidebar.style.display = "flex";
+          document
+            .querySelectorAll(".admin-only")
+            .forEach((el) => (el.style.display = "flex"));
+          document
+            .querySelectorAll(".dev-only")
+            .forEach((el) => (el.style.display = "flex"));
 
-        if (!sessao.logado || sessao.perfil !== 'desenvolvedor') {
-          window.location.href = '../pages/TelaLogin.html';
-          return;
+          document.getElementById("checking").style.display = "none";
+          document.getElementById("conteudo").style.display = "block";
+
+          carregarHistorico();
+        } catch {
+          window.location.href = "../pages/TelaLogin.html";
         }
+      })();
 
-        const sidebar = document.getElementById('navSidebar');
-        sidebar.style.display = 'flex';
-        document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'flex');
-        document.querySelectorAll('.dev-only').forEach(el => el.style.display = 'flex');
+      const KEYWORDS = [
+        "SELECT",
+        "FROM",
+        "WHERE",
+        "INSERT",
+        "INTO",
+        "VALUES",
+        "UPDATE",
+        "SET",
+        "DELETE",
+        "CREATE",
+        "DROP",
+        "ALTER",
+        "TABLE",
+        "INDEX",
+        "DATABASE",
+        "JOIN",
+        "LEFT",
+        "RIGHT",
+        "INNER",
+        "OUTER",
+        "FULL",
+        "CROSS",
+        "ON",
+        "AS",
+        "AND",
+        "OR",
+        "NOT",
+        "IN",
+        "IS",
+        "NULL",
+        "LIKE",
+        "BETWEEN",
+        "ORDER",
+        "BY",
+        "GROUP",
+        "HAVING",
+        "LIMIT",
+        "OFFSET",
+        "DISTINCT",
+        "COUNT",
+        "SUM",
+        "AVG",
+        "MAX",
+        "MIN",
+        "UNION",
+        "ALL",
+        "EXISTS",
+        "CASE",
+        "WHEN",
+        "THEN",
+        "ELSE",
+        "END",
+        "ASC",
+        "DESC",
+        "PRIMARY",
+        "KEY",
+        "FOREIGN",
+        "REFERENCES",
+        "UNIQUE",
+        "AUTO_INCREMENT",
+        "DEFAULT",
+        "SHOW",
+        "TABLES",
+        "DESCRIBE",
+        "DESC",
+        "USE",
+        "EXPLAIN",
+        "BEGIN",
+        "COMMIT",
+        "ROLLBACK",
+        "TRANSACTION",
+        "TRUNCATE",
+        "REPLACE",
+      ];
 
-        document.getElementById('checking').style.display  = 'none';
-        document.getElementById('conteudo').style.display  = 'block';
-
-        carregarHistorico();
-
-      } catch {
-        window.location.href = '../pages/TelaLogin.html';
+      function escHtml(s) {
+        return String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
       }
-    })();
 
-    const KEYWORDS = [
-      'SELECT','FROM','WHERE','INSERT','INTO','VALUES','UPDATE','SET',
-      'DELETE','CREATE','DROP','ALTER','TABLE','INDEX','DATABASE',
-      'JOIN','LEFT','RIGHT','INNER','OUTER','FULL','CROSS',
-      'ON','AS','AND','OR','NOT','IN','IS','NULL','LIKE','BETWEEN',
-      'ORDER','BY','GROUP','HAVING','LIMIT','OFFSET','DISTINCT',
-      'COUNT','SUM','AVG','MAX','MIN','UNION','ALL','EXISTS',
-      'CASE','WHEN','THEN','ELSE','END','ASC','DESC',
-      'PRIMARY','KEY','FOREIGN','REFERENCES','UNIQUE','AUTO_INCREMENT',
-      'DEFAULT','SHOW','TABLES','DESCRIBE','DESC','USE','EXPLAIN',
-      'BEGIN','COMMIT','ROLLBACK','TRANSACTION','TRUNCATE','REPLACE'
-    ];
+      function highlightSQL(raw) {
+        const parts = [];
+        let i = 0;
+        const text = raw;
 
-    function escHtml(s) {
-      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-    }
+        while (i < text.length) {
+          let matched = false;
+          let m;
 
-    function highlightSQL(raw) {
-      const parts = [];
-      let i = 0;
-      const text = raw;
-
-      while (i < text.length) {
-        let matched = false;
-        let m;
-
-        m = text.slice(i).match(/^(--[^\n]*)/);
-        if (m) { parts.push(`<span class="sql-cmt">${escHtml(m[1])}</span>`); i += m[1].length; matched = true; }
-
-        if (!matched) { m = text.slice(i).match(/^('[^']*'|"[^"]*")/); if (m) { parts.push(`<span class="sql-str">${escHtml(m[1])}</span>`); i += m[1].length; matched = true; } }
-        if (!matched) { m = text.slice(i).match(/^(\d+(\.\d+)?)\b/); if (m) { parts.push(`<span class="sql-num">${escHtml(m[1])}</span>`); i += m[1].length; matched = true; } }
-
-        if (!matched) {
-          m = text.slice(i).match(/^([A-Za-z_][A-Za-z0-9_]*)/);
+          m = text.slice(i).match(/^(--[^\n]*)/);
           if (m) {
-            const word = m[1];
-            if (KEYWORDS.includes(word.toUpperCase())) {
-              parts.push(`<span class="sql-kw">${escHtml(word)}</span>`);
-            } else if (text[i + word.length] === '(') {
-              parts.push(`<span class="sql-fn">${escHtml(word)}</span>`);
-            } else {
-              parts.push(escHtml(word));
-            }
-            i += word.length;
+            parts.push(`<span class="sql-cmt">${escHtml(m[1])}</span>`);
+            i += m[1].length;
             matched = true;
+          }
+
+          if (!matched) {
+            m = text.slice(i).match(/^('[^']*'|"[^"]*")/);
+            if (m) {
+              parts.push(`<span class="sql-str">${escHtml(m[1])}</span>`);
+              i += m[1].length;
+              matched = true;
+            }
+          }
+          if (!matched) {
+            m = text.slice(i).match(/^(\d+(\.\d+)?)\b/);
+            if (m) {
+              parts.push(`<span class="sql-num">${escHtml(m[1])}</span>`);
+              i += m[1].length;
+              matched = true;
+            }
+          }
+
+          if (!matched) {
+            m = text.slice(i).match(/^([A-Za-z_][A-Za-z0-9_]*)/);
+            if (m) {
+              const word = m[1];
+              if (KEYWORDS.includes(word.toUpperCase())) {
+                parts.push(`<span class="sql-kw">${escHtml(word)}</span>`);
+              } else if (text[i + word.length] === "(") {
+                parts.push(`<span class="sql-fn">${escHtml(word)}</span>`);
+              } else {
+                parts.push(escHtml(word));
+              }
+              i += word.length;
+              matched = true;
+            }
+          }
+
+          if (!matched) {
+            m = text.slice(i).match(/^(!=|<>|<=|>=|<|>|=)/);
+            if (m) {
+              parts.push(`<span class="sql-op">${escHtml(m[1])}</span>`);
+              i += m[1].length;
+              matched = true;
+            }
+          }
+          if (!matched) {
+            m = text.slice(i).match(/^([,;()])/);
+            if (m) {
+              parts.push(`<span class="sql-punct">${escHtml(m[1])}</span>`);
+              i += m[1].length;
+              matched = true;
+            }
+          }
+          if (!matched) {
+            parts.push(escHtml(text[i]));
+            i++;
           }
         }
 
-        if (!matched) { m = text.slice(i).match(/^(!=|<>|<=|>=|<|>|=)/); if (m) { parts.push(`<span class="sql-op">${escHtml(m[1])}</span>`); i += m[1].length; matched = true; } }
-        if (!matched) { m = text.slice(i).match(/^([,;()])/); if (m) { parts.push(`<span class="sql-punct">${escHtml(m[1])}</span>`); i += m[1].length; matched = true; } }
-        if (!matched) { parts.push(escHtml(text[i])); i++; }
+        return parts.join("");
       }
 
-      return parts.join('');
-    }
+      const queryInput = document.getElementById("queryInput");
+      const highlightDiv = document.getElementById("highlight-layer");
 
-    const queryInput   = document.getElementById('queryInput');
-    const highlightDiv = document.getElementById('highlight-layer');
-
-    function syncHighlight() {
-      highlightDiv.innerHTML = highlightSQL(queryInput.value) + '\n';
-    }
-
-    function syncScroll() {
-      highlightDiv.scrollTop  = queryInput.scrollTop;
-      highlightDiv.scrollLeft = queryInput.scrollLeft;
-    }
-
-    queryInput.addEventListener('input',  syncHighlight);
-    queryInput.addEventListener('scroll', syncScroll);
-    syncHighlight();
-
-    queryInput.addEventListener('keydown', e => {
-      if (e.key === 'Tab') {
-        e.preventDefault();
-        const s = queryInput.selectionStart;
-        const v = queryInput.value;
-        queryInput.value = v.slice(0, s) + '  ' + v.slice(queryInput.selectionEnd);
-        queryInput.selectionStart = queryInput.selectionEnd = s + 2;
-        syncHighlight();
+      function syncHighlight() {
+        highlightDiv.innerHTML = highlightSQL(queryInput.value) + "\n";
       }
-      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-        e.preventDefault();
-        executarQuery();
-      }
-    });
 
-    document.getElementById('btnLimpar').addEventListener('click', () => {
-      queryInput.value = '';
+      function syncScroll() {
+        highlightDiv.scrollTop = queryInput.scrollTop;
+        highlightDiv.scrollLeft = queryInput.scrollLeft;
+      }
+
+      queryInput.addEventListener("input", syncHighlight);
+      queryInput.addEventListener("scroll", syncScroll);
       syncHighlight();
-      document.getElementById('resultado').innerHTML = '';
-      document.getElementById('timerLabel').textContent = '';
-    });
 
-    const HIST_KEY = 'sql_console_hist';
-    const HIST_MAX = 40;
+      queryInput.addEventListener("keydown", (e) => {
+        if (e.key === "Tab") {
+          e.preventDefault();
+          const s = queryInput.selectionStart;
+          const v = queryInput.value;
+          queryInput.value =
+            v.slice(0, s) + "  " + v.slice(queryInput.selectionEnd);
+          queryInput.selectionStart = queryInput.selectionEnd = s + 2;
+          syncHighlight();
+        }
+        if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+          e.preventDefault();
+          executarQuery();
+        }
+      });
 
-    function getHist()   { try { return JSON.parse(localStorage.getItem(HIST_KEY) || '[]'); } catch { return []; } }
-    function saveHist(h) { localStorage.setItem(HIST_KEY, JSON.stringify(h)); }
-    function addToHist(q, ok, rows) {
-      const h = getHist();
-      h.unshift({ q, ok, rows, ts: Date.now() });
-      if (h.length > HIST_MAX) h.splice(HIST_MAX);
-      saveHist(h);
-      renderHist();
-    }
+      document.getElementById("btnLimpar").addEventListener("click", () => {
+        queryInput.value = "";
+        syncHighlight();
+        document.getElementById("resultado").innerHTML = "";
+        document.getElementById("timerLabel").textContent = "";
+      });
 
-    function formatTs(ts) {
-      return new Date(ts).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    }
+      const HIST_KEY = "sql_console_hist";
+      const HIST_MAX = 40;
 
-    function renderHist() {
-      const h    = getHist();
-      const list = document.getElementById('histList');
-      if (!h.length) { list.innerHTML = '<div class="hist-empty">Nenhuma query executada ainda</div>'; return; }
-      list.innerHTML = h.map((item, idx) => `
+      function getHist() {
+        try {
+          return JSON.parse(localStorage.getItem(HIST_KEY) || "[]");
+        } catch {
+          return [];
+        }
+      }
+      function saveHist(h) {
+        localStorage.setItem(HIST_KEY, JSON.stringify(h));
+      }
+      function addToHist(q, ok, rows) {
+        const h = getHist();
+        h.unshift({ q, ok, rows, ts: Date.now() });
+        if (h.length > HIST_MAX) h.splice(HIST_MAX);
+        saveHist(h);
+        renderHist();
+      }
+
+      function formatTs(ts) {
+        return new Date(ts).toLocaleTimeString("pt-BR", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        });
+      }
+
+      function renderHist() {
+        const h = getHist();
+        const list = document.getElementById("histList");
+        if (!h.length) {
+          list.innerHTML =
+            '<div class="hist-empty">Nenhuma query executada ainda</div>';
+          return;
+        }
+        list.innerHTML = h
+          .map(
+            (item, idx) => `
         <div class="hist-item" data-idx="${idx}" title="${escHtml(item.q)}">
-          <div class="hist-item-query">${escHtml(item.q.replace(/\s+/g,' ').trim())}</div>
+          <div class="hist-item-query">${escHtml(item.q.replace(/\s+/g, " ").trim())}</div>
           <div class="hist-item-meta">
             <span>${formatTs(item.ts)}</span>
-            ${item.ok
-              ? `<span class="hist-badge-ok"><i class="fa-solid fa-circle-check"></i> ${item.rows}</span>`
-              : `<span class="hist-badge-err"><i class="fa-solid fa-circle-xmark"></i> erro</span>`}
+            ${
+              item.ok
+                ? `<span class="hist-badge-ok"><i class="fa-solid fa-circle-check"></i> ${item.rows}</span>`
+                : `<span class="hist-badge-err"><i class="fa-solid fa-circle-xmark"></i> erro</span>`
+            }
           </div>
         </div>
-      `).join('');
+      `,
+          )
+          .join("");
 
-      list.querySelectorAll('.hist-item').forEach(el => {
-        el.addEventListener('click', () => {
-          const item = getHist()[parseInt(el.dataset.idx)];
-          if (item) { queryInput.value = item.q; syncHighlight(); queryInput.focus(); }
-        });
-      });
-    }
-
-    function carregarHistorico() { renderHist(); }
-
-    document.getElementById('btnClearHist').addEventListener('click', () => {
-      if (confirm('Limpar todo o histórico de queries?')) { localStorage.removeItem(HIST_KEY); renderHist(); }
-    });
-
-    async function executarQuery() {
-      const query       = queryInput.value.trim();
-      const resultadoEl = document.getElementById('resultado');
-      const btn         = document.getElementById('btnExecutar');
-      const timerEl     = document.getElementById('timerLabel');
-
-      resultadoEl.innerHTML = '';
-      timerEl.textContent   = '';
-      if (!query) return;
-
-      btn.disabled  = true;
-      btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Executando...';
-      const t0      = performance.now();
-
-      try {
-        const resp = await fetch(`${API}/sql_console.php`, {
-          method: 'POST',
-          credentials: 'same-origin',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ query })
-        });
-        const data = await resp.json();
-        const ms   = (performance.now() - t0).toFixed(0);
-        timerEl.textContent = `${ms} ms`;
-
-        if (data.erro) {
-          resultadoEl.innerHTML = `<div class="msg-erro"><i class="fa-solid fa-circle-xmark" style="margin-right:8px;color:#e24b4a;"></i>${escHtml(data.erro)}</div>`;
-          addToHist(query, false, 0);
-
-        } else if (data.tipo === 'comando') {
-          resultadoEl.innerHTML = `<div class="msg-ok"><i class="fa-solid fa-circle-check" style="margin-right:8px;"></i>Comando executado com sucesso. <strong>${data.linhas_afetadas}</strong> linha(s) afetada(s).</div>`;
-          addToHist(query, true, `${data.linhas_afetadas} afetadas`);
-
-        } else if (!data.linhas || data.linhas.length === 0) {
-          resultadoEl.innerHTML = `<div class="msg-ok"><i class="fa-solid fa-circle-check" style="margin-right:8px;"></i>Consulta executada. Nenhum resultado retornado.</div>`;
-          addToHist(query, true, '0 linhas');
-
-        } else {
-          const cols = Object.keys(data.linhas[0]);
-          let html   = '<div class="table-wrap"><table><thead><tr>';
-          cols.forEach(c => { html += `<th>${escHtml(c)}</th>`; });
-          html += '</tr></thead><tbody>';
-          data.linhas.forEach(row => {
-            html += '<tr>';
-            cols.forEach(c => {
-              const val = row[c];
-              html += val === null || val === undefined
-                ? `<td class="null-val">NULL</td>`
-                : `<td>${escHtml(String(val))}</td>`;
-            });
-            html += '</tr>';
+        list.querySelectorAll(".hist-item").forEach((el) => {
+          el.addEventListener("click", () => {
+            const item = getHist()[parseInt(el.dataset.idx)];
+            if (item) {
+              queryInput.value = item.q;
+              syncHighlight();
+              queryInput.focus();
+            }
           });
-          html += '</tbody></table></div>';
-          html += `<div class="resultado-info"><span class="dot"></span><span><strong>${data.total}</strong> linha(s) retornada(s) &nbsp;·&nbsp; ${ms} ms</span></div>`;
-          resultadoEl.innerHTML = html;
-          addToHist(query, true, `${data.total} linhas`);
-        }
-
-      } catch (err) {
-        const ms = (performance.now() - t0).toFixed(0);
-        timerEl.textContent = `${ms} ms`;
-        resultadoEl.innerHTML = `<div class="msg-erro"><i class="fa-solid fa-wifi" style="margin-right:8px;color:#e24b4a;"></i>Erro de rede: ${escHtml(err.message)}</div>`;
-        addToHist(query, false, 0);
-      } finally {
-        btn.disabled  = false;
-        btn.innerHTML = '<i class="fa-solid fa-play"></i> Executar';
+        });
       }
-    }
 
-    document.getElementById('btnExecutar').addEventListener('click', executarQuery);
-  </script>
-</body>
+      function carregarHistorico() {
+        renderHist();
+      }
+
+      document.getElementById("btnClearHist").addEventListener("click", () => {
+        if (confirm("Limpar todo o histórico de queries?")) {
+          localStorage.removeItem(HIST_KEY);
+          renderHist();
+        }
+      });
+
+      async function executarQuery() {
+        const query = queryInput.value.trim();
+        const resultadoEl = document.getElementById("resultado");
+        const btn = document.getElementById("btnExecutar");
+        const timerEl = document.getElementById("timerLabel");
+
+        resultadoEl.innerHTML = "";
+        timerEl.textContent = "";
+        if (!query) return;
+
+        btn.disabled = true;
+        btn.innerHTML =
+          '<i class="fa-solid fa-circle-notch fa-spin"></i> Executando...';
+        const t0 = performance.now();
+
+        try {
+          const resp = await fetch(`${API}/sql_console.php`, {
+            method: "POST",
+            credentials: "same-origin",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ query }),
+          });
+          const data = await resp.json();
+          const ms = (performance.now() - t0).toFixed(0);
+          timerEl.textContent = `${ms} ms`;
+
+          if (data.erro) {
+            resultadoEl.innerHTML = `<div class="msg-erro"><i class="fa-solid fa-circle-xmark" style="margin-right:8px;color:#e24b4a;"></i>${escHtml(data.erro)}</div>`;
+            addToHist(query, false, 0);
+          } else if (data.tipo === "comando") {
+            resultadoEl.innerHTML = `<div class="msg-ok"><i class="fa-solid fa-circle-check" style="margin-right:8px;"></i>Comando executado com sucesso. <strong>${data.linhas_afetadas}</strong> linha(s) afetada(s).</div>`;
+            addToHist(query, true, `${data.linhas_afetadas} afetadas`);
+          } else if (!data.linhas || data.linhas.length === 0) {
+            resultadoEl.innerHTML = `<div class="msg-ok"><i class="fa-solid fa-circle-check" style="margin-right:8px;"></i>Consulta executada. Nenhum resultado retornado.</div>`;
+            addToHist(query, true, "0 linhas");
+          } else {
+            const cols = Object.keys(data.linhas[0]);
+            let html = '<div class="table-wrap"><table><thead><tr>';
+            cols.forEach((c) => {
+              html += `<th>${escHtml(c)}</th>`;
+            });
+            html += "</tr></thead><tbody>";
+            data.linhas.forEach((row) => {
+              html += "<tr>";
+              cols.forEach((c) => {
+                const val = row[c];
+                html +=
+                  val === null || val === undefined
+                    ? `<td class="null-val">NULL</td>`
+                    : `<td>${escHtml(String(val))}</td>`;
+              });
+              html += "</tr>";
+            });
+            html += "</tbody></table></div>";
+            html += `<div class="resultado-info"><span class="dot"></span><span><strong>${data.total}</strong> linha(s) retornada(s) &nbsp;·&nbsp; ${ms} ms</span></div>`;
+            resultadoEl.innerHTML = html;
+            addToHist(query, true, `${data.total} linhas`);
+          }
+        } catch (err) {
+          const ms = (performance.now() - t0).toFixed(0);
+          timerEl.textContent = `${ms} ms`;
+          resultadoEl.innerHTML = `<div class="msg-erro"><i class="fa-solid fa-wifi" style="margin-right:8px;color:#e24b4a;"></i>Erro de rede: ${escHtml(err.message)}</div>`;
+          addToHist(query, false, 0);
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-play"></i> Executar';
+        }
+      }
+
+      document
+        .getElementById("btnExecutar")
+        .addEventListener("click", executarQuery);
+    </script>
+  </body>
 </html>
