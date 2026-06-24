@@ -1,304 +1,558 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../styles/TelaGestaoUsuarios.css">
-  <link rel="stylesheet" href="../styles/navbar.css">
-  <link rel="stylesheet" href="../styles/footer.css">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <title>Gestão de Usuários - Biblioteca</title>
-  <style>
-    .modal-historico { max-width: 680px; max-height: 85vh; display: flex; flex-direction: column; }
-    .modal-historico .modal-body { overflow-y: auto; padding-top: 8px; flex: 1; }
-    .modal-historico .modal-body::-webkit-scrollbar { width: 4px; }
-    .modal-historico .modal-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../styles/TelaGestaoUsuarios.css" />
+    <link rel="stylesheet" href="../styles/navbar.css" />
+    <link rel="stylesheet" href="../styles/footer.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <title>Gestão de Usuários - Biblioteca</title>
+    <style>
+      .modal-historico {
+        max-width: 680px;
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .modal-historico .modal-body {
+        overflow-y: auto;
+        padding-top: 8px;
+        flex: 1;
+      }
+      .modal-historico .modal-body::-webkit-scrollbar {
+        width: 4px;
+      }
+      .modal-historico .modal-body::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+      }
 
-    .nav-sidebar-item.admin-only { display: none; }
-    .nav-sidebar-item.dev-only   { display: none; }
+      .nav-sidebar-item.admin-only {
+        display: none;
+      }
+      .nav-sidebar-item.dev-only {
+        display: none;
+      }
 
-    /* ══ Sidebar azul — identidade da Home/Dashboard ══ */
-    .nav-sidebar {
-      background: linear-gradient(
+      /* ══ Sidebar azul — identidade da Home/Dashboard ══ */
+      .nav-sidebar {
+        background: linear-gradient(
           180deg,
           rgba(27, 38, 136, 0.55) 0%,
-          rgba(6,  11,  48, 0.70) 100%
-      ) !important;
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-right: 1px solid rgba(112, 163, 240, 0.18) !important;
-    }
-    .nav-sidebar-item {
-      color: rgba(232, 236, 244, 0.5) !important;
-      border-radius: 0 6px 6px 0;
-    }
-    .nav-sidebar-item:hover {
-      background: rgba(112, 163, 240, 0.12) !important;
-      color: rgba(232, 236, 244, 0.9) !important;
-      border-left-color: rgba(112, 163, 240, 0.3) !important;
-    }
-    .nav-sidebar-item.active {
-      background: rgba(112, 163, 240, 0.15) !important;
-      border-left-color: #70a3f0 !important;
-      color: #e8ecf4 !important;
-    }
-    .nav-sidebar-item i {
-      color: #70a3f0 !important;
-      opacity: 0.75;
-      transition: opacity 0.2s;
-    }
-    .nav-sidebar-item:hover i,
-    .nav-sidebar-item.active i { opacity: 1; }
+          rgba(6, 11, 48, 0.7) 100%
+        ) !important;
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border-right: 1px solid rgba(112, 163, 240, 0.18) !important;
+      }
+      .nav-sidebar-item {
+        color: rgba(232, 236, 244, 0.5) !important;
+        border-radius: 0 6px 6px 0;
+      }
+      .nav-sidebar-item:hover {
+        background: rgba(112, 163, 240, 0.12) !important;
+        color: rgba(232, 236, 244, 0.9) !important;
+        border-left-color: rgba(112, 163, 240, 0.3) !important;
+      }
+      .nav-sidebar-item.active {
+        background: rgba(112, 163, 240, 0.15) !important;
+        border-left-color: #70a3f0 !important;
+        color: #e8ecf4 !important;
+      }
+      .nav-sidebar-item i {
+        color: #70a3f0 !important;
+        opacity: 0.75;
+        transition: opacity 0.2s;
+      }
+      .nav-sidebar-item:hover i,
+      .nav-sidebar-item.active i {
+        opacity: 1;
+      }
 
-    .hist-loading { text-align: center; padding: 40px; color: rgba(255,255,255,0.3); font-size: 13px; }
-    .hist-vazio   { text-align: center; padding: 40px; color: rgba(255,255,255,0.25); font-size: 13px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
-    .hist-vazio i { font-size: 28px; }
+      .hist-loading {
+        text-align: center;
+        padding: 40px;
+        color: rgba(255, 255, 255, 0.3);
+        font-size: 13px;
+      }
+      .hist-vazio {
+        text-align: center;
+        padding: 40px;
+        color: rgba(255, 255, 255, 0.25);
+        font-size: 13px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+      .hist-vazio i {
+        font-size: 28px;
+      }
 
-    .hist-item { display: flex; align-items: flex-start; gap: 16px; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
-    .hist-item:last-child { border-bottom: none; }
-    .hist-capa { width: 44px; height: 60px; object-fit: cover; border-radius: 3px; flex-shrink: 0; background: rgba(255,255,255,0.04); }
-    .hist-info { flex: 1; min-width: 0; }
-    .hist-titulo { font-size: 14px; font-weight: 500; color: #e8e4de; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .hist-autor  { font-size: 11px; color: rgba(255,255,255,0.35); margin: 3px 0 8px; }
-    .hist-datas  { display: flex; flex-wrap: wrap; gap: 12px; font-size: 11px; color: rgba(255,255,255,0.4); }
-    .hist-datas i { margin-right: 4px; color: rgba(255,255,255,0.2); }
-    .hist-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
+      .hist-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 16px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .hist-item:last-child {
+        border-bottom: none;
+      }
+      .hist-capa {
+        width: 44px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 3px;
+        flex-shrink: 0;
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .hist-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .hist-titulo {
+        font-size: 14px;
+        font-weight: 500;
+        color: #e8e4de;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .hist-autor {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.35);
+        margin: 3px 0 8px;
+      }
+      .hist-datas {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.4);
+      }
+      .hist-datas i {
+        margin-right: 4px;
+        color: rgba(255, 255, 255, 0.2);
+      }
+      .hist-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 8px;
+        flex-shrink: 0;
+      }
 
-    .badge-status { font-size: 9px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 8px; border-radius: 2px; }
-    .badge-ativo      { background: rgba(122,173,255,0.12); color: #7aadff; }
-    .badge-devolvido  { background: rgba(29,158,117,0.12);  color: #5dcaa5; }
-    .badge-cancelado  { background: rgba(226,75,74,0.12);   color: #e24b4a; }
+      .badge-status {
+        font-size: 9px;
+        font-weight: 500;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        padding: 3px 8px;
+        border-radius: 2px;
+      }
+      .badge-ativo {
+        background: rgba(122, 173, 255, 0.12);
+        color: #7aadff;
+      }
+      .badge-devolvido {
+        background: rgba(29, 158, 117, 0.12);
+        color: #5dcaa5;
+      }
+      .badge-cancelado {
+        background: rgba(226, 75, 74, 0.12);
+        color: #e24b4a;
+      }
 
-    .btn-cancelar-emp {
-      background: transparent; border: 1px solid rgba(226,75,74,0.3); color: #e24b4a;
-      font-size: 10px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase;
-      padding: 5px 10px; border-radius: 3px; cursor: pointer; transition: background 0.2s, border-color 0.2s;
-      white-space: nowrap;
-    }
-    .btn-cancelar-emp:hover { background: rgba(226,75,74,0.1); border-color: rgba(226,75,74,0.6); }
-    .btn-cancelar-emp:disabled { opacity: 0.4; cursor: not-allowed; }
+      .btn-cancelar-emp {
+        background: transparent;
+        border: 1px solid rgba(226, 75, 74, 0.3);
+        color: #e24b4a;
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        padding: 5px 10px;
+        border-radius: 3px;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          border-color 0.2s;
+        white-space: nowrap;
+      }
+      .btn-cancelar-emp:hover {
+        background: rgba(226, 75, 74, 0.1);
+        border-color: rgba(226, 75, 74, 0.6);
+      }
+      .btn-cancelar-emp:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
 
-    .btn-historico { color: #7aadff !important; border-color: rgba(122,173,255,0.3) !important; }
-    .btn-historico:hover { background: rgba(122,173,255,0.08) !important; }
+      .btn-historico {
+        color: #7aadff !important;
+        border-color: rgba(122, 173, 255, 0.3) !important;
+      }
+      .btn-historico:hover {
+        background: rgba(122, 173, 255, 0.08) !important;
+      }
 
-    /* Fix largura do container */
-    .container { max-width: none !important; }
-  </style>
-</head>
-<body>
-
-  <header class="header">
-    <div class="header-container">
-      <div class="logo-left">
-        <img src="../img/logo_removebg.png" alt="Digital Library" class="logo-img">
-      </div>
-      <nav class="nav-menu">
-        <a href="../pages/TelaHome.html" class="nav-link">INÍCIO</a>
-        <a href="../pages/TelaHome.html#sessao-sobre" class="nav-link">SOBRE</a>
-        <a href="../pages/TelaCatalogoLivros.html" class="nav-link">CATÁLOGO</a>
-        <a href="../pages/TelaHome.html#sessao-contato" class="nav-link">CONTATO</a>
-      </nav>
-      <div class="nav-user-area" id="navUserArea"></div>
-    </div>
-  </header>
-
-  <div class="page-wrapper">
-
-    <aside class="nav-sidebar" id="navSidebar">
-      <a href="../pages/dashboard.html" class="nav-sidebar-item admin-only">
-        <i class="fa-solid fa-house"></i><span>Dashboard</span>
-      </a>
-      <a href="../pages/TelaADDLivro.html" class="nav-sidebar-item admin-only">
-        <i class="fa-solid fa-book-medical"></i><span>Adicionar Livro</span>
-      </a>
-      <a href="../pages/TelaGestaoUsuarios.html" class="nav-sidebar-item admin-only active">
-        <i class="fa-solid fa-users-gear"></i><span>Gestão de Usuários</span>
-      </a>
-      <a href="../pages/TelaCatalogoLivros.html" class="nav-sidebar-item">
-        <i class="fa-solid fa-book-open"></i><span>Catálogo</span>
-      </a>
-      <a href="../pages/TelaUsuariologado.html" class="nav-sidebar-item">
-        <i class="fa-solid fa-user"></i><span>Meu Perfil</span>
-      </a>
-      <a href="../pages/TelaSqlConsole.html" class="nav-sidebar-item dev-only">
-        <i class="fa-solid fa-tower-observation"></i><span>Torre de Consultas</span>
-      </a>
-    </aside>
-
-    <div class="container">
-
-      <div class="page-header">
-        <span class="page-sup">Administração</span>
-        <h1>Gestão de Usuários</h1>
-        <p class="page-desc">Visualize, edite e gerencie todos os membros cadastrados no sistema</p>
-      </div>
-
-      <div class="toolbar">
-        <div class="toolbar-left">
-          <div class="search-wrapper">
-            <i class="fas fa-search search-icon"></i>
-            <input type="text" id="campoBusca" class="search-input" placeholder="Buscar por nome, email ou ID...">
-          </div>
-          <select id="filtroPerfil" class="select-filter">
-            <option value="">Todos os perfis</option>
-            <option value="admin">Admin</option>
-            <option value="usuario">Usuário</option>
-            <option value="desenvolvedor">Desenvolvedor</option>
-          </select>
+      /* Fix largura do container */
+      .container {
+        max-width: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header-container">
+        <div class="logo-left">
+          <img
+            src="../img/logo_removebg.png"
+            alt="Digital Library"
+            class="logo-img"
+          />
         </div>
-        <span class="total-badge" id="totalUsuarios">— usuários</span>
+        <nav class="nav-menu">
+          <a href="../pages/TelaHome.html" class="nav-link">INÍCIO</a>
+          <a href="../pages/TelaHome.html#sessao-sobre" class="nav-link"
+            >SOBRE</a
+          >
+          <a href="../pages/TelaCatalogoLivros.html" class="nav-link"
+            >CATÁLOGO</a
+          >
+          <a href="../pages/TelaHome.html#sessao-contato" class="nav-link"
+            >CONTATO</a
+          >
+        </nav>
+        <div class="nav-user-area" id="navUserArea"></div>
       </div>
+    </header>
 
-      <div class="card table-card">
-        <div class="table-wrapper">
-          <table class="user-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Email</th>
-                <th>Telefone</th>
-                <th>CPF</th>
-                <th>Estado</th>
-                <th>Perfil</th>
-                <th>Cadastro</th>
-                <th class="col-acoes">Ações</th>
-              </tr>
-            </thead>
-            <tbody id="corpoTabela">
-              <tr class="skeleton-row"><td colspan="9"><div class="skeleton-linha"></div></td></tr>
-              <tr class="skeleton-row"><td colspan="9"><div class="skeleton-linha short"></div></td></tr>
-              <tr class="skeleton-row"><td colspan="9"><div class="skeleton-linha"></div></td></tr>
-            </tbody>
-          </table>
+    <div class="page-wrapper">
+      <aside class="nav-sidebar" id="navSidebar">
+        <a href="../pages/dashboard.html" class="nav-sidebar-item admin-only">
+          <i class="fa-solid fa-house"></i><span>Dashboard</span>
+        </a>
+        <a
+          href="../pages/TelaADDLivro.html"
+          class="nav-sidebar-item admin-only"
+        >
+          <i class="fa-solid fa-book-medical"></i><span>Adicionar Livro</span>
+        </a>
+        <a
+          href="../pages/TelaGestaoUsuarios.html"
+          class="nav-sidebar-item admin-only active"
+        >
+          <i class="fa-solid fa-users-gear"></i><span>Gestão de Usuários</span>
+        </a>
+        <a href="../pages/TelaCatalogoLivros.html" class="nav-sidebar-item">
+          <i class="fa-solid fa-book-open"></i><span>Catálogo</span>
+        </a>
+        <a href="../pages/TelaUsuariologado.html" class="nav-sidebar-item">
+          <i class="fa-solid fa-user"></i><span>Meu Perfil</span>
+        </a>
+        <a
+          href="../pages/TelaSqlConsole.html"
+          class="nav-sidebar-item dev-only"
+        >
+          <i class="fa-solid fa-tower-observation"></i
+          ><span>Torre de Consultas</span>
+        </a>
+      </aside>
+
+      <div class="container">
+        <div class="page-header">
+          <span class="page-sup">Administração</span>
+          <h1>Gestão de Usuários</h1>
+          <p class="page-desc">
+            Visualize, edite e gerencie todos os membros cadastrados no sistema
+          </p>
         </div>
-      </div>
 
-    </div>
-  </div>
-
-  <!-- MODAL HISTÓRICO -->
-  <div class="modal-overlay" id="modalHistoricoOverlay">
-    <div class="modal modal-historico" id="modalHistorico">
-      <div class="modal-header">
-        <div>
-          <span class="modal-sup">Administração</span>
-          <h2 class="modal-title">Histórico de <span id="historicoNome" style="color:#7aadff;"></span></h2>
-        </div>
-        <button class="modal-close" id="btnFecharHistorico"><i class="fas fa-times"></i></button>
-      </div>
-      <div class="modal-body">
-        <div id="historicoLista"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL EDITAR -->
-  <div class="modal-overlay" id="modalOverlay">
-    <div class="modal" id="modalEditar">
-      <div class="modal-header">
-        <div>
-          <span class="modal-sup">Administração</span>
-          <h2 class="modal-title">Editar Usuário</h2>
-        </div>
-        <button class="modal-close" id="btnFecharModal"><i class="fas fa-times"></i></button>
-      </div>
-      <div class="modal-body">
-        <input type="hidden" id="editId">
-        <div class="modal-grid">
-          <div class="field-group full">
-            <label>Nome Completo</label>
-            <input type="text" id="editNome" class="input-field" placeholder="Nome do usuário">
-          </div>
-          <div class="field-group full">
-            <label>Email</label>
-            <input type="email" id="editEmail" class="input-field" placeholder="email@exemplo.com">
-          </div>
-          <div class="field-group">
-            <label>Telefone</label>
-            <input type="text" id="editTelefone" class="input-field" placeholder="(00) 00000-0000">
-          </div>
-          <div class="field-group">
-            <label>CPF</label>
-            <input type="text" id="editCpf" class="input-field" placeholder="000.000.000-00">
-          </div>
-          <div class="field-group">
-            <label>Data de Nascimento</label>
-            <input type="date" id="editNascimento" class="input-field">
-          </div>
-          <div class="field-group">
-            <label>Estado</label>
-            <select id="editEstado" class="input-field select-field">
-              <option value="">Selecione</option>
-              <option value="AC">AC</option><option value="AL">AL</option><option value="AP">AP</option>
-              <option value="AM">AM</option><option value="BA">BA</option><option value="CE">CE</option>
-              <option value="DF">DF</option><option value="ES">ES</option><option value="GO">GO</option>
-              <option value="MA">MA</option><option value="MT">MT</option><option value="MS">MS</option>
-              <option value="MG">MG</option><option value="PA">PA</option><option value="PB">PB</option>
-              <option value="PR">PR</option><option value="PE">PE</option><option value="PI">PI</option>
-              <option value="RJ">RJ</option><option value="RN">RN</option><option value="RS">RS</option>
-              <option value="RO">RO</option><option value="RR">RR</option><option value="SC">SC</option>
-              <option value="SP">SP</option><option value="SE">SE</option><option value="TO">TO</option>
-            </select>
-          </div>
-          <div class="field-group full">
-            <label>Perfil de Acesso</label>
-            <select id="editPerfil" class="input-field select-field">
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <div class="search-wrapper">
+              <i class="fas fa-search search-icon"></i>
+              <input
+                type="text"
+                id="campoBusca"
+                class="search-input"
+                placeholder="Buscar por nome, email ou ID..."
+              />
+            </div>
+            <select id="filtroPerfil" class="select-filter">
+              <option value="">Todos os perfis</option>
+              <option value="admin">Admin</option>
               <option value="usuario">Usuário</option>
-              <option value="admin">Administrador</option>
               <option value="desenvolvedor">Desenvolvedor</option>
             </select>
           </div>
-          <div class="field-group full">
-            <label>Nova Senha <span class="label-opcional">(deixe em branco para manter a atual)</span></label>
-            <input type="password" id="editSenha" class="input-field" placeholder="••••••••">
+          <span class="total-badge" id="totalUsuarios">— usuários</span>
+        </div>
+
+        <div class="card table-card">
+          <div class="table-wrapper">
+            <table class="user-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nome</th>
+                  <th>Email</th>
+                  <th>Perfil</th>
+                  <th class="col-acoes">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="corpoTabela">
+                <tr class="skeleton-row">
+                  <td colspan="5"><div class="skeleton-linha"></div></td>
+                </tr>
+                <tr class="skeleton-row">
+                  <td colspan="5"><div class="skeleton-linha short"></div></td>
+                </tr>
+                <tr class="skeleton-row">
+                  <td colspan="5"><div class="skeleton-linha"></div></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
-      <div class="modal-footer">
-        <button class="btn-ghost" id="btnCancelarModal">Cancelar</button>
-        <button class="btn-primary" id="btnSalvarEdicao">
-          <i class="fas fa-save"></i> Salvar Alterações
-        </button>
-      </div>
     </div>
-  </div>
 
-  <!-- MODAL CONFIRMAR EXCLUSÃO -->
-  <div class="modal-overlay" id="modalConfirmOverlay">
-    <div class="modal modal-sm" id="modalConfirm">
-      <div class="modal-header">
-        <div>
-          <span class="modal-sup">Atenção</span>
-          <h2 class="modal-title">Remover Usuário</h2>
+    <!-- MODAL DETALHES DO USUÁRIO -->
+    <div class="modal-overlay" id="modalDetalhesOverlay">
+      <div class="modal modal-detalhes" id="modalDetalhes">
+        <div class="modal-header">
+          <div>
+            <span class="modal-sup">Administração</span>
+            <h2 class="modal-title" id="detalhesNomeTitle">
+              Detalhes do Usuário
+            </h2>
+          </div>
+          <button class="modal-close" id="btnFecharDetalhes">
+            <i class="fas fa-times"></i>
+          </button>
         </div>
-        <button class="modal-close" id="btnFecharConfirm"><i class="fas fa-times"></i></button>
-      </div>
-      <div class="modal-body">
-        <div class="confirm-icon"><i class="fas fa-user-slash"></i></div>
-        <p class="confirm-msg">Tem certeza que deseja remover o usuário <strong id="confirmNome"></strong>? Esta ação não pode ser desfeita.</p>
-      </div>
-      <div class="modal-footer">
-        <button class="btn-ghost" id="btnCancelarConfirm">Cancelar</button>
-        <button class="btn-danger" id="btnConfirmarRemocao">
-          <i class="fas fa-trash-alt"></i> Remover
-        </button>
+        <div class="modal-body">
+          <div class="detalhes-grid" id="detalhesConteudo"></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-ghost" id="btnDetalhesHistorico">
+            <i class="fas fa-clock-rotate-left"></i> Histórico
+          </button>
+          <button class="btn-primary" id="btnDetalhesEditar">
+            <i class="fas fa-pen-to-square"></i> Editar
+          </button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="toast-perfil" id="toastGestao">
-    <div class="tp-icon"><i class="fa-solid fa-check" id="toastIconEl"></i></div>
-    <span class="tp-msg" id="toastMsg">—</span>
-  </div>
+    <!-- MODAL HISTÓRICO -->
+    <div class="modal-overlay" id="modalHistoricoOverlay">
+      <div class="modal modal-historico" id="modalHistorico">
+        <div class="modal-header">
+          <div>
+            <span class="modal-sup">Administração</span>
+            <h2 class="modal-title">
+              Histórico de
+              <span id="historicoNome" style="color: #7aadff"></span>
+            </h2>
+          </div>
+          <button class="modal-close" id="btnFecharHistorico">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div id="historicoLista"></div>
+        </div>
+      </div>
+    </div>
 
-  <div id="footer"></div>
+    <!-- MODAL EDITAR -->
+    <div class="modal-overlay" id="modalOverlay">
+      <div class="modal" id="modalEditar">
+        <div class="modal-header">
+          <div>
+            <span class="modal-sup">Administração</span>
+            <h2 class="modal-title">Editar Usuário</h2>
+          </div>
+          <button class="modal-close" id="btnFecharModal">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="editId" />
+          <div class="modal-grid">
+            <div class="field-group full">
+              <label>Nome Completo</label>
+              <input
+                type="text"
+                id="editNome"
+                class="input-field"
+                placeholder="Nome do usuário"
+              />
+            </div>
+            <div class="field-group full">
+              <label>Email</label>
+              <input
+                type="email"
+                id="editEmail"
+                class="input-field"
+                placeholder="email@exemplo.com"
+              />
+            </div>
+            <div class="field-group">
+              <label>Telefone</label>
+              <input
+                type="text"
+                id="editTelefone"
+                class="input-field"
+                placeholder="(00) 00000-0000"
+              />
+            </div>
+            <div class="field-group">
+              <label>CPF</label>
+              <input
+                type="text"
+                id="editCpf"
+                class="input-field"
+                placeholder="000.000.000-00"
+              />
+            </div>
+            <div class="field-group">
+              <label>Data de Nascimento</label>
+              <input type="date" id="editNascimento" class="input-field" />
+            </div>
+            <div class="field-group">
+              <label>Estado</label>
+              <select id="editEstado" class="input-field select-field">
+                <option value="">Selecione</option>
+                <option value="AC">AC</option>
+                <option value="AL">AL</option>
+                <option value="AP">AP</option>
+                <option value="AM">AM</option>
+                <option value="BA">BA</option>
+                <option value="CE">CE</option>
+                <option value="DF">DF</option>
+                <option value="ES">ES</option>
+                <option value="GO">GO</option>
+                <option value="MA">MA</option>
+                <option value="MT">MT</option>
+                <option value="MS">MS</option>
+                <option value="MG">MG</option>
+                <option value="PA">PA</option>
+                <option value="PB">PB</option>
+                <option value="PR">PR</option>
+                <option value="PE">PE</option>
+                <option value="PI">PI</option>
+                <option value="RJ">RJ</option>
+                <option value="RN">RN</option>
+                <option value="RS">RS</option>
+                <option value="RO">RO</option>
+                <option value="RR">RR</option>
+                <option value="SC">SC</option>
+                <option value="SP">SP</option>
+                <option value="SE">SE</option>
+                <option value="TO">TO</option>
+              </select>
+            </div>
+            <div class="field-group full">
+              <label>Perfil de Acesso</label>
+              <select id="editPerfil" class="input-field select-field">
+                <option value="usuario">Usuário</option>
+                <option value="admin">Administrador</option>
+                <option value="desenvolvedor">Desenvolvedor</option>
+              </select>
+            </div>
+            <div class="field-group full">
+              <label
+                >Data de Cadastro
+                <span class="label-opcional">(somente leitura)</span></label
+              >
+              <input
+                type="text"
+                id="editCadastro"
+                class="input-field input-readonly"
+                readonly
+                tabindex="-1"
+              />
+            </div>
+            <div class="field-group full">
+              <label
+                >Nova Senha
+                <span class="label-opcional"
+                  >(deixe em branco para manter a atual)</span
+                ></label
+              >
+              <input
+                type="password"
+                id="editSenha"
+                class="input-field"
+                placeholder="••••••••"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-ghost" id="btnCancelarModal">Cancelar</button>
+          <button class="btn-primary" id="btnSalvarEdicao">
+            <i class="fas fa-save"></i> Salvar Alterações
+          </button>
+        </div>
+      </div>
+    </div>
 
-  <script src="../scripts/navbar.js"></script>
-  <script>initNavbar();</script>
-  <script src="../scripts/include.js"></script>
-  <script src="../scripts/TelaGestaoUsuarios.js"></script>
+    <!-- MODAL CONFIRMAR EXCLUSÃO -->
+    <div class="modal-overlay" id="modalConfirmOverlay">
+      <div class="modal modal-sm" id="modalConfirm">
+        <div class="modal-header">
+          <div>
+            <span class="modal-sup">Atenção</span>
+            <h2 class="modal-title">Remover Usuário</h2>
+          </div>
+          <button class="modal-close" id="btnFecharConfirm">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="confirm-icon"><i class="fas fa-user-slash"></i></div>
+          <p class="confirm-msg">
+            Tem certeza que deseja remover o usuário
+            <strong id="confirmNome"></strong>? Esta ação não pode ser desfeita.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-ghost" id="btnCancelarConfirm">Cancelar</button>
+          <button class="btn-danger" id="btnConfirmarRemocao">
+            <i class="fas fa-trash-alt"></i> Remover
+          </button>
+        </div>
+      </div>
+    </div>
 
-</body>
+    <div class="toast-perfil" id="toastGestao">
+      <div class="tp-icon">
+        <i class="fa-solid fa-check" id="toastIconEl"></i>
+      </div>
+      <span class="tp-msg" id="toastMsg">—</span>
+    </div>
+
+    <div id="footer"></div>
+
+    <script src="../scripts/navbar.js"></script>
+    <script>
+      initNavbar();
+    </script>
+    <script src="../scripts/include.js"></script>
+    <script src="../scripts/TelaGestaoUsuarios.js"></script>
+  </body>
 </html>
