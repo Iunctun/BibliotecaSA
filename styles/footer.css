@@ -5,9 +5,9 @@
 .footer {
   background: linear-gradient(
     180deg,
-    rgba(9, 14, 63, 1)   0%,
-    #0a1040              40%,
-    #090e3f             100%
+    rgba(9, 14, 63, 1) 0%,
+    #0a1040 40%,
+    #090e3f 100%
   );
   border-top: 1px solid rgba(112, 163, 240, 0.1);
   color: #e7e7e7;
@@ -18,7 +18,7 @@
 
 /* Glow sutil no topo do footer */
 .footer::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 50%;
@@ -35,9 +35,10 @@
 }
 
 .container {
-  max-width: 1100px;
+  width: 100%;
+  margin-left: 230px;
   margin: 0 auto;
-  padding: 0 60px;
+  padding: 67px 48px 100px 48px;
 }
 
 .footer-content {
@@ -48,7 +49,7 @@
 }
 
 .footer-section h3 {
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 2.5px;
@@ -64,7 +65,7 @@
 }
 
 .footer-section p {
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
   font-size: 13px;
   font-weight: 300;
   color: rgba(136, 146, 180, 0.8);
@@ -73,7 +74,7 @@
 }
 
 .footer-section a {
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
   font-size: 13px;
   font-weight: 300;
   color: rgba(136, 146, 180, 0.75);
@@ -92,7 +93,9 @@
 .footer-section a[style*="font-size: 1.5rem"] {
   color: rgba(136, 146, 180, 0.6) !important;
   font-size: 16px !important;
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
   display: inline-block;
 }
 
@@ -111,7 +114,7 @@
 }
 
 .footer-bottom p {
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
   font-size: 11px;
   font-weight: 400;
   color: rgba(136, 146, 180, 0.4);
@@ -120,12 +123,23 @@
 }
 
 @media (max-width: 768px) {
-  .container { padding: 0 32px; }
-  .footer { padding: 56px 0 28px; }
-  .footer-content { gap: 36px; }
+  .container {
+    padding: 0 32px;
+  }
+  .footer {
+    padding: 56px 0 28px;
+  }
+  .footer-content {
+    gap: 36px;
+  }
 }
 
 @media (max-width: 480px) {
-  .container { padding: 0 24px; }
-  .footer-content { grid-template-columns: 1fr; gap: 32px; }
+  .container {
+    padding: 0 24px;
+  }
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
 }
