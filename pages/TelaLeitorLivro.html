@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../styles/navbar.css" />
+    <link rel="stylesheet" href="../styles/footer.css" />
+    <link rel="stylesheet" href="../styles/TelaLeitorLivro.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <title>Lendo — Biblioteca</title>
+  </head>
+  <body>
+
+    <!-- ===== NAVBAR INLINE ===== -->
+    <header class="header">
+      <div class="header-container">
+        <div class="logo-left">
+          <img src="../img/logo_removebg.png" alt="Digital Library" class="logo-img" />
+        </div>
+        <nav class="nav-menu">
+          <a href="../pages/TelaHome.html" class="nav-link">INÍCIO</a>
+          <a href="../pages/TelaHome.html#sessao-sobre" class="nav-link">SOBRE</a>
+          <a href="../pages/TelaCatalogoLivros.html" class="nav-link">CATÁLOGO</a>
+          <a href="../pages/TelaHome.html#sessao-contato" class="nav-link">CONTATO</a>
+        </nav>
+        <div class="nav-user-area" id="navUserArea"></div>
+      </div>
+    </header>
+
+    <div class="page-wrapper">
+
+      <!-- ===== SIDEBAR ===== -->
+      <aside class="nav-sidebar" id="navSidebar">
+        <a href="../pages/dashboard.html" class="nav-sidebar-item admin-only">
+          <i class="fa-solid fa-house"></i><span>Dashboard</span>
+        </a>
+        <a href="../pages/TelaADDLivro.html" class="nav-sidebar-item admin-only">
+          <i class="fa-solid fa-book-medical"></i><span>Adicionar Livro</span>
+        </a>
+        <a href="../pages/TelaGestaoUsuarios.html" class="nav-sidebar-item admin-only">
+          <i class="fa-solid fa-users-gear"></i><span>Gestão de Usuários</span>
+        </a>
+        <a href="../pages/TelaCatalogoLivros.html" class="nav-sidebar-item">
+          <i class="fa-solid fa-book-open"></i><span>Catálogo</span>
+        </a>
+        <!-- Meus Livros ativo (vem da leitura) -->
+        <a href="../pages/TelaMeusLivros.html" class="nav-sidebar-item active">
+          <i class="fa-solid fa-books"></i><span>Meus Livros</span>
+        </a>
+        <a href="../pages/TelaUsuariologado.html" class="nav-sidebar-item">
+          <i class="fa-solid fa-user"></i><span>Meu Perfil</span>
+        </a>
+        <a href="../pages/TelaSqlConsole.html" class="nav-sidebar-item dev-only">
+          <i class="fa-solid fa-tower-observation"></i><span>Torre de Consultas</span>
+        </a>
+      </aside>
+
+      <!-- ===== LEITOR ===== -->
+      <div class="leitor-container" id="leitorContainer">
+
+        <!-- Loading -->
+        <div class="loading-state" id="loadingState">
+          <i class="fa-solid fa-circle-notch fa-spin"></i>
+          <p>Abrindo o livro...</p>
+        </div>
+
+        <!-- Conteúdo do leitor (injetado pelo JS) -->
+        <div id="leitorConteudo" style="display:none; flex-direction:column; gap:0; flex:1;">
+
+          <!-- Cabeçalho fixo do leitor -->
+          <div class="leitor-header" id="leitorHeader">
+            <img class="leitor-capa-mini" id="leitorCapaMini" src="" alt="Capa" />
+            <div class="leitor-info">
+              <a href="../pages/TelaMeusLivros.html" class="leitor-voltar">
+                <i class="fa-solid fa-arrow-left"></i> Meus Livros
+              </a>
+              <div style="display:flex;align-items:center;gap:0;flex-wrap:wrap;">
+                <div class="leitor-titulo" id="leitorTitulo">—</div>
+                <span class="leitor-status" id="leitorStatusBadge"></span>
+              </div>
+              <div class="leitor-autor" id="leitorAutor">—</div>
+              <div class="leitor-progresso-wrap">
+                <div class="leitor-progresso-bg">
+                  <div class="leitor-progresso-fill" id="leitorProgressoFill" style="width:0%"></div>
+                </div>
+                <span class="leitor-progresso-pct" id="leitorProgressoPct">0%</span>
+                <span class="leitor-pagina-info" id="leitorPaginaInfo">Página 1 de 10</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Body do leitor -->
+          <div class="leitor-body">
+
+            <!-- Container das páginas com animação -->
+            <div class="paginas-wrapper" id="paginasWrapper">
+              <!-- Páginas injetadas pelo JS -->
+            </div>
+
+            <!-- Navegação -->
+            <div class="leitor-navegacao" id="leitorNav">
+              <button class="btn-nav" id="btnAnterior" disabled>
+                <i class="fa-solid fa-chevron-left"></i>
+                <span>Página Anterior</span>
+              </button>
+
+              <div class="nav-pagina-atual">
+                <span class="nav-pag-label">Página</span>
+                <span class="nav-pag-numero" id="navPagAtual">1</span>
+                <span class="nav-pag-total" id="navPagTotal">de 10</span>
+              </div>
+
+              <button class="btn-nav" id="btnProxima">
+                <span>Próxima Página</span>
+                <i class="fa-solid fa-chevron-right"></i>
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast-leitor" id="toastLeitor">
+      <div class="tl-icon"><i class="fa-solid fa-check" id="tlIconEl"></i></div>
+      <span class="tl-msg" id="tlMsg"></span>
+    </div>
+
+    <script src="../scripts/navbar.js"></script>
+    <script>initNavbar();</script>
+    <script src="../scripts/TelaLeitorLivro.js"></script>
+  </body>
+</html>
