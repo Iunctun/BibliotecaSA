@@ -45,9 +45,12 @@
         display: flex;
         flex-direction: column;
         gap: 2px;
-        position: sticky;
-        top: 0px;
-        height: calc(100vh - 70px);
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        overflow-y: auto;
+        z-index: 100;
       }
       .sidebar-item {
         display: flex;
@@ -97,6 +100,7 @@
         display: none;
       }
       .main {
+        margin-left: 230px;
         flex: 1;
         min-width: 0;
         overflow: hidden;
@@ -115,15 +119,9 @@
         </div>
         <nav class="nav-menu">
           <a href="../pages/TelaHome.html" class="nav-link">INÍCIO</a>
-          <a href="../pages/TelaHome.html#sessao-sobre" class="nav-link"
-            >SOBRE</a
-          >
-          <a href="../pages/TelaCatalogoLivros.html" class="nav-link"
-            >CATÁLOGO</a
-          >
-          <a href="../pages/TelaHome.html#sessao-contato" class="nav-link"
-            >CONTATO</a
-          >
+          <a href="../pages/TelaHome.html#sessao-sobre" class="nav-link">SOBRE</a>
+          <a href="../pages/TelaCatalogoLivros.html" class="nav-link">CATÁLOGO</a>
+          <a href="../pages/TelaHome.html#sessao-contato" class="nav-link">CONTATO</a>
         </nav>
         <div class="nav-user-area" id="navUserArea"></div>
       </div>
@@ -134,16 +132,10 @@
         <a href="../pages/dashboard.html" class="sidebar-item admin-only">
           <i class="fa-solid fa-house"></i><span>Dashboard</span>
         </a>
-        <a
-          href="../pages/TelaADDLivro.html"
-          class="sidebar-item admin-only active"
-        >
+        <a href="../pages/TelaADDLivro.html" class="sidebar-item admin-only active">
           <i class="fa-solid fa-book-medical"></i><span>Adicionar Livro</span>
         </a>
-        <a
-          href="../pages/TelaGestaoUsuarios.html"
-          class="sidebar-item admin-only"
-        >
+        <a href="../pages/TelaGestaoUsuarios.html" class="sidebar-item admin-only">
           <i class="fa-solid fa-users-gear"></i><span>Gestão de Usuários</span>
         </a>
         <a href="../pages/TelaCatalogoLivros.html" class="sidebar-item">
@@ -156,8 +148,7 @@
           <i class="fa-solid fa-user"></i><span>Meu Perfil</span>
         </a>
         <a href="../pages/TelaSqlConsole.html" class="sidebar-item dev-only">
-          <i class="fa-solid fa-tower-observation"></i
-          ><span>Torre de Consultas</span>
+          <i class="fa-solid fa-tower-observation"></i><span>Torre de Consultas</span>
         </a>
       </aside>
 
@@ -171,21 +162,9 @@
           </div>
           <div class="form-card">
             <div class="form-top">
-              <div
-                class="cover-upload-area"
-                id="coverArea"
-                title="Clique para escolher a capa"
-              >
-                <input
-                  type="file"
-                  id="inputCapa"
-                  accept="image/jpeg,image/png,image/webp"
-                />
-                <img
-                  class="cover-preview"
-                  id="capaPreview"
-                  alt="Preview da capa"
-                />
+              <div class="cover-upload-area" id="coverArea" title="Clique para escolher a capa">
+                <input type="file" id="inputCapa" accept="image/jpeg,image/png,image/webp" />
+                <img class="cover-preview" id="capaPreview" alt="Preview da capa" />
                 <div class="cover-placeholder" id="capaPlaceholder">
                   <i class="fa-regular fa-image"></i>
                   <span>Clique para adicionar a capa do livro</span>
@@ -195,32 +174,16 @@
               </div>
               <div class="form-fields">
                 <div class="form-group">
-                  <label for="inputTitulo"
-                    >Título <span class="required">*</span></label
-                  >
-                  <input
-                    type="text"
-                    id="inputTitulo"
-                    placeholder="Ex: Dom Quixote"
-                    maxlength="120"
-                  />
+                  <label for="inputTitulo">Título <span class="required">*</span></label>
+                  <input type="text" id="inputTitulo" placeholder="Ex: Dom Quixote" maxlength="120" />
                 </div>
                 <div class="form-row">
                   <div class="form-group">
-                    <label for="inputAutor"
-                      >Autor <span class="required">*</span></label
-                    >
-                    <input
-                      type="text"
-                      id="inputAutor"
-                      placeholder="Ex: Miguel de Cervantes"
-                      maxlength="80"
-                    />
+                    <label for="inputAutor">Autor <span class="required">*</span></label>
+                    <input type="text" id="inputAutor" placeholder="Ex: Miguel de Cervantes" maxlength="80" />
                   </div>
                   <div class="form-group">
-                    <label for="inputCategoria"
-                      >Categoria <span class="required">*</span></label
-                    >
+                    <label for="inputCategoria">Categoria <span class="required">*</span></label>
                     <select id="inputCategoria">
                       <option value="">Selecione uma categoria</option>
                       <option value="Terror">Terror</option>
@@ -229,9 +192,7 @@
                       <option value="Suspense">Suspense</option>
                       <option value="Comédia">Comédia</option>
                       <option value="Fantasia">Fantasia</option>
-                      <option value="Ficção Científica">
-                        Ficção Científica
-                      </option>
+                      <option value="Ficção Científica">Ficção Científica</option>
                       <option value="Aventura">Aventura</option>
                       <option value="Biografia">Biografia</option>
                       <option value="História">História</option>
@@ -243,65 +204,27 @@
                 </div>
                 <div class="form-row">
                   <div class="form-group">
-                    <label for="inputDataPublicacao"
-                      >Data de Publicação <span class="required">*</span></label
-                    >
+                    <label for="inputDataPublicacao">Data de Publicação <span class="required">*</span></label>
                     <input type="date" id="inputDataPublicacao" />
                   </div>
                   <div class="form-group">
-                    <label for="inputQuantidade"
-                      >Quantidade em Estoque
-                      <span class="required">*</span></label
-                    >
-                    <input
-                      type="number"
-                      id="inputQuantidade"
-                      min="1"
-                      max="9999"
-                      placeholder="Ex: 3"
-                    />
+                    <label for="inputQuantidade">Quantidade em Estoque <span class="required">*</span></label>
+                    <input type="number" id="inputQuantidade" min="1" max="9999" placeholder="Ex: 3" />
                   </div>
                 </div>
                 <div class="form-row">
                   <div class="form-group">
-                    <label for="inputPreco"
-                      >Preço do Aluguel (R$)
-                      <span class="required">*</span></label
-                    >
+                    <label for="inputPreco">Preço do Aluguel (R$) <span class="required">*</span></label>
                     <div style="position: relative">
-                      <span
-                        style="
-                          position: absolute;
-                          left: 14px;
-                          top: 50%;
-                          transform: translateY(-50%);
-                          color: rgba(255, 255, 255, 0.35);
-                          font-size: 13px;
-                          pointer-events: none;
-                        "
-                        >R$</span
-                      >
-                      <input
-                        type="number"
-                        id="inputPreco"
-                        min="0"
-                        step="0.01"
-                        placeholder="10,00"
-                        style="padding-left: 36px"
-                      />
+                      <span style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: rgba(255, 255, 255, 0.35); font-size: 13px; pointer-events: none;">R$</span>
+                      <input type="number" id="inputPreco" min="0" step="0.01" placeholder="10,00" style="padding-left: 36px" />
                     </div>
                   </div>
                   <div class="form-group" style="visibility: hidden"></div>
                 </div>
                 <div class="form-group">
-                  <label for="inputResumo"
-                    >Resumo <span class="required">*</span></label
-                  >
-                  <textarea
-                    id="inputResumo"
-                    placeholder="Escreva uma sinopse do livro..."
-                    maxlength="600"
-                  ></textarea>
+                  <label for="inputResumo">Resumo <span class="required">*</span></label>
+                  <textarea id="inputResumo" placeholder="Escreva uma sinopse do livro..." maxlength="600"></textarea>
                   <span class="char-count" id="charCount">0 / 600</span>
                 </div>
               </div>
@@ -324,12 +247,9 @@
       <span id="toast-msg"></span>
     </div>
     <div id="footer"></div>
-    b
 
     <script src="../scripts/navbar.js"></script>
-    <script>
-      initNavbar();
-    </script>
+    <script>initNavbar();</script>
     <script src="../scripts/include.js"></script>
     <script>
       const API = "/BibliotecaSA/backend";
@@ -337,24 +257,15 @@
 
       (async () => {
         try {
-          const resp = await fetch(`${API}/sessao.php`, {
-            credentials: "same-origin",
-          });
+          const resp = await fetch(`${API}/sessao.php`, { credentials: "same-origin" });
           const data = await resp.json();
-          if (
-            !data.logado ||
-            (data.perfil !== "admin" && data.perfil !== "desenvolvedor")
-          ) {
+          if (!data.logado || (data.perfil !== "admin" && data.perfil !== "desenvolvedor")) {
             window.location.href = "/BibliotecaSA/pages/TelaLogin.html";
             return;
           }
-          document
-            .querySelectorAll(".admin-only")
-            .forEach((el) => (el.style.display = "flex"));
+          document.querySelectorAll(".admin-only").forEach((el) => (el.style.display = "flex"));
           if (data.perfil === "desenvolvedor") {
-            document
-              .querySelectorAll(".dev-only")
-              .forEach((el) => (el.style.display = "flex"));
+            document.querySelectorAll(".dev-only").forEach((el) => (el.style.display = "flex"));
           }
         } catch {
           window.location.href = "/BibliotecaSA/pages/TelaLogin.html";
@@ -389,91 +300,55 @@
         charCount.textContent = `${inputResumo.value.length} / 600`;
       });
 
-      document
-        .getElementById("btnSalvar")
-        .addEventListener("click", async () => {
-          const titulo = document.getElementById("inputTitulo").value.trim();
-          const autor = document.getElementById("inputAutor").value.trim();
-          const categoria = document.getElementById("inputCategoria").value;
-          const data = document.getElementById("inputDataPublicacao").value;
-          const qtd = document.getElementById("inputQuantidade").value;
-          const resumo = inputResumo.value.trim();
-          const preco = document.getElementById("inputPreco").value;
+      document.getElementById("btnSalvar").addEventListener("click", async () => {
+        const titulo = document.getElementById("inputTitulo").value.trim();
+        const autor = document.getElementById("inputAutor").value.trim();
+        const categoria = document.getElementById("inputCategoria").value;
+        const data = document.getElementById("inputDataPublicacao").value;
+        const qtd = document.getElementById("inputQuantidade").value;
+        const resumo = inputResumo.value.trim();
+        const preco = document.getElementById("inputPreco").value;
 
-          if (!titulo) {
-            mostrarToast("Informe o título do livro.", true);
-            return;
-          }
-          if (!autor) {
-            mostrarToast("Informe o autor do livro.", true);
-            return;
-          }
-          if (!categoria) {
-            mostrarToast("Selecione uma categoria.", true);
-            return;
-          }
-          if (!data) {
-            mostrarToast("Informe a data de publicação.", true);
-            return;
-          }
-          if (!qtd || parseInt(qtd) < 1) {
-            mostrarToast("Quantidade deve ser no mínimo 1.", true);
-            return;
-          }
-          if (preco === "" || parseFloat(preco) < 0) {
-            mostrarToast(
-              "Informe um preço de aluguel válido (mínimo R$ 0,00).",
-              true,
-            );
-            return;
-          }
-          if (!resumo) {
-            mostrarToast("Escreva um resumo do livro.", true);
-            return;
-          }
+        if (!titulo) { mostrarToast("Informe o título do livro.", true); return; }
+        if (!autor) { mostrarToast("Informe o autor do livro.", true); return; }
+        if (!categoria) { mostrarToast("Selecione uma categoria.", true); return; }
+        if (!data) { mostrarToast("Informe a data de publicação.", true); return; }
+        if (!qtd || parseInt(qtd) < 1) { mostrarToast("Quantidade deve ser no mínimo 1.", true); return; }
+        if (preco === "" || parseFloat(preco) < 0) { mostrarToast("Informe um preço de aluguel válido (mínimo R$ 0,00).", true); return; }
+        if (!resumo) { mostrarToast("Escreva um resumo do livro.", true); return; }
 
-          const btn = document.getElementById("btnSalvar");
-          const orig = btn.innerHTML;
-          btn.disabled = true;
-          btn.innerHTML =
-            '<i class="fa-solid fa-circle-notch fa-spin"></i> Salvando...';
+        const btn = document.getElementById("btnSalvar");
+        const orig = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Salvando...';
 
-          const fd = new FormData();
-          fd.append("titulo", titulo);
-          fd.append("autor", autor);
-          fd.append("categoria", categoria);
-          fd.append("data_publicacao", data);
-          fd.append("quantidade", qtd);
-          fd.append("preco_aluguel", preco !== "" ? preco : "10.00");
-          fd.append("resumo", resumo);
-          if (inputCapa.files[0]) fd.append("capa", inputCapa.files[0]);
+        const fd = new FormData();
+        fd.append("titulo", titulo);
+        fd.append("autor", autor);
+        fd.append("categoria", categoria);
+        fd.append("data_publicacao", data);
+        fd.append("quantidade", qtd);
+        fd.append("preco_aluguel", preco !== "" ? preco : "10.00");
+        fd.append("resumo", resumo);
+        if (inputCapa.files[0]) fd.append("capa", inputCapa.files[0]);
 
-          try {
-            const res = await fetch(`${API}/livros_salvar.php`, {
-              method: "POST",
-              credentials: "same-origin",
-              body: fd,
-            });
-            const data2 = await res.json();
-            if (data2.sucesso) {
-              mostrarToast("Livro salvo com sucesso! Redirecionando...", false);
-              setTimeout(
-                () =>
-                  (window.location.href =
-                    "/BibliotecaSA/pages/TelaCatalogoLivros.html"),
-                2000,
-              );
-            } else {
-              btn.disabled = false;
-              btn.innerHTML = orig;
-              mostrarToast(data2.erro || "Erro ao salvar o livro.", true);
-            }
-          } catch {
+        try {
+          const res = await fetch(`${API}/livros_salvar.php`, { method: "POST", credentials: "same-origin", body: fd });
+          const data2 = await res.json();
+          if (data2.sucesso) {
+            mostrarToast("Livro salvo com sucesso! Redirecionando...", false);
+            setTimeout(() => (window.location.href = "/BibliotecaSA/pages/TelaCatalogoLivros.html"), 2000);
+          } else {
             btn.disabled = false;
             btn.innerHTML = orig;
-            mostrarToast("Falha ao conectar ao servidor.", true);
+            mostrarToast(data2.erro || "Erro ao salvar o livro.", true);
           }
-        });
+        } catch {
+          btn.disabled = false;
+          btn.innerHTML = orig;
+          mostrarToast("Falha ao conectar ao servidor.", true);
+        }
+      });
 
       function mostrarToast(msg, erro = false) {
         clearTimeout(toastTimer);
@@ -481,12 +356,8 @@
         const icon = document.getElementById("toast-icon");
         const msgEl = document.getElementById("toast-msg");
         msgEl.textContent = msg;
-        icon.className = erro
-          ? "fa-solid fa-circle-xmark"
-          : "fa-solid fa-circle-check";
-        toast.style.borderColor = erro
-          ? "rgba(226,75,74,0.4)"
-          : "rgba(29,158,117,0.4)";
+        icon.className = erro ? "fa-solid fa-circle-xmark" : "fa-solid fa-circle-check";
+        toast.style.borderColor = erro ? "rgba(226,75,74,0.4)" : "rgba(29,158,117,0.4)";
         icon.style.color = erro ? "#e24b4a" : "#1d9e75";
         toast.classList.add("show");
         toastTimer = setTimeout(() => toast.classList.remove("show"), 3500);
