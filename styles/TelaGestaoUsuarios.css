@@ -294,9 +294,12 @@ body {
 }
 .badge-usuario {
   background: rgba(112, 163, 240, 0.1);
-  color: #70a3f0;
+  color: #f07070;
 }
-
+.badge-dev {
+  background: rgba(112, 163, 240, 0.1);
+  color: #f0c370;
+}
 /* Botões de ação na tabela */
 .btn-acao {
   background: transparent;
