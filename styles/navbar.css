@@ -23,12 +23,7 @@
   --bg-opacity: 0.9;
   --blur-amount: 20px;
   --logo-filter: brightness(1);
-  background: linear-gradient(
-    180deg,
-    rgba(6, 11, 48, 0.7) 0%,
-    /* --navy-dark com alpha */ rgba(27, 38, 136, 0.55) 100%
-      /* --navy com alpha */
-  );
+      background: linear-gradient(180deg, rgb(5 17 105 / 70%) 0%, /* --navy-dark com alpha */ rgb(41 62 255 / 0%) 100% /* --navy com alpha */);
 
   padding: 20px 0;
   position: fixed;
