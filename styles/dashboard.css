@@ -29,9 +29,12 @@ body {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  position: sticky;
-  top: 0px;
-  height: calc(100vh - 70px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  overflow-y: auto;
+  z-index: 100;
 }
 
 .sidebar-item {
@@ -58,7 +61,6 @@ body {
   background: rgba(255, 255, 255, 0.04);
   color: rgba(255, 255, 255, 0.7);
 }
-/* azul bebê no item ativo em vez de verde */
 .sidebar-item.active {
   background: rgba(100, 160, 255, 0.08);
   border-left-color: #7aadff;
@@ -72,6 +74,7 @@ body {
 
 /* ── Main ── */
 .main {
+  margin-left: 230px;
   flex: 1;
   padding: 67px 48px 100px 48px;
   min-width: 0;
@@ -138,22 +141,18 @@ body {
   font-size: 18px;
   flex-shrink: 0;
 }
-/* "green" card → azul bebê */
 .card-icon-wrap.green {
   background: rgba(100, 160, 255, 0.13);
   color: #90bfff;
 }
-/* blue card → azul médio (mantém, mas levemente ajustado) */
 .card-icon-wrap.blue {
   background: rgba(62, 91, 219, 0.15);
   color: #8faaf0;
 }
-/* amber → azul acinzentado suave */
 .card-icon-wrap.amber {
   background: rgba(100, 130, 200, 0.15);
   color: #a0b8e8;
 }
-/* red → mantém para indicar erro/atraso */
 .card-icon-wrap.red {
   background: rgba(226, 75, 74, 0.13);
   color: #d97171;
@@ -185,7 +184,6 @@ body {
   margin-top: 2px;
 }
 
-/* accent borders — tons azuis em vez de verde/amber */
 .accent-green {
   border-color: rgba(100, 160, 255, 0.15);
 }
@@ -241,7 +239,6 @@ body {
   border-color: rgba(255, 255, 255, 0.1);
 }
 
-/* ícone padrão — azul bebê */
 .sec-icon {
   width: 36px;
   height: 36px;
@@ -254,17 +251,14 @@ body {
   font-size: 14px;
   flex-shrink: 0;
 }
-/* orange → azul suave */
 .sec-icon.orange {
   background: rgba(80, 120, 220, 0.12);
   color: #a0b8f0;
 }
-/* purple → azul lavanda suave */
 .sec-icon.purple {
   background: rgba(110, 130, 220, 0.12);
   color: #b0bff0;
 }
-/* teal → azul gelo */
 .sec-icon.teal {
   background: rgba(80, 160, 210, 0.12);
   color: #90d0f0;
@@ -330,7 +324,6 @@ body {
   border-radius: 50%;
   display: inline-block;
 }
-/* legenda: azul bebê em vez de verde */
 .leg-dot.green {
   background: #7aadff;
 }
@@ -443,7 +436,6 @@ body {
   border-radius: 2px;
   flex-shrink: 0;
 }
-/* ativo → azul bebê em vez de verde */
 .recent-status.ativo {
   background: rgba(100, 160, 255, 0.1);
   color: #90bfff;
