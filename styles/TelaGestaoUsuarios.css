@@ -38,10 +38,12 @@ body {
   flex-direction: column;
   gap: 2px;
   padding: 125px 0 36px;
-  position: sticky;
-  top: 0;
-  height: calc(100vh - 70px);
+  position: fixed;
+  top: 0px;
+  left: 0;
+  bottom: 0;
   overflow-y: auto;
+  z-index: 100;
 }
 
 .nav-sidebar .admin-only {
@@ -88,9 +90,11 @@ body {
 
 /* ── Container principal ── */
 .container {
+  margin-left: 230px;
   flex: 1;
   padding: 67px 48px 100px 48px;
-  min-width: 0;
+
+  width: 100%;
 }
 
 /* ── Cabeçalho da página ── */
