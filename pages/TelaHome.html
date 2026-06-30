@@ -116,15 +116,22 @@
         @media (max-width: 900px)  { .livros-home-grid { grid-template-columns: repeat(3, 1fr); gap: 18px; } .livros-home-section { padding: 60px 40px 40px; } }
         @media (max-width: 640px)  { .livros-home-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; } .livros-home-section { padding: 48px 24px 32px; } .livros-home-header { flex-direction: column; align-items: flex-start; gap: 12px; } }
 
+        /* ── Fix lupa centralizada ── */
+        .input-search::before {
+            top: 23px !important;
+            transform: none !important;
+        }
+
         /* ── Autocomplete dropdown ── */
         .ac-dropdown {
-            position: fixed;
-            background: #1a1c26 !important;
-            border: 1px solid rgba(112, 163, 240, 0.25);
+            position: fixed !important;
+            background-color: #1e2030 !important;
+            background-image: none !important;
+            border: 1px solid #3a4060;
             border-radius: 10px;
-            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.75);
+            box-shadow: 0 8px 32px #000;
             overflow: hidden;
-            z-index: 99999;
+            z-index: 999999 !important;
             opacity: 0;
             transform: translateY(-6px);
             pointer-events: none;
@@ -240,7 +247,6 @@
                     placeholder="Pesquisar por título, autor ou gênero..."
                     autocomplete="off"
                 />
-                <div class="ac-dropdown" id="acDropdown" role="listbox"></div>
             </div>
 
             <!-- Tags de categoria -->
@@ -455,6 +461,9 @@
     <!-- ═══════════════════════════════════════════
          SCRIPTS
     ═══════════════════════════════════════════ -->
+    <!-- Autocomplete dropdown — fora de qualquer overflow:hidden -->
+    <div class="ac-dropdown" id="acDropdown" role="listbox"></div>
+
     <script src="../scripts/navbar.js"></script>
     <script>initNavbar();</script>
     <script src="../scripts/include.js"></script>
