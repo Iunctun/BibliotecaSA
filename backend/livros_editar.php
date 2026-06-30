@@ -1,8 +1,7 @@
 <?php
 
 //  livros_editar.php
-//  POST (JSON) — atualiza campos editáveis de um livro
-//  Atualmente suporta: preco_aluguel
+//  POST (JSON ou FormData) — atualiza campos editáveis de um livro
 //  Apenas admin pode usar este endpoint
 //  Retorna JSON { sucesso: true } ou { erro: "msg" }
 
@@ -19,7 +18,14 @@ if (empty($_SESSION['usuario_id']) || $_SESSION['usuario_perfil'] !== 'admin') {
 
 require_once __DIR__ . '/conexao.php';
 
-$dados = json_decode(file_get_contents('php://input'), true);
+// Suporta FormData (multipart) e JSON
+$contentType = $_SERVER['CONTENT_TYPE'] ?? '';
+if (str_contains($contentType, 'application/json')) {
+    $dados = json_decode(file_get_contents('php://input'), true) ?? [];
+} else {
+    // FormData — campos vêm em $_POST
+    $dados = $_POST;
+}
 
 if (empty($dados['id'])) {
     echo json_encode(['erro' => 'ID do livro obrigatório.']);
@@ -40,14 +46,62 @@ if (!$stmt->fetch()) {
 $campos   = [];
 $valores  = [];
 
-if (isset($dados['preco_aluguel'])) {
+// Campos de texto
+$mapeamento = [
+    'titulo'           => ['max' => 120],
+    'autor'            => ['max' => 80],
+    'categoria'        => ['max' => 60],
+    'data_publicacao'  => [],
+    'resumo'           => ['max' => 600],
+];
+foreach ($mapeamento as $campo => $opts) {
+    if (isset($dados[$campo]) && $dados[$campo] !== '') {
+        $val = trim($dados[$campo]);
+        if (!empty($opts['max'])) $val = mb_substr($val, 0, $opts['max']);
+        $campos[]  = "$campo = ?";
+        $valores[] = $val;
+    }
+}
+
+// Quantidade
+if (isset($dados['quantidade']) && $dados['quantidade'] !== '') {
+    $campos[]  = 'quantidade = ?';
+    $valores[] = max(0, (int)$dados['quantidade']);
+}
+
+// Preço de aluguel
+if (isset($dados['preco_aluguel']) && $dados['preco_aluguel'] !== '') {
     $preco = (float)$dados['preco_aluguel'];
     if ($preco < 0) {
         echo json_encode(['erro' => 'O preço não pode ser negativo.']);
         exit;
     }
     $campos[]  = 'preco_aluguel = ?';
-    $valores[] = $preco;
+    $valores[] = round($preco, 2);
+}
+
+// Upload de capa (FormData)
+if (!empty($_FILES['capa']['tmp_name'])) {
+    $file     = $_FILES['capa'];
+    $allowed  = ['image/jpeg', 'image/png', 'image/webp'];
+    $finfo    = new finfo(FILEINFO_MIME_TYPE);
+    $mime     = $finfo->file($file['tmp_name']);
+    if (!in_array($mime, $allowed)) {
+        echo json_encode(['erro' => 'Formato de imagem inválido.']);
+        exit;
+    }
+    if ($file['size'] > 5 * 1024 * 1024) {
+        echo json_encode(['erro' => 'Imagem muito grande (máx 5 MB).']);
+        exit;
+    }
+    $ext      = pathinfo($file['name'], PATHINFO_EXTENSION) ?: 'jpg';
+    $nome     = 'capa_' . $id . '_' . time() . '.' . $ext;
+    $destDir  = __DIR__ . '/../img/capas/';
+    if (!is_dir($destDir)) mkdir($destDir, 0775, true);
+    if (move_uploaded_file($file['tmp_name'], $destDir . $nome)) {
+        $campos[]  = 'capa_path = ?';
+        $valores[] = 'img/capas/' . $nome;
+    }
 }
 
 if (empty($campos)) {

@@ -768,6 +768,18 @@
           >
         </div>
 
+        <!-- Preço de aluguel -->
+        <div id="modalPrecoWrap" style="
+          display:flex; align-items:center; justify-content:space-between;
+          background:rgba(29,158,117,0.06); border:1px solid rgba(29,158,117,0.18);
+          border-radius:4px; padding:12px 18px; margin-bottom:4px;
+        ">
+          <span style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.35);">
+            <i class="fa-solid fa-tag" style="margin-right:6px;color:#1d9e75;"></i>Valor do aluguel
+          </span>
+          <span id="modalPrecoValor" style="font-family:'Playfair Display',serif;font-size:18px;color:#5dcaa5;font-weight:400;">—</span>
+        </div>
+
         <div class="modal-footer">
           <button class="btn-modal-cancel" id="btnCancelar">Cancelar</button>
           <button class="btn-modal-confirm" id="btnConfirmar">
@@ -892,6 +904,28 @@
               id="editQuantidade"
               type="number"
               min="0"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            Preço de Aluguel (R$)
+            <span style="color:rgba(255,255,255,0.3);font-size:9px;letter-spacing:1px;text-transform:none;margin-left:6px;">deixe 0 para gratuito</span>
+          </label>
+          <div style="position:relative;">
+            <span style="
+              position:absolute; left:14px; top:50%; transform:translateY(-50%);
+              color:rgba(255,255,255,0.35); font-size:13px; pointer-events:none;
+            ">R$</span>
+            <input
+              class="form-input"
+              id="editPrecoAluguel"
+              type="number"
+              min="0"
+              step="0.01"
+              placeholder="0,00"
+              style="padding-left:36px;"
             />
           </div>
         </div>
@@ -1129,7 +1163,19 @@
           l.preco_aluguel > 0
             ? "R$ " + parseFloat(l.preco_aluguel).toFixed(2).replace(".", ",")
             : "Gratuito";
-        modalBookInfo.innerHTML = `<strong>${l.titulo}</strong> — ${l.autor}<br>Prazo: 15 dias &nbsp;|&nbsp; Valor: <strong style="color:#5dcaa5;">${precoStr}</strong>`;
+        modalBookInfo.innerHTML = `<strong>${l.titulo}</strong> — ${l.autor}<br>Prazo: 15 dias`;
+        // Preenche o badge de preço no modal de locação
+        const modalPrecoValor = document.getElementById("modalPrecoValor");
+        if (modalPrecoValor) {
+          modalPrecoValor.textContent = precoStr;
+          if (l.preco_aluguel > 0) {
+            modalPrecoValor.style.color = "#5dcaa5";
+          } else {
+            modalPrecoValor.style.color = "rgba(255,255,255,0.4)";
+            modalPrecoValor.style.fontSize = "13px";
+            modalPrecoValor.style.fontFamily = "DM Sans, sans-serif";
+          }
+        }
       }
 
       function renderErro(msg) {
@@ -1388,6 +1434,8 @@
           l.data_publicacao || "";
         document.getElementById("editQuantidade").value = l.quantidade ?? "";
         document.getElementById("editResumo").value = l.resumo || "";
+        document.getElementById("editPrecoAluguel").value =
+          l.preco_aluguel != null ? parseFloat(l.preco_aluguel).toFixed(2) : "0.00";
 
         const thumb = document.getElementById("editCapaThumb");
         thumb.src = l.capa_path
@@ -1443,6 +1491,7 @@
           const dataPub = document.getElementById("editDataPublicacao").value;
           const qtd = document.getElementById("editQuantidade").value;
           const resumo = document.getElementById("editResumo").value.trim();
+          const preco = parseFloat(document.getElementById("editPrecoAluguel").value) || 0;
 
           if (!titulo || !autor || !categoria || !dataPub || !qtd || !resumo) {
             mostrarToast(
@@ -1467,6 +1516,7 @@
           fd.append("data_publicacao", dataPub);
           fd.append("quantidade", qtd);
           fd.append("resumo", resumo);
+          fd.append("preco_aluguel", preco.toFixed(2));
           const novaCapaFile =
             document.getElementById("editInputCapa").files[0];
           if (novaCapaFile) fd.append("capa", novaCapaFile);
