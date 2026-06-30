@@ -119,7 +119,7 @@
         /* ── Autocomplete dropdown ── */
         .ac-dropdown {
             position: fixed;
-            background: rgba(8, 12, 52, 0.98);
+            background: #080c34;
             border: 1px solid rgba(112, 163, 240, 0.25);
             border-radius: 10px;
             box-shadow: 0 24px 64px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(112, 163, 240, 0.06) inset;
@@ -523,7 +523,7 @@
         fecharDropdown();
         if (item.tipo === 'Autor') {
             window.location.href = `/BibliotecaSA/pages/TelaCatalogoLivros.html?autor=${encodeURIComponent(item.label)}`;
-        } else if (item.tipo === 'Genero' || item.tipo === 'G\u00eanero') {
+        } else if (item.tipo === 'Categoria') {
             window.location.href = `/BibliotecaSA/pages/TelaCatalogoLivros.html?categoria=${encodeURIComponent(item.label)}`;
         } else {
             window.location.href = `/BibliotecaSA/pages/TelaDoLivro.html?id=${item.id}`;
