@@ -118,19 +118,15 @@
 
         /* ── Autocomplete dropdown ── */
         .ac-dropdown {
-            position: absolute;
-            top: calc(100% + 6px);
-            left: 0;
-            width: 100%;
-            background: rgba(10, 15, 60, 0.97);
-            border: 1px solid rgba(112, 163, 240, 0.22);
+            position: fixed;
+            background: rgba(8, 12, 52, 0.98);
+            border: 1px solid rgba(112, 163, 240, 0.25);
             border-radius: 10px;
-            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(112, 163, 240, 0.06) inset;
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(112, 163, 240, 0.06) inset;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             overflow: hidden;
-            z-index: 999;
-            /* oculto por padrão */
+            z-index: 99999;
             opacity: 0;
             transform: translateY(-6px);
             pointer-events: none;
@@ -506,12 +502,16 @@
     /* ── Busca no hero + Autocomplete ── */
     const heroSearch = document.getElementById('heroSearch');
     const acDropdown = document.getElementById('acDropdown');
-    let acItems      = [];
-    let acFocused    = -1;
-    let acDebounce   = null;
+    let acItems    = [];
+    let acFocused  = -1;
+    let acDebounce = null;
 
-    function irParaCatalogo(q) {
-        if (q) window.location.href = `/BibliotecaSA/pages/TelaCatalogoLivros.html?busca=${encodeURIComponent(q)}`;
+    /* Posiciona o dropdown (fixed) abaixo do input */
+    function posicionarDropdown() {
+        const rect = heroSearch.getBoundingClientRect();
+        acDropdown.style.top   = (rect.bottom + 6) + 'px';
+        acDropdown.style.left  = rect.left + 'px';
+        acDropdown.style.width = rect.width + 'px';
     }
 
     function fecharDropdown() {
@@ -519,112 +519,100 @@
         acFocused = -1;
     }
 
+    function navegarItem(item) {
+        fecharDropdown();
+        if (item.tipo === 'Autor') {
+            window.location.href = `/BibliotecaSA/pages/TelaCatalogoLivros.html?autor=${encodeURIComponent(item.label)}`;
+        } else if (item.tipo === 'Genero' || item.tipo === 'G\u00eanero') {
+            window.location.href = `/BibliotecaSA/pages/TelaCatalogoLivros.html?categoria=${encodeURIComponent(item.label)}`;
+        } else {
+            window.location.href = `/BibliotecaSA/pages/TelaDoLivro.html?id=${item.id}`;
+        }
+    }
+
     function destacar(texto, query) {
-        const re = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-        return texto.replace(re, '<em>$1</em>');
+        const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        return texto.replace(new RegExp(`(${escaped})`, 'gi'), '<em>$1</em>');
     }
 
     function renderDropdown(itens, query) {
         acItems   = itens;
         acFocused = -1;
 
+        posicionarDropdown();
+
         if (!itens.length) {
-            acDropdown.innerHTML = `<div class="ac-empty">Nenhum resultado encontrado</div>`;
+            acDropdown.innerHTML = '<div class="ac-empty">Nenhum resultado encontrado</div>';
             acDropdown.classList.add('ac-open');
             return;
         }
 
-        acDropdown.innerHTML = itens.map((item, i) => `
-            <div class="ac-item" data-index="${i}" role="option">
+        acDropdown.innerHTML = itens.map((item, i) =>
+            `<div class="ac-item" data-index="${i}" role="option">
                 <span class="ac-label">${destacar(item.label, query)}</span>
                 <span class="ac-badge">${item.tipo}</span>
-            </div>
-        `).join('');
+            </div>`
+        ).join('');
 
-        // Clique num item
         acDropdown.querySelectorAll('.ac-item').forEach(el => {
             el.addEventListener('mousedown', e => {
-                e.preventDefault(); // evita blur antes do clique
-                const idx  = parseInt(el.dataset.index);
-                const item = acItems[idx];
-                heroSearch.value = item.label;
-                fecharDropdown();
-
-                // Autores e gêneros filtram por parâmetro específico
-                if (item.tipo === 'Autor') {
-                    window.location.href = `/BibliotecaSA/pages/TelaCatalogoLivros.html?autor=${encodeURIComponent(item.label)}`;
-                } else if (item.tipo === 'Gênero') {
-                    window.location.href = `/BibliotecaSA/pages/TelaCatalogoLivros.html?categoria=${encodeURIComponent(item.label)}`;
-                } else {
-                    // Livro — vai direto para a tela do livro
-                    window.location.href = `/BibliotecaSA/pages/TelaDoLivro.html?id=${item.id}`;
-                }
+                e.preventDefault();
+                heroSearch.value = acItems[parseInt(el.dataset.index)].label;
+                navegarItem(acItems[parseInt(el.dataset.index)]);
             });
         });
 
         acDropdown.classList.add('ac-open');
     }
 
-    function moverFoco(direcao) {
-        const itensEl = acDropdown.querySelectorAll('.ac-item');
-        if (!itensEl.length) return;
-        itensEl.forEach(el => el.classList.remove('ac-focused'));
-        acFocused = (acFocused + direcao + itensEl.length) % itensEl.length;
-        itensEl[acFocused].classList.add('ac-focused');
+    function moverFoco(dir) {
+        const els = acDropdown.querySelectorAll('.ac-item');
+        if (!els.length) return;
+        els.forEach(e => e.classList.remove('ac-focused'));
+        acFocused = (acFocused + dir + els.length) % els.length;
+        els[acFocused].classList.add('ac-focused');
         heroSearch.value = acItems[acFocused].label;
     }
 
     heroSearch.addEventListener('input', () => {
         const q = heroSearch.value.trim();
         clearTimeout(acDebounce);
-
         if (q.length < 2) { fecharDropdown(); return; }
 
         acDebounce = setTimeout(async () => {
             try {
                 const res   = await fetch(`${API}/autocomplete.php?q=${encodeURIComponent(q)}`);
                 const dados = await res.json();
+                if (!Array.isArray(dados)) { fecharDropdown(); return; }
                 renderDropdown(dados, q);
-            } catch {
+            } catch (err) {
+                console.error('Autocomplete erro:', err);
                 fecharDropdown();
             }
-        }, 220); // debounce 220ms
+        }, 220);
     });
 
     heroSearch.addEventListener('keydown', e => {
-        if (e.key === 'ArrowDown') { e.preventDefault(); moverFoco(1); return; }
+        if (e.key === 'ArrowDown') { e.preventDefault(); moverFoco(1);  return; }
         if (e.key === 'ArrowUp')   { e.preventDefault(); moverFoco(-1); return; }
         if (e.key === 'Escape')    { fecharDropdown(); return; }
         if (e.key === 'Enter') {
             if (acFocused >= 0 && acItems[acFocused]) {
-                // Seleciona o item focado
-                heroSearch.dispatchEvent(new MouseEvent('mousedown')); // reutiliza lógica
-                const item = acItems[acFocused];
-                heroSearch.value = item.label;
-                fecharDropdown();
-                if (item.tipo === 'Autor') {
-                    window.location.href = `/BibliotecaSA/pages/TelaCatalogoLivros.html?autor=${encodeURIComponent(item.label)}`;
-                } else if (item.tipo === 'Gênero') {
-                    window.location.href = `/BibliotecaSA/pages/TelaCatalogoLivros.html?categoria=${encodeURIComponent(item.label)}`;
-                } else {
-                    window.location.href = `/BibliotecaSA/pages/TelaDoLivro.html?id=${item.id}`;
-                }
+                heroSearch.value = acItems[acFocused].label;
+                navegarItem(acItems[acFocused]);
             } else {
-                irParaCatalogo(heroSearch.value.trim());
+                const q = heroSearch.value.trim();
+                if (q) window.location.href = `/BibliotecaSA/pages/TelaCatalogoLivros.html?busca=${encodeURIComponent(q)}`;
             }
         }
     });
 
-    heroSearch.addEventListener('blur', () => {
-        // Pequeno delay para permitir clique no item do dropdown
-        setTimeout(fecharDropdown, 150);
-    });
+    heroSearch.addEventListener('blur',  () => setTimeout(fecharDropdown, 150));
+    window.addEventListener('resize',    () => { if (acDropdown.classList.contains('ac-open')) posicionarDropdown(); });
+    window.addEventListener('scroll',    () => { if (acDropdown.classList.contains('ac-open')) posicionarDropdown(); }, true);
 
-    // Fecha ao clicar fora
     document.addEventListener('click', e => {
-        if (!heroSearch.contains(e.target) && !acDropdown.contains(e.target)) {
-            fecharDropdown();
-        }
+        if (!heroSearch.contains(e.target) && !acDropdown.contains(e.target)) fecharDropdown();
     });
 
     /* ── Tags de categoria ── */
