@@ -640,20 +640,103 @@
               <div class="skeleton-linha short"></div>
             </div>
 
-            <br />
-            <div class="section">
-              <i class="fas fa-trash-alt"></i> Multas
-              <i class="fas fa-exclamation-triangle multa-icon"></i>
-            </div>
-            <div class="section">
-              <strong>Valor Total:</strong>
-              <span id="valor" class="total">R$0.00</span>
-              <br /><br />
-              <button class="btn-primary" id="btnPagamento">
-                <i class="fas fa-credit-card"></i> Pagamento
-              </button>
-            </div>
+
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Locação (Reserva Pendente) -->
+    <div id="modalLocarOverlay" style="
+      position:fixed; inset:0; background:rgba(0,0,0,0.75);
+      display:flex; align-items:center; justify-content:center;
+      z-index:9000; opacity:0; pointer-events:none;
+      transition:opacity 0.3s ease;
+    ">
+      <div style="
+        background:#1e2128; border:1px solid rgba(255,255,255,0.1);
+        border-radius:8px; padding:40px 36px; width:100%; max-width:480px;
+        transform:translateY(20px); transition:transform 0.3s ease;
+      " id="modalLocarBox">
+        <p style="font-family:'Playfair Display',serif;font-size:26px;font-weight:400;color:#fff;margin-bottom:6px;">Locar livro</p>
+        <p style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:24px;">Preencha os dados para confirmar a locação</p>
+
+        <div id="modalLocarBookInfo" style="
+          background:rgba(29,158,117,0.07); border:1px solid rgba(29,158,117,0.2);
+          border-radius:4px; padding:14px 18px; font-size:13px;
+          color:rgba(255,255,255,0.55); line-height:1.7; margin-bottom:24px;
+        ">—</div>
+
+        <!-- Preço -->
+        <div style="
+          display:flex; align-items:center; justify-content:space-between;
+          background:rgba(29,158,117,0.06); border:1px solid rgba(29,158,117,0.18);
+          border-radius:4px; padding:12px 18px; margin-bottom:20px;
+        ">
+          <span style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.35);">
+            <i class="fa-solid fa-tag" style="margin-right:6px;color:#1d9e75;"></i>Valor do aluguel
+          </span>
+          <span id="modalLocarPreco" style="font-family:'Playfair Display',serif;font-size:18px;color:#5dcaa5;font-weight:400;">—</span>
+        </div>
+
+        <div style="margin-bottom:18px;">
+          <label style="display:block;font-size:9px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:8px;">Nome completo</label>
+          <input id="locarNome" type="text" placeholder="Seu nome completo" style="
+            width:100%; background:#111316; border:1px solid rgba(255,255,255,0.12);
+            border-radius:4px; color:#e8e4de; font-family:'DM Sans',sans-serif;
+            font-size:14px; padding:12px 16px; outline:none; transition:border-color 0.2s;
+          " onfocus="this.style.borderColor='#3e5bdb'" onblur="this.style.borderColor='rgba(255,255,255,0.12)'"/>
+        </div>
+        <div style="margin-bottom:18px;">
+          <label style="display:block;font-size:9px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:8px;">CPF</label>
+          <input id="locarCpf" type="text" placeholder="000.000.000-00" maxlength="14" style="
+            width:100%; background:#111316; border:1px solid rgba(255,255,255,0.12);
+            border-radius:4px; color:#e8e4de; font-family:'DM Sans',sans-serif;
+            font-size:14px; padding:12px 16px; outline:none; transition:border-color 0.2s;
+          " onfocus="this.style.borderColor='#3e5bdb'" onblur="this.style.borderColor='rgba(255,255,255,0.12)'"/>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;">
+          <div>
+            <label style="display:block;font-size:9px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:8px;">Data de retirada</label>
+            <input id="locarRetirada" type="date" style="
+              width:100%; background:#111316; border:1px solid rgba(255,255,255,0.12);
+              border-radius:4px; color:#e8e4de; font-family:'DM Sans',sans-serif;
+              font-size:14px; padding:12px 16px; outline:none;
+            "/>
+          </div>
+          <div>
+            <label style="display:block;font-size:9px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:8px;">Data de devolução</label>
+            <input id="locarDevolucao" type="date" readonly style="
+              width:100%; background:#111316; border:1px solid rgba(255,255,255,0.12);
+              border-radius:4px; color:#e8e4de; font-family:'DM Sans',sans-serif;
+              font-size:14px; padding:12px 16px; outline:none; opacity:0.5; cursor:not-allowed;
+            "/>
+          </div>
+        </div>
+        <div style="margin-bottom:4px;">
+          <label style="display:block;font-size:9px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:8px;">E-mail</label>
+          <input id="locarEmail" type="email" placeholder="email@exemplo.com" maxlength="120" style="
+            width:100%; background:#111316; border:1px solid rgba(255,255,255,0.12);
+            border-radius:4px; color:#e8e4de; font-family:'DM Sans',sans-serif;
+            font-size:14px; padding:12px 16px; outline:none; transition:border-color 0.2s;
+          " onfocus="this.style.borderColor='#3e5bdb'" onblur="this.style.borderColor='rgba(255,255,255,0.12)'"/>
+        </div>
+
+        <div style="display:flex;gap:12px;margin-top:28px;">
+          <button id="modalLocarCancelar" style="
+            background:transparent; color:rgba(255,255,255,0.4);
+            border:1px solid rgba(255,255,255,0.12); padding:13px 22px;
+            border-radius:3px; font-family:'DM Sans',sans-serif; font-size:12px;
+            font-weight:500; letter-spacing:2px; text-transform:uppercase; cursor:pointer;
+          ">Cancelar</button>
+          <button id="modalLocarConfirmar" style="
+            flex:1; background:#3e5bdb; color:#fff; border:none;
+            padding:13px 22px; border-radius:3px; font-family:'DM Sans',sans-serif;
+            font-size:12px; font-weight:500; letter-spacing:2px; text-transform:uppercase; cursor:pointer;
+            transition:background 0.2s;
+          ">
+            <i class="fa-solid fa-check" style="margin-right:8px;"></i>Confirmar locação
+          </button>
         </div>
       </div>
     </div>
@@ -745,9 +828,6 @@
 
           // ── Reservas ──
           renderReservas(data.reservas);
-
-          // ── Multas (empréstimos atrasados) ──
-          calcularMultas(data.emprestimos);
         } catch (e) {
           mostrarToast("Erro ao carregar perfil.", true);
         }
@@ -819,15 +899,25 @@
         <div class="livro-item" id="reserva-${r.id}">
           <img class="livro-capa" src="${capa}" alt="${r.titulo}" onerror="this.src='../img/livro-placeholder.webp'">
           <div class="livro-info">
-            <div class="livro-titulo">${r.titulo}</div>
+            <div class="livro-titulo" style="cursor:pointer;" data-livro-id="${r.livro_id}" data-reserva-titulo="${r.titulo}" data-reserva-autor="${r.autor}">${r.titulo}</div>
             <div class="livro-autor">${r.autor}</div>
             <span class="livro-badge badge-pendente">
               <i class="fa-solid fa-clock" style="font-size:9px;"></i> Pendente
             </span>
             <div class="livro-datas">Reservado em: <strong>${criado}</strong></div>
-            <button class="btn-cancelar-reserva" data-id="${r.id}">
-              <i class="fas fa-times" style="margin-right:5px;"></i> Cancelar
-            </button>
+            <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
+              <button class="btn-locar-reserva" data-livro-id="${r.livro_id}" data-titulo="${r.titulo}" data-autor="${r.autor}" style="
+                background:#3e5bdb; color:#fff; border:none; padding:6px 14px;
+                border-radius:3px; font-size:10px; font-weight:600; letter-spacing:1.5px;
+                text-transform:uppercase; cursor:pointer; display:flex; align-items:center; gap:6px;
+                transition:background 0.2s;
+              ">
+                <i class="fa-solid fa-file-contract"></i> Locar
+              </button>
+              <button class="btn-cancelar-reserva" data-id="${r.id}" style="margin-top:0;">
+                <i class="fas fa-times" style="margin-right:5px;"></i> Cancelar
+              </button>
+            </div>
           </div>
         </div>`;
           })
@@ -837,6 +927,13 @@
         el.querySelectorAll(".btn-cancelar-reserva").forEach((btn) => {
           btn.addEventListener("click", () =>
             cancelarReserva(parseInt(btn.dataset.id)),
+          );
+        });
+
+        // Evento de locar reserva
+        el.querySelectorAll(".btn-locar-reserva").forEach((btn) => {
+          btn.addEventListener("click", () =>
+            abrirModalLocar(parseInt(btn.dataset.livroId), btn.dataset.titulo, btn.dataset.autor)
           );
         });
       }
@@ -868,25 +965,6 @@
         }
       }
 
-      function calcularMultas(emprestimos) {
-        if (!emprestimos || emprestimos.length === 0) return;
-        const hoje = new Date();
-        hoje.setHours(0, 0, 0, 0);
-        const DIARIA = 2.0;
-        let total = 0;
-
-        emprestimos.forEach((e) => {
-          const dev = new Date(e.data_devolucao + "T00:00:00");
-          if (dev < hoje) {
-            const dias = Math.floor((hoje - dev) / (1000 * 60 * 60 * 24));
-            total += dias * DIARIA;
-          }
-        });
-
-        document.getElementById("valor").textContent =
-          `R$ ${total.toFixed(2).replace(".", ",")}`;
-      }
-
       function mostrarToast(msg, erro = false) {
         clearTimeout(toastTimer);
         const toast = document.getElementById("toastPerfil");
@@ -899,8 +977,127 @@
         toastTimer = setTimeout(() => toast.classList.remove("show"), 3000);
       }
 
-      document.getElementById("btnPagamento").addEventListener("click", () => {
-        mostrarToast("Módulo de pagamento em breve.", false);
+      // ── Modal de Locação via Reserva ──
+      let livroIdParaLocar = null;
+
+      function aplicarMascaraCPF(input) {
+        input.addEventListener('input', () => {
+          let v = input.value.replace(/\D/g, '').slice(0, 11);
+          if (v.length > 9)      v = v.replace(/(\d{3})(\d{3})(\d{3})(\d{0,2})/, '$1.$2.$3-$4');
+          else if (v.length > 6) v = v.replace(/(\d{3})(\d{3})(\d{0,3})/, '$1.$2.$3');
+          else if (v.length > 3) v = v.replace(/(\d{3})(\d{0,3})/, '$1.$2');
+          input.value = v;
+        });
+      }
+      aplicarMascaraCPF(document.getElementById('locarCpf'));
+
+      // Atualiza devolução automaticamente 15 dias após retirada
+      document.getElementById('locarRetirada').addEventListener('change', (e) => {
+        const dt = new Date(e.target.value + 'T00:00:00');
+        if (!isNaN(dt)) {
+          dt.setDate(dt.getDate() + 15);
+          document.getElementById('locarDevolucao').value = dt.toISOString().split('T')[0];
+        }
+      });
+
+      async function abrirModalLocar(livroId, titulo, autor) {
+        livroIdParaLocar = livroId;
+
+        // Busca preço do livro
+        let precoStr = '—';
+        try {
+          const r = await fetch(`${API}/livros_detalhe.php?id=${livroId}`, { credentials: 'same-origin' });
+          const d = await r.json();
+          if (!d.erro) {
+            precoStr = d.preco_aluguel > 0
+              ? 'R$ ' + parseFloat(d.preco_aluguel).toFixed(2).replace('.', ',')
+              : 'Gratuito';
+          }
+        } catch {}
+
+        document.getElementById('modalLocarBookInfo').innerHTML =
+          `<strong style="color:#5dcaa5;">${titulo}</strong> — ${autor}<br>Prazo: 15 dias`;
+        document.getElementById('modalLocarPreco').textContent = precoStr;
+
+        // Limpa campos
+        document.getElementById('locarNome').value = '';
+        document.getElementById('locarCpf').value = '';
+        document.getElementById('locarRetirada').value = '';
+        document.getElementById('locarDevolucao').value = '';
+        document.getElementById('locarEmail').value = '';
+
+        const overlay = document.getElementById('modalLocarOverlay');
+        const box     = document.getElementById('modalLocarBox');
+        overlay.style.opacity = '1';
+        overlay.style.pointerEvents = 'auto';
+        box.style.transform = 'translateY(0)';
+      }
+
+      function fecharModalLocar() {
+        const overlay = document.getElementById('modalLocarOverlay');
+        const box     = document.getElementById('modalLocarBox');
+        overlay.style.opacity = '0';
+        overlay.style.pointerEvents = 'none';
+        box.style.transform = 'translateY(20px)';
+        livroIdParaLocar = null;
+      }
+
+      document.getElementById('modalLocarCancelar').addEventListener('click', fecharModalLocar);
+      document.getElementById('modalLocarOverlay').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('modalLocarOverlay')) fecharModalLocar();
+      });
+
+      document.getElementById('modalLocarConfirmar').addEventListener('click', async () => {
+        const nome     = document.getElementById('locarNome').value.trim();
+        const cpf      = document.getElementById('locarCpf').value.trim();
+        const retirada = document.getElementById('locarRetirada').value;
+        const email    = document.getElementById('locarEmail').value.trim();
+
+        if (!nome)                                { mostrarToast('Informe seu nome completo.', true);  return; }
+        if (cpf.replace(/\D/g,'').length !== 11)  { mostrarToast('Informe um CPF válido.', true);     return; }
+        if (!retirada)                            { mostrarToast('Informe a data de retirada.', true); return; }
+        if (!email || !email.includes('@'))       { mostrarToast('Informe um e-mail válido.', true);   return; }
+
+        const dtDev = new Date(retirada + 'T00:00:00');
+        dtDev.setDate(dtDev.getDate() + 15);
+        const devolucaoISO = dtDev.toISOString().split('T')[0];
+
+        const btn = document.getElementById('modalLocarConfirmar');
+        const orig = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin" style="margin-right:8px;"></i> Confirmando...';
+
+        try {
+          const res = await fetch(`${API}/emprestimo_salvar.php`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'same-origin',
+            body: JSON.stringify({
+              livro_id:       livroIdParaLocar,
+              nome,
+              cpf,
+              contato:        email,
+              data_retirada:  retirada,
+              data_devolucao: devolucaoISO
+            })
+          });
+          const data = await res.json();
+
+          if (data.erro) {
+            mostrarToast(data.erro, true);
+            btn.disabled = false;
+            btn.innerHTML = orig;
+            return;
+          }
+
+          fecharModalLocar();
+          mostrarToast(`Locação confirmada! Devolução até ${dtDev.toLocaleDateString('pt-BR')}.`, false);
+
+        } catch {
+          mostrarToast('Erro ao conectar com o servidor.', true);
+          btn.disabled = false;
+          btn.innerHTML = orig;
+        }
       });
 
       // ── Créditos ──
