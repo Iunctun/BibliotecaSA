@@ -787,6 +787,7 @@
       // ============================================================
       const API = "/BibliotecaSA/backend";
       let toastTimer = null;
+      let dadosUsuarioLogado = { nome: '', email: '' };
 
       async function carregarPerfil() {
         try {
@@ -803,6 +804,8 @@
           // ── Dados pessoais ──
           document.getElementById("nome").value = data.usuario.nome || "—";
           document.getElementById("email").value = data.usuario.email || "—";
+          dadosUsuarioLogado.nome  = data.usuario.nome  || '';
+          dadosUsuarioLogado.email = data.usuario.email || '';
           document.getElementById("membroId").value =
             "#" + String(data.usuario.id).padStart(5, "0");
           atualizarCreditos(data.usuario.creditos ?? 0);
@@ -1019,12 +1022,12 @@
           `<strong style="color:#5dcaa5;">${titulo}</strong> — ${autor}<br>Prazo: 15 dias`;
         document.getElementById('modalLocarPreco').textContent = precoStr;
 
-        // Limpa campos
-        document.getElementById('locarNome').value = '';
-        document.getElementById('locarCpf').value = '';
-        document.getElementById('locarRetirada').value = '';
+        // Limpa campos e pré-preenche com dados da conta
+        document.getElementById('locarNome').value  = dadosUsuarioLogado.nome;
+        document.getElementById('locarCpf').value   = '';
+        document.getElementById('locarRetirada').value  = '';
         document.getElementById('locarDevolucao').value = '';
-        document.getElementById('locarEmail').value = '';
+        document.getElementById('locarEmail').value = dadosUsuarioLogado.email;
 
         const overlay = document.getElementById('modalLocarOverlay');
         const box     = document.getElementById('modalLocarBox');
