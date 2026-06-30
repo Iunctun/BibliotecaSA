@@ -166,8 +166,8 @@ svg text {
   font-weight: 900;
   position: absolute;
   left: 18px;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 23px;
+  transform: none;
   color: var(--accent);
   font-size: 13px;
   pointer-events: none;

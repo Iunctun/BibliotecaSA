@@ -607,6 +607,7 @@
     const params   = new URLSearchParams(window.location.search);
     const buscaUrl = params.get('busca')     || '';
     const catUrl   = params.get('categoria') || '';
+    const autorUrl = params.get('autor')     || '';
 
     if (buscaUrl) inputBusca.value = buscaUrl;
 
@@ -614,7 +615,7 @@
       const res = await fetch(`${API_BASE}/livros_listar.php`);
       todosLivros = await res.json();
       if (!Array.isArray(todosLivros)) throw new Error('Resposta inválida');
-      popularFiltros(catUrl);
+      popularFiltros(catUrl, autorUrl);
       aplicarFiltros();
     } catch {
       grid.innerHTML = `<div style="color:rgba(255,255,255,0.3);font-size:13px;grid-column:1/-1;text-align:center;padding:60px 0;">Erro ao carregar livros. Tente recarregar a página.</div>`;
@@ -622,7 +623,7 @@
   }
 
   // ── Popula os filtros laterais com valores reais do banco ──
-  function popularFiltros(catPre = '') {
+  function popularFiltros(catPre = '', autorPre = '') {
     const categorias = [...new Set(todosLivros.map(l => l.categoria).filter(Boolean))].sort();
     const autores    = [...new Set(todosLivros.map(l => l.autor).filter(Boolean))].sort();
 
@@ -633,7 +634,7 @@
 
     filtrosAuts.innerHTML = autores.map(a => `
       <label class="option">
-        <input type="checkbox" data-filter="autor" value="${a}"> ${a}
+        <input type="checkbox" data-filter="autor" value="${a}" ${a === autorPre ? 'checked' : ''}> ${a}
       </label>`).join('');
 
     document.querySelectorAll('input[type="checkbox"]').forEach(cb =>
